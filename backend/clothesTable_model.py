@@ -135,7 +135,7 @@ class clothesTable_model:
         self.closeDb()
 #-----------------------------------------------------------------------------------------------------------------------------------------------
     # DB one data selection
-    def selectClothes(self, clothes_type, code):
+    def oneSelectClothes(self, clothes_type, code):
         self.connectDb()
         self.writeDb(f"SELECT * FROM {clothes_type} WHERE n_code='{code}';")
         result = self.cur.fetchall()
@@ -143,7 +143,7 @@ class clothesTable_model:
         self.closeDb()
 
     # DB longClothes selection
-    def longClothes_type(self, clothes_type, type_id):
+    def clothesType(self, clothes_type, type_id):
         self.connectDb()
         self.writeDb(f"SELECT * FROM {clothes_type} WHERE type_id= {type_id};")
         result = self.cur.fetchall()
