@@ -34,3 +34,7 @@ CREATE TABLE IF NOT EXISTS  hood (
                 h_logo VARCHAR(20),
                 h_url VARCHAR(300),
                 FOREIGN KEY (h_type_id) REFERENCES clothing_type (type_id));
+
+INSERT INTO neat (n_code, n_userId, n_type_id, n_brand, n_color, n_logo, n_url) VALUES ('n3', 'user1', 1, 'nike', 'black', 'nike_logo', 'nike_url');
+
+SELECT * FROM neat;
