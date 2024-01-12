@@ -51,6 +51,11 @@ class clothesTable_model:
             CREATE SEQUENCE IF NOT EXISTS hood_sequence START 1;
             CREATE SEQUENCE IF NOT EXISTS shirt_sequence START 1;
             CREATE SEQUENCE IF NOT EXISTS mantoman_sequence START 1;
+
+            CREATE SEQUENCE IF NOT EXISTS jeans_sequence START 1;
+            CREATE SEQUENCE IF NOT EXISTS slacks_sequence START 1;
+            CREATE SEQUENCE IF NOT EXISTS training_sequence START 1;
+            CREATE SEQUENCE IF NOT EXISTS jogger_sequence START 1;
             '''
         high_table = '''
             CREATE TABLE IF NOT EXISTS neat (
@@ -89,6 +94,43 @@ class clothesTable_model:
                 h_logo VARCHAR(20),
                 h_url VARCHAR(300),
                 FOREIGN KEY (h_type_id) REFERENCES clothing_type (type_id));
+------------------------------------------------------------------------------------------
+            CREATE TABLE IF NOT EXISTS p_jeans(
+                p_j_code CHAR(50) PRIMARY KEY,
+                p_j_userId CHAR(20) NOT NULL,
+                p_j_type_id INT NOT NULL,
+                p_j_brand VARCHAR(20) NOT NULL,
+                p_j_color VARCHAR(20) NOT NULL,
+                p_j_logo VARCHAR(20),
+                p_j_url VARCHAR(300),
+                FOREIGN KEY (p_j_type_id) REFERENCES clothing_type (type_id));
+            CREATE TABLE IF NOT EXISTS p_slacks(
+                p_s_code CHAR(50) PRIMARY KEY,
+                p_s_userId CHAR(20) NOT NULL,
+                p_s_type_id INT NOT NULL,
+                p_s_brand VARCHAR(20) NOT NULL,
+                p_s_color VARCHAR(20) NOT NULL,
+                p_s_logo VARCHAR(20),
+                p_s_url VARCHAR(300),
+                FOREIGN KEY (p_s_type_id) REFERENCES clothing_type (type_id));
+            CREATE TABLE IF NOT EXISTS p_trainnig(
+                p_t_code CHAR(50) PRIMARY KEY,
+                p_t_userId CHAR(20) NOT NULL,
+                p_t_type_id INT NOT NULL,
+                p_t_brand VARCHAR(20) NOT NULL,
+                p_t_color VARCHAR(20) NOT NULL,
+                p_t_logo VARCHAR(20),
+                p_t_url VARCHAR(300),
+                FOREIGN KEY (p_t_type_id) REFERENCES clothing_type (type_id));
+            CREATE TABLE IF NOT EXISTS p_jogger(
+                p_jo_code CHAR(50) PRIMARY KEY,
+                p_jo_userId CHAR(20) NOT NULL,
+                p_jo_type_id INT NOT NULL,
+                p_jo_brand VARCHAR(20) NOT NULL,
+                p_jo_color VARCHAR(20) NOT NULL,
+                p_jo_logo VARCHAR(20),
+                p_jo_url VARCHAR(300),
+                FOREIGN KEY (p_jo_type_id) REFERENCES clothing_type (type_id));
             '''
         self.writeDb(clothes_setting)
         self.writeDb(high_table)
