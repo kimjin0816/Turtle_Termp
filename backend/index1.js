@@ -7,7 +7,7 @@ const port = 3000;
 
 app.use(cors()); // CORS 미들웨어 추가하기
 
-const pool = new Pool({         // 자신의 DB에 맞게 수정하기
+const pool = new Pool({         // 자신의 DB에 맞게 수정
   user: 'postgres',             // 자신의 DB user 이름 적기
   host: 'localhost',            // 자신의 DB host 이름 적기
   database: 'Project',          // 자신의 DB 서버 이름 적기
