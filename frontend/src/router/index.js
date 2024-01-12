@@ -1,29 +1,54 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import SignUp from '../views/SignUp.vue';
+import AboutView from '../views/AboutView.vue'; // AboutView 추가
+import FindCre from '@/views/FindCre.vue';
+import EditinfView from '@/views/EditinfView.vue';
+import DeleteView from '@/views/DeleteView.vue';
 
-Vue.use(VueRouter)
+
+Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: SignUp,
   },
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+    component: AboutView, // AboutView 추가
+  },
+  {
+    path: '/findCredentials',
+    name: 'FindCredentials',
+    component: FindCre,
+  },
+  {
+    path: '/updateProfile',
+    name: 'updateProfile',
+    component: EditinfView,
+  },
+  {
+    path: '/deleteProfile',
+    name: 'deleteProfile',
+    component: DeleteView,
+  },
+  
+
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
