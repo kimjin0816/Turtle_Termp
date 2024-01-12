@@ -20,7 +20,7 @@
           <h1>이미지 결과</h1>
         </div>
         <v-row justify="center">
-          <v-col v-for="(image, index) in attachedImages" :key="index" cols="10" sm="4" md="4">
+          <v-col v-for="(image, index) in attachedImages" :key="index" cols="10" sm="5" md="5">
             <div class="image-container" style="text-align: center;">
               <img :src="image.src" alt="Image Result">
             </div>
