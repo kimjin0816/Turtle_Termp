@@ -118,5 +118,5 @@ dist
 .pnp.*
 
 #보안관련해서..
-/node_modules/
-/package-lock.json
+**/node_modules/
+**/package-lock.json
