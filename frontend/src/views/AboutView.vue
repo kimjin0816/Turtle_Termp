@@ -1,5 +1,16 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <Keyword />
 </template>
+
+<script>
+  
+  import Keyword from '@/components/keyword.vue';
+
+  export default {
+    name: 'About',
+
+    components: {
+      Keyword
+    },
+  }
+</script>
