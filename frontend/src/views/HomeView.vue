@@ -1,82 +1,69 @@
 <template>
-  <div class="home-container">
-    <div class="center-box">
-      <h1>로그인</h1>
-      <!-- 로그인 폼 -->
-      <form @submit.prevent="login" class="login-form">
-        <div class="form-group">
-          <label for="username">아이디:</label>
-          <input v-model="username" type="text" id="username" name="username" required>
+  <v-row class="text-center" style="margin-top: -20px;">
+    <v-col cols="12">
+      <!-- 첨부한 이미지 표시 영역 -->
+      <v-row>
+        <v-col v-for="(image, index) in attachedImages" :key="index" cols="10">
+          <v-img :src="image.src" alt="Attached Image"></v-img>
+        </v-col>
+      </v-row>
+
+      <!-- 이미지 첨부 -->
+      <v-col>
+        <v-file-input label="이미지를 첨부하세요" v-model="selectedImage" accept="image/*"></v-file-input>
+        <v-btn @click="attachImage">이미지 첨부</v-btn>
+      </v-col>
+
+      <!-- 이미지 결과 -->
+      <v-container>
+        <div class="my-3" style="text-align: center;">
+          <h1>이미지 결과</h1>
         </div>
-
-        <div class="form-group">
-          <label for="password">비밀번호:</label>
-          <input v-model="password" type="password" id="password" name="password" required>
-        </div>
-
-        <button type="submit">로그인</button>
-      </form>
-
-      <!-- 회원가입, 아이디/비밀번호 찾기 링크 -->
-      <div class="links">
-        <router-link to="/signup">
-          <button class="router-link">회원가입</button>
-        </router-link>
-        <router-link to="/findCredentials">
-          <button class="router-link">아이디/비밀번호 찾기</button>
-        </router-link>
-        <router-link to="/updateProfile">
-          <button class="router-link">회원정보 수정</button>
-        </router-link>
-        <router-link to="/deleteProfile">
-          <button class="router-link">회원 탈퇴</button>
-        </router-link>
-      </div>
-
-      <hello-world />
-    </div>
-  </div>
+        <v-row justify="center">
+          <v-col v-for="(image, index) in attachedImages" :key="index" cols="10" sm="4" md="4">
+            <div class="image-container" style="text-align: center;">
+              <img :src="image.src" alt="Image Result">
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld';
-
 export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld,
-  },
+  name: 'Home',
+
   data() {
     return {
-      username: '',
-      password: '',
+      selectedImage: null,
+      attachedImages: [],
+      sampleImages: [
+        'https://example.com/path/to/image1.jpg',
+        'https://example.com/path/to/image2.jpg',
+        'https://example.com/path/to/image3.jpg',
+        'https://example.com/path/to/image4.jpg',
+        'https://example.com/path/to/image5.jpg',
+        'https://example.com/path/to/image6.jpg',
+        'https://example.com/path/to/image7.jpg',
+        'https://example.com/path/to/image8.jpg',
+        'https://example.com/path/to/image9.jpg',
+      ],
     };
   },
+
+  mounted() {
+    this.attachedImages = this.sampleImages
+      .slice(0, 9) // Slice the array to ensure it has a maximum of 9 items
+      .map(src => ({ src }));
+  },
+
   methods: {
-    async login() {
-      try {
-        const response = await fetch('http://localhost:3000/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            MEM_ID: this.username,
-            MEM_PASSWORD: this.password,
-          }),
-        });
-
-        const result = await response.json();
-
-        if (response.status === 200) {
-          alert(result.message); // 로그인 성공 메시지
-          this.$router.push('/about'); // AboutView로 이동
-        } else {
-          alert(result.message); // 로그인 실패 메시지
-        }
-      } catch (error) {
-        console.error('로그인 오류:', error);
-        alert('서버 오류');
+    attachImage() {
+      if (this.selectedImage) {
+        this.attachedImages.push({ src: URL.createObjectURL(this.selectedImage) });
+        this.selectedImage = null;
       }
     },
   },
@@ -84,95 +71,7 @@ export default {
 </script>
 
 <style scoped>
-.home-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f5f5f5; /* 배경색 추가 */
-}
-
-.center-box {
-  text-align: center;
-  background-color: #fff; /* 중앙 박스 배경색 추가 */
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  color: #333; /* 제목 색상 변경 */
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.login-form {
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #555; /* 라벨 색상 변경 */
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s; /* 부드러운 색상 전환을 위한 트랜지션 추가 */
-}
-
-button:hover {
-  background-color: grey;
-}
-
-.links {
-  margin-top: 20px;
-  display: flex; /* 버튼을 가로로 나열하기 위해 추가 */
-  justify-content: space-between; /* 버튼 사이에 간격 주기 위해 추가 */
-}
-
-.router-link {
-  flex: 1; /* 버튼의 공간을 동일하게 나누기 위해 추가 */
-  margin-right: 10px; /* 여백 추가 */
-  margin-left: 10px;
-}
-
-.router-link button {
-  width: 100%; /* 버튼을 가로로 꽉 채우기 위해 추가 */
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 3px;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  transition: background-color 0.3s; /* 부드러운 색상 전환을 위한 트랜지션 추가 */
-}
-
-.router-link button:hover {
-  background-color: #007bff;
+.image-container {
+  margin: 20px;
 }
 </style>

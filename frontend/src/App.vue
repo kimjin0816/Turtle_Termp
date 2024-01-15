@@ -18,11 +18,11 @@
           </v-btn>
         </v-row>
 
-      <v-row style="display: flex; justify-content: flex-start; margin-top: -10px">
-        <v-btn @click="goToLogin" text color="black" class="ml-1">
-          로그인
-        </v-btn>
-      </v-row>
+        <v-row style="display: flex; justify-content: flex-start; margin-top: -10px">
+          <v-btn @click="goToLogin" text color="black" class="ml-1">
+            로그인
+          </v-btn>
+        </v-row>
     </v-app-bar>
 
     <v-main>
@@ -64,6 +64,14 @@ export default {
         this.$router.push('/cody');
       } catch (error) {
         console.error('Error navigating to /cody:', error);
+      }
+    },
+    goToLogin() {
+      try {
+        // Vue Router를 이용하여 /login 페이지로 이동
+        this.$router.push('/login');
+      } catch (error) {
+        console.error('Error navigating to /login:', error);
       }
     }
   },

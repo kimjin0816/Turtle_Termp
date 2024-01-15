@@ -1,14 +1,13 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import AboutView from "../views/AboutView.vue";
-import CodyView from "../views/CodyView.vue";
-
-import SignUp from "../views/SignUp.vue";
-import AboutView from "../views/AboutView.vue"; // AboutView 추가
-import FindCre from "@/views/FindCre.vue";
-import EditinfView from "@/views/EditinfView.vue";
-import DeleteView from "@/views/DeleteView.vue";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import AboutView from '../views/AboutView.vue';
+import CodyView from '../views/CodyView.vue';
+import LoginView from '../views/LoginView.vue';
+import SignUpView from '../views/SignUpView.vue';
+import FindCreView from '../views/FindCreView.vue';
+import EditinfView from '../views/EditinfView.vue';
+import DeleteView from '../views/DeleteView.vue';
 
 Vue.use(VueRouter);
 
@@ -34,6 +33,32 @@ const routes = [
     component: CodyView,
   },
   {
+    path: '/login',
+    name: 'login',
+    component: LoginView,
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: SignUpView,
+  },
+  {
+    path: '/findCredentials',
+    name: 'findCredentials',
+    component: FindCreView,
+  },
+  {
+    path: '/updateProfile',
+    name: 'updateProfile',
+    component: EditinfView,
+  },
+  {
+    path: '/deleteProfile',
+    name: 'deleteProfile',
+    component: DeleteView,
+  },
+  {
+
     component: AboutView, // AboutView 추가
   },
   {
