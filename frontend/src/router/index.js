@@ -13,18 +13,23 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
+    path: "/",
+    name: "home",
     component: HomeView,
   },
   {
-    path: '/about',
-    name: 'about',
+    path: "/signup",
+    name: "signup",
+    component: SignUp,
+  },
+  {
+    path: "/about",
+    name: "about",
     component: AboutView,
   },
   {
-    path: '/cody',
-    name: 'cody',
+    path: "/cody",
+    name: "cody",
     component: CodyView,
   },
   {
@@ -51,11 +56,30 @@ const routes = [
     path: '/deleteProfile',
     name: 'deleteProfile',
     component: DeleteView,
-  }
+  },
+  {
+
+    component: AboutView, // AboutView 추가
+  },
+  {
+    path: "/findCredentials",
+    name: "FindCredentials",
+    component: FindCre,
+  },
+  {
+    path: "/updateProfile",
+    name: "updateProfile",
+    component: EditinfView,
+  },
+  {
+    path: "/deleteProfile",
+    name: "deleteProfile",
+    component: DeleteView,
+  },
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes,
 });
