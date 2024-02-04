@@ -1,22 +1,31 @@
 const express = require('express');
+const session = require('express-session');
 const { Pool } = require('pg');
 const cors = require('cors');
+const crypto = require('crypto');
 
 const app = express();
 const port = 3000;
 
-app.use(cors()); // CORS 미들웨어 추가하기
+// 세션 설정
+const sessionKey = crypto.randomBytes(32).toString('base64');
+app.use(session({
+  secret: sessionKey,
+  resave: false,
+  saveUninitialized: true,
+}));
 
-const pool = new Pool({         // 자신의 DB에 맞게 수정
-  user: 'postgres',             // 자신의 DB user 이름 적기
-  host: 'localhost',            // 자신의 DB host 이름 적기
-  database: 'postgres',          // 자신의 DB 서버 이름 적기
-  password: '1015',             // 자신의 DB 비밀번호 적기
-  port: 5432,                   // 자신의 DB 포트 번호 적기
+app.use(cors()); // CORS 미들웨어 추가
+
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'postgres',
+  password: '1015',
+  port: 5432,
 });
 
 app.use(express.json());
-
 
 // 회원가입
 app.post('/signup', async (req, res) => {
@@ -39,7 +48,6 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-
 // 로그인
 app.post('/login', async (req, res) => {
   const { MEM_ID, MEM_PASSWORD } = req.body;
@@ -49,7 +57,8 @@ app.post('/login', async (req, res) => {
       [MEM_ID, MEM_PASSWORD]);
 
     if (user.rows.length > 0) {
-      res.status(200).json({ message: '로그인 성공' });
+      req.session.user = user.rows[0]; // 세션에 사용자 정보 저장
+      res.status(200).json({ message: '로그인 성공', nickname: user.rows[0].MEM_NICKNAME });
     } else {
       res.status(401).json({ message: '유효하지 않은 사용자 또는 비밀번호' });
     }
@@ -58,7 +67,6 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ error: '서버 오류' });
   }
 });
-
 
 // 아이디 및 비밀번호 찾기
 app.post('/findCredentials', async (req, res) => {
@@ -79,7 +87,6 @@ app.post('/findCredentials', async (req, res) => {
     res.status(500).json({ error: '서버 오류' });
   }
 });
-
 
 // 회원 정보 수정
 app.put('/updateProfile', async (req, res) => {
@@ -102,7 +109,6 @@ app.put('/updateProfile', async (req, res) => {
   }
 });
 
-
 // 회원 삭제 (탈퇴)
 app.delete('/deleteProfile', async (req, res) => {
   const { MEM_ID, MEM_PASSWORD } = req.body;
@@ -116,13 +122,40 @@ app.delete('/deleteProfile', async (req, res) => {
 
     await pool.query('DELETE FROM "MEMBERSHIP" WHERE "MEM_ID" = $1', [MEM_ID]);
 
-    res.status(200).json({ message: '회원 삭제 성공' });
+    // 세션 지우기
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('세션 삭제 오류:', err);
+        res.status(500).json({ message: '로그아웃 실패' });
+      } else {
+        console.log('세션 삭제 성공');
+        res.status(200).json({ message: '회원 삭제 성공 및 로그아웃 성공' });
+      }
+    });
   } catch (error) {
     console.error('회원 삭제 오류:', error);
     res.status(500).json({ error: '서버 오류' });
   }
 });
 
+// 로그아웃
+app.post('/logout', async (req, res) => {
+  try {
+    // 세션 지우기
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('세션 삭제 오류:', err);
+        res.status(500).json({ message: '로그아웃 실패' });
+      } else {
+        console.log('세션 삭제 성공');
+        res.status(200).json({ message: '로그아웃 성공' });
+      }
+    });
+  } catch (error) {
+    console.error('로그아웃 오류:', error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`서버가 포트 ${port}에서 실행 중입니다.`);
