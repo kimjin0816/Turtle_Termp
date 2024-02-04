@@ -4,7 +4,8 @@ class clothesHandler:
     def __init__(self):
         self.conn = None
         self.cur = None
-        self.first_letter = None
+        self.firstletter_data = None
+        self.firstletter_attribute = None
 #-----------------------------------------------------------------------------------------------------------------------------------------------
 #region DB connection/close/write methods
     # DB connection
@@ -24,25 +25,28 @@ class clothesHandler:
 #-----------------------------------------------------------------------------------------------------------------------------------------------
     # first letter of clothes type
     def firstCode_letter(self, clothes_type):
-        self.writeDb(f"SELECT SUBSTRING('{clothes_type}' FROM 1 FOR 3);")
-        self.first_letter = self.cur.fetchall()[0][0]
+        self.writeDb(f"SELECT SUBSTRING('{clothes_type}' FROM 1 FOR 2);")
+        self.firstletter_attribute = self.cur.fetchall()[0][0]
+        self.writeDb(f"SELECT REPLACE('{clothes_type}', '_', '');")
+        self.firstletter_data = self.cur.fetchall()[0][0]
+        print(self.firstletter_data)
+        print(self.firstletter_attribute)
 # -----------------------------------------------------------------------------------------------------------------------------------------------
-    # DB data insertion
+    # data insertion
     def insertData(self, clothes_type, userId, type_id, brand, color, logo, url):
         self.connectDb()
         self.firstCode_letter(clothes_type)
-        self.writeDb(f"INSERT INTO {clothes_type} ({self.first_letter}_code, {self.first_letter}_userId, {self.first_letter}_type_id, {self.first_letter}_brand, {self.first_letter}_color, {self.first_letter}_logo, {self.first_letter}_url) VALUES ('{self.first_letter}' || nextval('{clothes_type}_sequence'), '{userId}', '{type_id}', '{brand}', '{color}', '{logo}', '{url}');")
+        self.writeDb(f"INSERT INTO {clothes_type} VALUES ('{self.firstletter_data}' || nextval('{clothes_type}_sequence'), '{userId}', '{type_id}', '{brand}', '{color}', '{logo}', '{url}');")
         self.closeDb()
 # -----------------------------------------------------------------------------------------------------------------------------------------------
-    # DB data update 
-    # research
+    # data update, research
     def updateData(self, clothes_type, data):
         self.connectDb()
         self.firstCode_letter(clothes_type)
-        self.writeDb(f"UPDATE {clothes_type} SET {self.first_letter}_type_id='{data[1]}', {self.first_letter}_brand='{data[2]}', {self.first_letter}_color='{data[3]}', {self.first_letter}_logo='{data[4]}', {self.first_letter}_url='{data[5]}' WHERE {self.first_letter}_code='{data[0]}';")
+        self.writeDb(f"UPDATE {clothes_type} SET {self.firstletter_data}_type_id='{data[1]}', {self.firstletter_data}_brand='{data[2]}', {self.first_letter}_color='{data[3]}', {self.first_letter}_logo='{data[4]}', {self.first_letter}_url='{data[5]}' WHERE {self.first_letter}_code='{data[0]}';")
         self.closeDb()
 #-----------------------------------------------------------------------------------------------------------------------------------------------
-    # DB table/data deletion
+    # table/data deletion
     def deleteData(self, clothes_type):
         self.connectDb()
         self.writeDb(f'DELETE FROM {clothes_type};')
@@ -63,7 +67,7 @@ class clothesHandler:
         self.writeDb(f"DROP SEQUENCE {clothes_type};")
         self.closeDb()
 #-----------------------------------------------------------------------------------------------------------------------------------------------
-    # DB one data selection
+    # one data selection
     def oneSelectClothes(self, clothes_type, code):
         self.connectDb()
         self.firstCode_letter(clothes_type)
@@ -72,10 +76,16 @@ class clothesHandler:
         print(result)
         self.closeDb()
 
-    # DB all data selection
+    # all data selection
     def allSelectClothes(self, clothes_type):
         self.connectDb()
         self.writeDb(f"SELECT * FROM {clothes_type};")
         result = self.cur.fetchall()
         print(result)
         self.closeDb()        
+
+    # Clothes length data selection
+    def typeIdSelectClothes(self, clothes_type, type_id):
+        self.connectDb()
+        self.writeDb(f"SELECT * FROM {clothes_type} WHERE t_n_type_id = {type_id};")
+        
