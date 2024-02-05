@@ -1,11 +1,21 @@
 const express = require("express");
+const session = require("express-session");
 const { Pool } = require("pg");
 const cors = require("cors");
+const crypto = require("crypto");
 
 const app = express();
 const port = 3000;
 
-app.use(cors()); // CORS 미들웨어 추가하기
+// 세션 설정
+const sessionKey = crypto.randomBytes(32).toString("base64");
+app.use(
+  session({
+    secret: sessionKey,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 const pool = new Pool({
   // 자신의 DB에 맞게 수정
@@ -71,7 +81,10 @@ app.post("/login", async (req, res) => {
     );
 
     if (user.rows.length > 0) {
-      res.status(200).json({ message: "로그인 성공" });
+      req.session.user = user.rows[0]; // 세션에 사용자 정보 저장
+      res
+        .status(200)
+        .json({ message: "로그인 성공", nickname: user.rows[0].MEM_NICKNAME });
     } else {
       res.status(401).json({ message: "유효하지 않은 사용자 또는 비밀번호" });
     }
@@ -167,10 +180,38 @@ app.delete("/deleteProfile", async (req, res) => {
 
     await pool.query('DELETE FROM "MEMBERSHIP" WHERE "MEM_ID" = $1', [MEM_ID]);
 
-    res.status(200).json({ message: "회원 삭제 성공" });
+    // 세션 지우기
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("세션 삭제 오류:", err);
+        res.status(500).json({ message: "로그아웃 실패" });
+      } else {
+        console.log("세션 삭제 성공");
+        res.status(200).json({ message: "회원 삭제 성공 및 로그아웃 성공" });
+      }
+    });
   } catch (error) {
     console.error("회원 삭제 오류:", error);
     res.status(500).json({ error: "서버 오류" });
+  }
+});
+
+// 로그아웃
+app.post("/logout", async (req, res) => {
+  try {
+    // 세션 지우기
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("세션 삭제 오류:", err);
+        res.status(500).json({ message: "로그아웃 실패" });
+      } else {
+        console.log("세션 삭제 성공");
+        res.status(200).json({ message: "로그아웃 성공" });
+      }
+    });
+  } catch (error) {
+    console.error("로그아웃 오류:", error);
+    res.status(500).json({ message: "서버 오류" });
   }
 });
 

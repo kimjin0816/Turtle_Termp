@@ -6,12 +6,24 @@
       <form @submit.prevent="login" class="login-form">
         <div class="form-group">
           <label for="username">아이디:</label>
-          <input v-model="username" type="text" id="username" name="username" required>
+          <input
+            v-model="username"
+            type="text"
+            id="username"
+            name="username"
+            required
+          />
         </div>
 
         <div class="form-group">
           <label for="password">비밀번호:</label>
-          <input v-model="password" type="password" id="password" name="password" required>
+          <input
+            v-model="password"
+            type="password"
+            id="password"
+            name="password"
+            required
+          />
         </div>
 
         <button type="submit">로그인</button>
@@ -32,31 +44,32 @@
           <button class="router-link">회원 탈퇴</button>
         </router-link>
       </div>
+
+      <!-- 닉네임 표시 -->
+      <div v-if="nickname" class="nickname-display">
+        <p>안녕하세요, {{ nickname }}님!</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld';
-
 export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld,
-  },
+  name: "LoginView",
   data() {
     return {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
+      nickname: "",
     };
   },
   methods: {
     async login() {
       try {
-        const response = await fetch('http://localhost:3000/login', { // 변경된 포트
-          method: 'POST',
+        const response = await fetch("http://localhost:3000/login", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             MEM_ID: this.username,
@@ -67,15 +80,20 @@ export default {
         const result = await response.json();
 
         if (response.status === 200) {
-          alert(result.message); // 로그인 성공 메시지
-          this.$router.push('/'); // 메인 화면으로 이동
+          alert(result.message);
+          this.handleLoginSuccess(result.nickname); // 수정된 부분
         } else {
-          alert(result.message); // 로그인 실패 메시지
+          alert(result.message);
         }
       } catch (error) {
-        console.error('로그인 오류:', error);
-        alert('서버 오류');
+        console.error("로그인 오류:", error);
+        alert("서버 오류");
       }
+    },
+
+    handleLoginSuccess(nickname) {
+      this.nickname = nickname;
+      this.$emit("login-success", nickname); // 부모(App.vue)에 이벤트 발신
     },
   },
 };
@@ -172,5 +190,11 @@ button:hover {
 
 .router-link button:hover {
   background-color: #007bff;
+}
+
+.nickname-display {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333;
 }
 </style>
