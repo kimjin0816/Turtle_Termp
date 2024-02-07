@@ -14,7 +14,7 @@ app.use(
     secret: sessionKey,
     resave: false,
     saveUninitialized: true,
-  }) 
+  })
 );
 
 const pool = new Pool({
@@ -214,6 +214,8 @@ app.post("/logout", async (req, res) => {
     res.status(500).json({ message: "서버 오류" });
   }
 });
+
+require("./router.js")(app);
 
 app.listen(port, () => {
   console.log(`서버가 포트 ${port}에서 실행 중입니다.`);
