@@ -29,8 +29,6 @@ class clothesHandler:
         self.firstletter_attribute = self.cur.fetchall()[0][0]
         self.writeDb(f"SELECT REPLACE('{clothes_type}', '_', '');")
         self.firstletter_data = self.cur.fetchall()[0][0]
-        print(self.firstletter_data)
-        print(self.firstletter_attribute)
 # -----------------------------------------------------------------------------------------------------------------------------------------------
     # data insertion
     def insertData(self, clothes_type, userId, type_id, brand, color, logo, url):

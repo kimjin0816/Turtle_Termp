@@ -14,7 +14,7 @@ app.use(
     secret: sessionKey,
     resave: false,
     saveUninitialized: true,
-  })
+  }) 
 );
 
 const pool = new Pool({
