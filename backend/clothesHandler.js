@@ -1,16 +1,16 @@
-// const { Client } = require("pg");
-const Pool = require("pg").Pool;
+// // const { Client } = require("pg");
+// const Pool = require("pg").Pool;
 
-// 데이터베이스 연결 설정
-const pool = new Pool({
-  host: "postgre",
-  user: "localhost",
-  password: "password",
-  database: "Clothes",
-});
+// // 데이터베이스 연결 설정
+// const pool = new Pool({
+//   host: "postgre",
+//   user: "localhost",
+//   password: "password",
+//   database: "Clothes",
+// });
 
 // entire clothing data results
-exports.findAll = (req, res) => {
+exports.export_keyword = (req, res) => {
   const clothes_type = req.query;
   pool.query("SELECT * FROM $1", [clothes_type], (error, results) => {
     if (error) {
