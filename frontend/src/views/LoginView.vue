@@ -44,11 +44,6 @@
           <button class="router-link">회원 탈퇴</button>
         </router-link>
       </div>
-
-      <!-- 닉네임 표시 -->
-      <div v-if="nickname" class="nickname-display">
-        <p>안녕하세요, {{ nickname }}님!</p>
-      </div>
     </div>
   </div>
 </template>
