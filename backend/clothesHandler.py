@@ -24,7 +24,7 @@ class clothesHandler:
 #-----------------------------------------------------------------------------------------------------------------------------------------------
     # first letter of clothes type
     def firstCode_letter(self, clothes_type):
-        self.writeDb(f"SELECT SUBSTRING('{clothes_type}' FROM 1 FOR 1);")
+        self.writeDb(f"SELECT SUBSTRING('{clothes_type}' FROM 1 FOR 3);")
         self.first_letter = self.cur.fetchall()[0][0]
 # -----------------------------------------------------------------------------------------------------------------------------------------------
     # DB data insertion
