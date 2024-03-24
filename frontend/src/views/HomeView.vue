@@ -1,5 +1,5 @@
 <template>
-  <v-row class="text-center" style="margin-top: -20px;">
+  <v-row class="text-center" style="margin-top: 20px;">
     <v-col cols="12">
       <!-- 이미지 첨부 -->
       <v-row justify="center">
@@ -13,20 +13,20 @@
         </v-col>
       </v-row>
 
+      <!-- 이미지 검색 및 코디 검색 버튼 -->
+      <v-row class="text-center">
+        <v-col class="text-right" style="margin-left: -360px; margin-top: 20px;">
+          <v-btn @click="attachImage">이미지 검색</v-btn>
+          <v-btn @click="gotoCody">코디 검색</v-btn>
+        </v-col>
+      </v-row>
+
       <!-- 첨부한 이미지 표시 -->
       <v-row justify="center" v-if="attachedImages.length > 0">
         <v-col v-for="(image, index) in attachedImages" :key="index" cols="12" md="4">
           <div class="image-container" style="text-align: center;">
             <img :src="image" alt="Attached Image">
           </div>
-        </v-col>
-      </v-row>
-
-      <!-- 이미지 검색 및 코디 검색 버튼 -->
-      <v-row class="text-center">
-        <v-col class="text-right" style="margin-left: -360px; margin-top: 20px;">
-          <v-btn @click="attachImage">이미지 검색</v-btn>
-          <v-btn @click="gotoCody">코디 검색</v-btn>
         </v-col>
       </v-row>
 
