@@ -1,6 +1,14 @@
-module.exports = (app) => {
-  const clothesHandler = require("./clothesHandler.js");
+const express = require("express");
+const UserController = require("./UserController");
 
-  app.get("/clothes/:clothes_type", clothesHandler.findAll); // 전체 의류 데이터 조회
-  app.get("/clothes/:clothes_type/:clothes_code", clothesHandler.findOne); // 특정 의류 데이터 조회
-};
+const router = express.Router();
+
+router.get("/", UserController.createTable);
+router.post("/signup", UserController.signUp);
+router.post("/login", UserController.login);
+router.post("/findCredentials", UserController.findCredentials);
+router.put("/updateProfile", UserController.updateProfile);
+router.delete("/deleteProfile", UserController.deleteProfile);
+router.post("/logout", UserController.logout);
+
+module.exports = router;

@@ -2,88 +2,97 @@ import psycopg2
 
 class clothesHandler:
     def __init__(self):
-        self.conn = None
-        self.cur = None
-        self.firstletter_data = None
-        self.firstletter_attribute = None
+        self.c_conn = None
+        self.c_cur = None
+        self.m_conn = None
+        self.m_cur = None
 #-----------------------------------------------------------------------------------------------------------------------------------------------
 #region DB connection/close/write methods
-    # DB connection
-    def connectDb(self):
-        self.conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='password', port='5432')
-        self.cur = self.conn.cursor()
-    # DB close
-    def closeDb(self):
-        self.cur.close()
-        self.conn.close()
-    # DB write   
-    def writeDb(self, cmd): 
+    # Clothes DB
+    def connectClothes(self):
+        self.c_conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='password', port='5432')
+        self.c_cur = self.c_conn.cursor()
+    def closeClothes(self):
+        self.c_cur.close()
+        self.c_conn.close()
+    def writeClothes(self, cmd): 
         sCmd = str(cmd) 
-        self.cur.execute(sCmd)
-        self.conn.commit()
+        self.c_cur.execute(sCmd)
+        self.c_conn.commit()
+    # Member DB
+    def connectMember(self):
+        self.m_conn = psycopg2.connect(host='localhost', database='members', user='postgres', password='password', port='5432')
+        self.m_cur = self.m_conn.cursor()
+    def closeMember(self):
+        self.m_cur.close()
+        self.m_conn.close()
+    def writeMember(self, cmd):
+        sCmd = str(cmd)
+        self.m_cur.execute(sCmd)
+        self.m_conn.commit()
 #endregion
 #-----------------------------------------------------------------------------------------------------------------------------------------------
-    # first letter of clothes type
-    def firstCode_letter(self, clothes_type):
-        self.writeDb(f"SELECT SUBSTRING('{clothes_type}' FROM 1 FOR 2);")
-        self.firstletter_attribute = self.cur.fetchall()[0][0]
-        self.writeDb(f"SELECT REPLACE('{clothes_type}', '_', '');")
-        self.firstletter_data = self.cur.fetchall()[0][0]
+    # binary => decimal
+    def decimal(self, binary): 
+        code = int(binary, 2)
+        return code
+# -----------------------------------------------------------------------------------------------------------------------------------------------     
+    # top feature data insert(once)
+    def t_f_insert(self, hood, kara, zipper, logo, printer):
+        self.connectClothes()
+        hood_val = int(hood)
+        kara_val = int(kara)
+        zipper_val = int(zipper)
+        logo_val = int(logo)
+        printer_val = int(printer)
+        f_code = self.decimal(f"{hood_val}{kara_val}{zipper_val}{logo_val}{printer_val}")
+        self.writeClothes(f"INSERT INTO top_feature VALUES ({f_code}, {hood}, {kara}, {zipper}, {logo}, {printer});")
+        self.closeClothes()
+    def b_f_insert(self, jogger, pocket):
+        self.connectClothes()
+        jogger_val = int(jogger)
+        pocket_val = int(pocket)
+        f_code = self.decimal(f"{jogger_val}{pocket_val}")
+        self.writeClothes(f"INSERT INTO bottom_feature VALUES ({f_code}, {jogger}, {pocket});")
+        self.closeClothes()   
+
+    # feature code setting
+    def t_f_code(self, feature):
+        hoodVal = int(feature[0])
+        karaVal = int(feature[1])
+        zipperVal = int(feature[2])
+        logoVal = int(feature[3])
+        printerVal = int(feature[4])
+        featureCode = self.decimal(f"{hoodVal}{karaVal}{zipperVal}{logoVal}{printerVal}")
+        return featureCode 
+    def b_f_code(self, feature):
+        joggerVal = int(feature[0])
+        pocketVal = int(feature[1])
+        featureCode = self.decimal(f"{joggerVal}{pocketVal}")
+        return featureCode
+    
+    # clother data insert
+    def t_c_Insert(self, id, shape, classification, color, feature):
+        self.connectClothes()
+        # self.connectMember()
+        f_code = self.t_f_code(feature)
+        # memberID = self.writeMember()
+        self.writeClothes(f"INSERT INTO clothes_top(t_code, t_shape, t_classification, t_color, t_f_code) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code});")
+        self.closeClothes()
+        # self.closeMember()
+    def b_c_Insert(self, id, shape, classification, color, feature):
+        self.connectClothes()
+        # self.connectMember()
+        f_code = self.b_f_code(feature)
+        # memberID = self.writeMember()
+        self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code});")
+        self.closeClothes()
+        # self.closeMember()
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------
-    # data insertion
-    def insertData(self, clothes_type, userId, type_id, brand, color, logo, url):
-        self.connectDb()
-        self.firstCode_letter(clothes_type)
-        self.writeDb(f"INSERT INTO {clothes_type} VALUES ('{self.firstletter_data}' || nextval('{clothes_type}_sequence'), '{userId}', '{type_id}', '{brand}', '{color}', '{logo}', '{url}');")
-        self.closeDb()
-# -----------------------------------------------------------------------------------------------------------------------------------------------
-    # data update, research
-    def updateData(self, clothes_type, data):
-        self.connectDb()
-        self.firstCode_letter(clothes_type)
-        self.writeDb(f"UPDATE {clothes_type} SET {self.firstletter_data}_type_id='{data[1]}', {self.firstletter_data}_brand='{data[2]}', {self.first_letter}_color='{data[3]}', {self.first_letter}_logo='{data[4]}', {self.first_letter}_url='{data[5]}' WHERE {self.first_letter}_code='{data[0]}';")
-        self.closeDb()
-#-----------------------------------------------------------------------------------------------------------------------------------------------
-    # table/data deletion
-    def deleteData(self, clothes_type):
-        self.connectDb()
-        self.writeDb(f'DELETE FROM {clothes_type};')
-        self.closeDb()
-
-    def truncateData(self, clothes_type):
-        self.connectDb()
-        self.writeDb(f'TRUNCATE TABLE {clothes_type};')
-        self.closeDb()
-
-    def dropTable(self, clothes_type):
-        self.connectDb()
-        self.writeDb(f'DROP TABLE IF EXISTS {clothes_type};')
-        self.closeDb()
-
-    def deleteSequence(self, clothes_type):
-        self.connectDb()
-        self.writeDb(f"DROP SEQUENCE {clothes_type};")
-        self.closeDb()
-#-----------------------------------------------------------------------------------------------------------------------------------------------
-    # one data selection
-    def oneSelectClothes(self, clothes_type, code):
-        self.connectDb()
-        self.firstCode_letter(clothes_type)
-        self.writeDb(f"SELECT * FROM {clothes_type} WHERE {self.first_letter}_code='{code}';")
-        result = self.cur.fetchall()
-        print(result)
-        self.closeDb()
-
-    # all data selection
-    def allSelectClothes(self, clothes_type):
-        self.connectDb()
-        self.writeDb(f"SELECT * FROM {clothes_type};")
-        result = self.cur.fetchall()
-        print(result)
-        self.closeDb()        
-
-    # Clothes length data selection
-    def typeIdSelectClothes(self, clothes_type, type_id):
-        self.connectDb()
-        self.writeDb(f"SELECT * FROM {clothes_type} WHERE t_n_type_id = {type_id};")
-        
+    def t_c_SelectID(self, id):
+        self.connectClothes()
+        self.writeClothes(f"SELECT * FROM clothes_top WHERE t_code LIKE '{id}_%';")
+        rows = self.c_cur.fetchall()
+        self.closeClothes()
+        return rows
