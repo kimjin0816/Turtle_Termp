@@ -24,7 +24,27 @@ exports.findOne = (req, res) => {
         throw error;
       }
       res.status(200).json(results.rows);
-      res.status(200).send(results.rows);
+      // res.status(200).send(results.rows);
     }
   );
 };
+
+// user register clothes data results
+exports.findIdClothes = (req, res) => {
+  const mem_id = req.query.clothes.mem_id;
+  const clothes_type = req.query.clothes.clothes_type;
+  queryMembers(
+    "SELECT ($1_shape, $1_classification, $1_color) FROM $2 WHERE t_code LIKE '$3_%';",
+    [clothes_type[0], clothes_type, mem_id],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res.status(200).json(results.rows);
+    }
+  );
+};
+
+exports.findfeatureCode = (req, res) => {};
+
+module.exports = clothesController;
