@@ -60,11 +60,6 @@ const routes = [
     component: MeminfView,
   },
   {
-    path: "/Memin",
-    name: "Memin",
-    component: MeminfView,
-  },
-  {
     path: "/Information",
     name: "Information",
     component: InformationView,
