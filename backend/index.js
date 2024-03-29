@@ -21,6 +21,8 @@ app.use(express.json());
 
 app.use(routes);
 
+// require("./router.js")(app);
+
 app.listen(port, () => {
   console.log(`서버가 포트 ${port}에서 동작 중....`);
 });

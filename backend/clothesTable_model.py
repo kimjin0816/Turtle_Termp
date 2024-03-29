@@ -4,7 +4,6 @@ class clothesTable_model:
     def __init__(self):
         self.conn = None
         self.cur = None
-        self.first_letter = None
 #-----------------------------------------------------------------------------------------------------------------------------------------------
 #region DB connection/close/write methods
     # DB connection
@@ -25,119 +24,37 @@ class clothesTable_model:
     # DB table settings
     def setTable(self):
         self.connectDb()
-        clothes_type = '''
-            CREATE TYPE clothe_type AS ENUM (
-                'top',
-                'bottom',
-                'outer',
-                'dress',
-                'shoes',
-                'bag',
-                'accessory',
-                'etc'
-            );
-                '''
         clothes_setting = '''
-            CREATE TABLE IF NOT EXISTS clothing_type (
-                type_id SERIAL PRIMARY KEY,
-                type_name VARCHAR(10) UNIQUE NOT NULL
-            );
-            
-            INSERT INTO clothing_type (type_name) 
-            VALUES ('long'), ('short')
-            ON CONFLICT (type_name) DO NOTHING;
+CREATE TABLE IF NOT EXISTS top_feature (
+                t_f_code CHAR(50) NOT NULL,
+                t_f_hood BOOLEAN NOT NULL,
+                t_f_kara BOOLEAN NOT NULL,
+                t_f_zipper BOOLEAN NOT NULL,
+                t_f_logo BOOLEAN NOT NULL,
+                t_f_printer BOOLEAN NOT NULL,
+                CONSTRAINT t_f_code_pk PRIMARY KEY (t_f_code));
+-- CREATE SEQUENCE IF NOT EXISTS top_sequence START 1;
+CREATE TABLE IF NOT EXISTS clothes_top (
+                t_serial SERIAL PRIMARY KEY,
+                t_code VARCHAR(50) NOT NULL,
+                t_shape VARCHAR(50) NOT NULL,
+                t_classification VARCHAR(50) NOT NULL,
+                t_color VARCHAR(50) NOT NULL,
+                t_f_code INT NOT NULL);
 
-            CREATE SEQUENCE IF NOT EXISTS t_neat_sequence START 1;
-            CREATE SEQUENCE IF NOT EXISTS t_hood_sequence START 1;
-            CREATE SEQUENCE IF NOT EXISTS t_shirt_sequence START 1;
-            CREATE SEQUENCE IF NOT EXISTS t_mantoman_sequence START 1;
-
-            CREATE SEQUENCE IF NOT EXISTS b_jeans_sequence START 1;
-            CREATE SEQUENCE IF NOT EXISTS b_slacks_sequence START 1;
-            CREATE SEQUENCE IF NOT EXISTS b_training_sequence START 1;
-            CREATE SEQUENCE IF NOT EXISTS b_jogger_sequence START 1;
-            '''
-        high_table = '''
-            CREATE TABLE IF NOT EXISTS t_neat (
-                t_n_code CHAR(50) PRIMARY KEY,
-                t_n_userId CHAR(20) NOT NULL,
-                t_n_type_id INT NOT NULL,
-                t_n_brand VARCHAR(20) NOT NULL,
-                t_n_color VARCHAR(20) NOT NULL,
-                t_n_logo VARCHAR(20),
-                t_n_url VARCHAR(300),
-                FOREIGN KEY (t_n_type_id) REFERENCES clothing_type (type_id));                
-
-            CREATE TABLE IF NOT EXISTS  t_mantoman (
-                t_m_code CHAR(50) PRIMARY KEY,
-                t_m_userId CHAR(20) NOT NULL,
-                t_m_type_id INT NOT NULL,
-                t_m_brand VARCHAR(20) NOT NULL,
-                t_m_color VARCHAR(20) NOT NULL,
-                t_m_logo VARCHAR(20),
-                t_m_url VARCHAR(300),
-                FOREIGN KEY (t_m_type_id) REFERENCES clothing_type (type_id));
-
-            CREATE TABLE IF NOT EXISTS  t_shirt (
-                t_s_code CHAR(50) PRIMARY KEY,
-                t_s_userId CHAR(20) NOT NULL,
-                t_s_type_id INT NOT NULL,
-                t_s_brand VARCHAR(20) NOT NULL,
-                t_s_color VARCHAR(20) NOT NULL,
-                t_s_logo VARCHAR(20),
-                t_s_url VARCHAR(300),
-                FOREIGN KEY (t_s_type_id) REFERENCES clothing_type (type_id));
-
-            CREATE TABLE IF NOT EXISTS  t_hood (
-                t_h_code CHAR(50) PRIMARY KEY,
-                t_h_userId CHAR(20) NOT NULL,
-                t_h_type_id INT NOT NULL,
-                t_h_brand VARCHAR(20) NOT NULL,
-                t_h_color VARCHAR(20) NOT NULL,
-                t_h_logo VARCHAR(20),
-                t_h_url VARCHAR(300),
-                FOREIGN KEY (t_h_type_id) REFERENCES clothing_type (type_id));
-------------------------------------------------------------------------------------------
-            CREATE TABLE IF NOT EXISTS b_jeans(
-                b_j_code CHAR(50) PRIMARY KEY,
-                b_j_userId CHAR(20) NOT NULL,
-                b_j_type_id INT NOT NULL,
-                b_j_brand VARCHAR(20) NOT NULL,
-                b_j_color VARCHAR(20) NOT NULL,
-                b_j_logo VARCHAR(20),
-                b_j_url VARCHAR(300),
-                FOREIGN KEY (b_j_type_id) REFERENCES clothing_type (type_id));
-
-            CREATE TABLE IF NOT EXISTS b_slacks(
-                b_s_code CHAR(50) PRIMARY KEY,
-                b_s_userId CHAR(20) NOT NULL,
-                b_s_type_id INT NOT NULL,
-                b_s_brand VARCHAR(20) NOT NULL,
-                b_s_color VARCHAR(20) NOT NULL,
-                b_s_logo VARCHAR(20),
-                b_s_url VARCHAR(300),
-                FOREIGN KEY (b_s_type_id) REFERENCES clothing_type (type_id));
-
-            CREATE TABLE IF NOT EXISTS b_training(                     
-                b_t_code CHAR(50) PRIMARY KEY,
-                b_t_userId CHAR(20) NOT NULL,
-                b_t_type_id INT NOT NULL,
-                b_t_brand VARCHAR(20) NOT NULL,
-                b_t_color VARCHAR(20) NOT NULL,
-                b_t_logo VARCHAR(20),
-                b_t_url VARCHAR(300),
-                FOREIGN KEY (b_t_type_id) REFERENCES clothing_type (type_id));
-
-            CREATE TABLE IF NOT EXISTS b_jogger( 
-                b_jo_code CHAR(50) PRIMARY KEY,
-                b_jo_userId CHAR(20) NOT NULL,
-                b_jo_type_id INT NOT NULL,
-                b_jo_brand VARCHAR(20) NOT NULL,
-                b_jo_color VARCHAR(20) NOT NULL,
-                b_jo_logo VARCHAR(20),
-                b_jo_url VARCHAR(300),
-                FOREIGN KEY (b_jo_type_id) REFERENCES clothing_type (type_id));
+CREATE TABLE IF NOT EXISTS bottom_feature (
+                b_f_code CHAR(50) NOT NULL,
+                b_f_jogger BOOLEAN NOT NULL,
+                b_f_pocket BOOLEAN NOT NULL,
+                CONSTRAINT b_f_code_pk PRIMARY KEY (b_f_code));   
+-- CREATE SEQUENCE IF NOT EXISTS bottom_sequence START 1;
+CREATE TABLE IF NOT EXISTS clothes_bottom (
+                b_serial SERIAL PRIMARY KEY,
+                b_code VARCHAR(50) NOT NULL,
+                b_shape VARCHAR(50) NOT NULL,
+                b_classification VARCHAR(50) NOT NULL,
+                b_color VARCHAR(50) NOT NULL,
+                b_f_code INT NOT NULL);
             '''
         self.writeDb(clothes_setting)
-        self.writeDb(high_table)
         self.closeDb()

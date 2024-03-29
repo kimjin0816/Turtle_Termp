@@ -1,6 +1,19 @@
-const db = require("./PostgreDB");
+const { queryMembers } = require("./PostgreDB");
 
 const UserController = {
+  // MEMBERSHIP 테이블 생성
+  createTable(req, res) {
+    queryMembers(
+      "CREATE TABLE IF NOT EXISTS MEMBERSHIP (MEM_ID VARCHAR(255) NOT NULL, MEM_PASSWORD VARCHAR(255) NOT NULL, MEM_NAME   VARCHAR(255) NOT NULL, MEM_EMAIL   VARCHAR(255) NOT NULL, MEM_TEL       VARCHAR(255) NOT NULL, MEM_NICKNAME  VARCHAR(255) NOT NULL, MEM_ADDRESS   VARCHAR(255) NOT NULL, CONSTRAINT MEM PRIMARY KEY (MEM_ID))",
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        console.log("MEMBERSHIP 테이블 생성 완료");
+      }
+    );
+  },
+
   // 회원가입
   async signUp(req, res) {
     const {
@@ -14,7 +27,7 @@ const UserController = {
     } = req.body;
 
     try {
-      const existingUser = await db.query(
+      const existingUser = await queryMembers(
         'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1',
         [MEM_ID]
       );
@@ -23,7 +36,7 @@ const UserController = {
         return res.status(400).json({ message: "이미 존재하는 사용자입니다." });
       }
 
-      await db.query(
+      await queryMembers(
         'INSERT INTO "MEMBERSHIP" ("MEM_ID", "MEM_PASSWORD", "MEM_NAME", "MEM_EMAIL", "MEM_TEL", "MEM_NICKNAME", "MEM_ADDRESS") VALUES ($1, $2, $3, $4, $5, $6, $7)',
         [
           MEM_ID,
@@ -48,7 +61,7 @@ const UserController = {
     const { MEM_ID, MEM_PASSWORD } = req.body;
 
     try {
-      const user = await db.query(
+      const user = await queryMembers(
         'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1 AND "MEM_PASSWORD" = $2',
         [MEM_ID, MEM_PASSWORD]
       );
@@ -73,7 +86,7 @@ const UserController = {
     const { MEM_NAME, MEM_EMAIL } = req.body;
 
     try {
-      const user = await db.query(
+      const user = await queryMembers(
         'SELECT "MEM_ID", "MEM_PASSWORD" FROM "MEMBERSHIP" WHERE "MEM_NAME" = $1 AND "MEM_EMAIL" = $2',
         [MEM_NAME, MEM_EMAIL]
       );
@@ -109,7 +122,7 @@ const UserController = {
     } = req.body;
 
     try {
-      const existingUser = await db.query(
+      const existingUser = await queryMembers(
         'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1',
         [MEM_ID]
       );
@@ -118,7 +131,7 @@ const UserController = {
         return res.status(404).json({ message: "존재하지 않는 사용자입니다." });
       }
 
-      await db.query(
+      await queryMembers(
         'UPDATE "MEMBERSHIP" SET "MEM_PASSWORD" = $2, "MEM_NAME" = $3, "MEM_EMAIL" = $4, "MEM_TEL" = $5, "MEM_NICKNAME" = $6, "MEM_ADDRESS" = $7 WHERE "MEM_ID" = $1',
         [
           MEM_ID,
@@ -143,7 +156,7 @@ const UserController = {
     const { MEM_ID, MEM_PASSWORD } = req.body;
 
     try {
-      const existingUser = await db.query(
+      const existingUser = await queryMembers(
         'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1 AND "MEM_PASSWORD" = $2',
         [MEM_ID, MEM_PASSWORD]
       );
@@ -154,7 +167,9 @@ const UserController = {
         });
       }
 
-      await db.query('DELETE FROM "MEMBERSHIP" WHERE "MEM_ID" = $1', [MEM_ID]);
+      await queryMembers('DELETE FROM "MEMBERSHIP" WHERE "MEM_ID" = $1', [
+        MEM_ID,
+      ]);
 
       // 세션 지우기
       req.session.destroy((err) => {
