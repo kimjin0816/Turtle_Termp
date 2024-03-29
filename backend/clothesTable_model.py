@@ -9,7 +9,7 @@ class clothesTable_model:
 #region DB connection/close/write methods
     # DB connection
     def connectDb(self):
-        self.conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='password', port='5432')
+        self.conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='1015', port='5432')
         self.cur = self.conn.cursor()
     # DB close
     def closeDb(self):
