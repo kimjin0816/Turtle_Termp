@@ -58,6 +58,11 @@
             </v-list-item>
 
             </v-list-item-group>
+            <v-list nav dense v-if="isAuthenticated" style="margin-top: 400px;">
+              <v-btn @click="handleLogout" color="light-grey" dark style="width: 100px;">
+                <v-list-item-title style="color: white; font-size: 24px;">로그아웃</v-list-item-title>
+              </v-btn>
+            </v-list>
           </v-list>
         </v-navigation-drawer>
       </v-row>

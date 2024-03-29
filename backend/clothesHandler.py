@@ -8,14 +8,16 @@ class clothesHandler:
         self.m_cur = None
 #-----------------------------------------------------------------------------------------------------------------------------------------------
 #region DB connection/close/write methods
-    # Clothes DB
-    def connectClothes(self):
-        self.c_conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='password', port='5432')
-        self.c_cur = self.c_conn.cursor()
-    def closeClothes(self):
-        self.c_cur.close()
-        self.c_conn.close()
-    def writeClothes(self, cmd): 
+    # DB connection
+    def connectDb(self):
+        self.conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='1015', port='5432')
+        self.cur = self.conn.cursor()
+    # DB close
+    def closeDb(self):
+        self.cur.close()
+        self.conn.close()
+    # DB write   
+    def writeDb(self, cmd): 
         sCmd = str(cmd) 
         self.c_cur.execute(sCmd)
         self.c_conn.commit()

@@ -1,50 +1,58 @@
 <template>
-  <v-row class="text-center" style="margin-top: 20px;">
-    <v-col cols="12">
-      <!-- 이미지 첨부 -->
-      <v-row justify="center">
-        <v-col cols="12" md="2">
-          <v-file-input
-            v-model="selectedImage"
-            label="이미지를 첨부하세요"
-            accept="image/*"
-            @change="handleImageUpload"
-          ></v-file-input>
-        </v-col>
-      </v-row>
+  <div>
+    <!-- Vimeo 동영상을 배경으로 사용 -->
+    <div class="background-video">
+      <iframe src="https://player.vimeo.com/video/905154784?h=27113fcebe&autoplay=1&muted=1&background=1&loop=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
 
-      <!-- 이미지 검색 및 코디 검색 버튼 -->
-      <v-row class="text-center">
-        <v-col class="text-right" style="margin-left: -360px; margin-top: 20px;">
-          <v-btn @click="attachImage">이미지 검색</v-btn>
-          <v-btn @click="gotoCody">코디 검색</v-btn>
-        </v-col>
-      </v-row>
-
-      <!-- 첨부한 이미지 표시 -->
-      <v-row justify="center" v-if="attachedImages.length > 0">
-        <v-col v-for="(image, index) in attachedImages" :key="index" cols="12" md="4">
-          <div class="image-container" style="text-align: center;">
-            <img :src="image" alt="Attached Image">
-          </div>
-        </v-col>
-      </v-row>
-
-      <!-- 이미지 결과 -->
-      <v-container v-if="showImageResults" style="margin-top: -20px;">
-        <div class="my-3" style="text-align: center;">
-          <h1>이미지 결과</h1>
-        </div>
+    <!-- 나머지 컨텐츠 -->
+    <v-row class="text-center" style="margin-top: 20px; position: relative; z-index: 1;">
+      <v-col cols="12">
+        <!-- 이미지 첨부 -->
         <v-row justify="center">
-          <v-col v-for="(image, index) in sampleImages" :key="index" cols="10" sm="4" md="4">
+          <v-col cols="12" md="2">
+            <v-file-input
+              v-model="selectedImage"
+              label="이미지를 첨부하세요"
+              accept="image/*"
+              @change="handleImageUpload"
+            ></v-file-input>
+          </v-col>
+        </v-row>
+
+        <!-- 이미지 검색 및 코디 검색 버튼 -->
+        <v-row class="text-center">
+          <v-col class="text-right" style="margin-left: -360px; margin-top: 20px;">
+            <v-btn color="grey lighten-1" dark @click="attachImage">이미지 검색</v-btn>
+            <v-btn color="secondary" dark @click="gotoCody">코디 검색</v-btn>
+          </v-col>
+        </v-row>
+
+        <!-- 첨부한 이미지 표시 -->
+        <v-row justify="center" v-if="attachedImages.length > 0">
+          <v-col v-for="(image, index) in attachedImages" :key="index" cols="12" md="4">
             <div class="image-container" style="text-align: center;">
-              <img :src="image" alt="Image Result">
+              <img :src="image" alt="Attached Image">
             </div>
           </v-col>
         </v-row>
-      </v-container>
-    </v-col>
-  </v-row>
+
+        <!-- 이미지 결과 -->
+        <v-container v-if="showImageResults" style="margin-top: -20px;">
+          <div class="my-3" style="text-align: center;">
+            <h1>이미지 결과</h1>
+          </div>
+          <v-row justify="center">
+            <v-col v-for="(image, index) in sampleImages" :key="index" cols="10" sm="4" md="4">
+              <div class="image-container" style="text-align: center;">
+                <img :src="image" alt="Image Result">
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -92,7 +100,17 @@ export default {
 </script>
 
 <style scoped>
-.image-container {
-  margin: 20px;
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.background-video iframe {
+  width: 100%;
+  height: 100%;
 }
 </style>
