@@ -1,11 +1,5 @@
 <template>
   <div>
-    <!-- Vimeo 동영상을 배경으로 사용 -->
-    <div class="background-video">
-      <iframe src="https://player.vimeo.com/video/905154784?h=27113fcebe&autoplay=1&muted=1&background=1&loop=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-    </div>
-
-    <!-- 나머지 컨텐츠 -->
     <v-row class="text-center" style="margin-top: 20px; position: relative; z-index: 1;">
       <v-col cols="12">
         <!-- 이미지 첨부 -->
@@ -98,19 +92,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.background-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
-.background-video iframe {
-  width: 100%;
-  height: 100%;
-}
-</style>
