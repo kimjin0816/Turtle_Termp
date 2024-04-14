@@ -64,3 +64,7 @@ FROM clothes_top;
 
 -- 옷특징 추출 쿼리
 SELECT * FROM bottom_feature WHERE b_f_code = (SELECT b_feature_id FROM clothes_bottom WHERE b_feature_id =  1);
+
+-- clothes table에 url 저장할 수 있는 속성 추가하기
+ALTER TABLE clothes_top ADD COLUMN t_url VARCHAR(255);
+ALTER TABLE clothes_bottom ADD COLUMN t_url VARCHAR(255);
