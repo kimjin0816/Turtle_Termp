@@ -1,16 +1,23 @@
 import psycopg2
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-# 웹 드라이버 종료
+
+import os
+from PIL import Image
+import shutil
+
+# import requests
+# from io import BytesIO
+
+# from flask import Flask, jsonify
+# from flask_cors import CORS
+
 # driver.quit()
+
 driver = webdriver.Chrome()
 
 class clothesHandler:
-    def __init__(self):
-        self.c_conn = None
-        self.c_cur = None
-        self.url = 'http://localhost:8080/'
-        driver.get(self.url)
 #-----------------------------------------------------------------------------------------------------------------------------------------------
 #region DB connection/close/write methods
     # Clothes DB
@@ -25,19 +32,47 @@ class clothesHandler:
         self.c_cur.execute(sCmd)
         self.c_conn.commit()
 #endregion
+    def __init__(self):
+        self.c_conn = None
+        self.c_cur = None
+        self.url = 'http://localhost:8080/'
+        driver.get(self.url)
 #-----------------------------------------------------------------------------------------------------------------------------------------------
     # binary => decimal
     def decimal(self, binary): 
         code = int(binary, 2)
         return code
+    # current username get
+    def get_current_user_id(self):
+        print(os.getlogin())
+        return os.getlogin()
 # -----------------------------------------------------------------------------------------------------------------------------------------------
     # clothes image url
     def c_img_url(self):
         img_elements = driver.find_elements(By.TAG_NAME, 'img')
-
         for img_element in img_elements:
             src = img_element.get_attribute('src')
         return src
+    # background/clothes_top file path copy test folder
+    def image_path(self, image_filename, type_clothes):
+        # clothes 폴더 경로 얻기
+        clothes_path = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', type_clothes)
+        # 이미지 파일 경로
+        image_path = os.path.join(clothes_path, image_filename)
+        
+        # 이미지를 test 폴더로 복사
+        destination_folder = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', 'test')
+        shutil.copy(image_path, destination_folder)
+        
+        # 복사된 이미지 파일의 경로
+        copied_image_path = os.path.join(destination_folder, image_filename)
+        
+        # 복사된 이미지 열기
+        img = Image.open(copied_image_path)
+        # 이미지 출력
+        img.show()
+        
+        return copied_image_path
 # -----------------------------------------------------------------------------------------------------------------------------------------------     
     # feature code setting
     def t_f_code(self, feature):
@@ -77,14 +112,14 @@ class clothesHandler:
     def t_c_Insert(self, id, shape, classification, color, feature):
         self.connectClothes()
         f_code = self.t_f_code(feature)
-        url = self.c_img_url()        
-        self.writeClothes(f"INSERT INTO clothes_top(t_code, t_shape, t_classification, t_color, t_f_code, t_url) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{url}');")
+        image_path = self.c_img_url()        
+        self.writeClothes(f"INSERT INTO clothes_top(t_code, t_shape, t_classification, t_color, t_f_code, t_img) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
         self.closeClothes()
     def b_c_Insert(self, id, shape, classification, color, feature):
         self.connectClothes()
         f_code = self.b_f_code(feature)
-        url = self.c_img_url()        
-        self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code, t_url) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{url}');")
+        image_path = self.c_img_url()        
+        self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code, t_url) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
         self.closeClothes()
 # -----------------------------------------------------------------------------------------------------------------------------------------------
     def t_c_SelectID(self, id):

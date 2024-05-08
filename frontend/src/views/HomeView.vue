@@ -10,13 +10,6 @@
     <v-row class="text-center" style="margin-top: 20px; position: relative; z-index: 1">
       <v-col cols="12">
         <!-- 이미지 첨부 -->
-        <!-- <v-row justify="center">
-          <v-col cols="12" md="2">
-            <v-file-input v-model="selectedImage" label="이미지를 첨부하세요" accept="image/*" @change="handleImageUpload">
-            </v-file-input>
-          </v-col>
-        </v-row> -->
-
         <v-form @submit.prevent="handleImageUpload">
           <v-file-input label="Select Image" v-model="selectedImage" accept="image/*" name="image"></v-file-input>
           <v-btn type="submit" color="grey lighten-1" dark>이미지 검색</v-btn> &nbsp;
@@ -70,16 +63,28 @@ export default {
       showImageResults: false, // 이미지 결과를 표시할지 여부를 저장하는 변수
     };
   },
-
   methods: {
     handleImageUpload() {
       if (this.selectedImage) {
-        // 다시 재검색을할때 attachedImages를 초기화
+        // 다시 재검색을 할 때 attachedImages를 초기화
         if (this.attachedImages.length > 0) {
           this.attachedImages = [];
         }
-        this.attachedImages.unshift(URL.createObjectURL(this.selectedImage));
-        console.log("attachedIamge: " +this.attachedImages);
+
+        // FileReader 객체 생성
+        const reader = new FileReader();
+
+        // 이미지 로드 완료 시 동작할 함수 정의
+        reader.onload = (event) => {
+          // FileReader 결과로부터 이미지의 URL을 추출하여 attachedImages 배열에 추가
+          this.attachedImages.unshift(event.target.result);
+          console.log("attachedImage: " + this.attachedImages);
+        };
+
+        // 선택한 이미지를 읽어오기
+        reader.readAsDataURL(this.selectedImage);
+
+        // 선택한 이미지 초기화
         this.selectedImage = null;
       }
     },
