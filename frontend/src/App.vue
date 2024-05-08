@@ -2,13 +2,11 @@
   <v-app>
     <!-- 상단 바 -->
     <v-app-bar app color="grey lighten-1" dark style="max-height: 100px">
-      <v-row
-        style="
+      <v-row style="
           display: flex;
           justify-content: flex-end;
           align-items: center;
-          margin-top: -10px;"
-      >
+          margin-top: -10px;">
 
         <!-- 새로운 메뉴 버튼 -->
         <div style="margin-right: 170px;">
@@ -21,41 +19,30 @@
           <span style="color: black; font-size: 36px; position: relative; left: -380px;">C&C</span>
         </div>
 
-        <v-navigation-drawer
-          v-model="drawer"
-          absolute
-          bottom
-          temporary
-          style="height: calc(100vh - 100px);"
-        >
-          <v-list
-            nav
-            dense
-          >
-            <v-list-item-group
-              v-model="group"
-              active-class="light-grey"
-            >
+        <v-navigation-drawer v-model="drawer" absolute bottom temporary style="height: calc(100vh - 100px);">
+          <v-list nav dense>
+            <v-list-item-group v-model="group" active-class="light-grey">
 
-            <v-btn @click="handleAuthAction" text color="white" class="ml-1" style="font-size: 24px; margin-bottom: 40px;">
-              {{ isAuthenticated ? nickname : "로그인" }}
-            </v-btn>
+              <v-btn @click="handleAuthAction" text color="white" class="ml-1"
+                style="font-size: 24px; margin-bottom: 40px;">
+                {{ isAuthenticated ? nickname : "로그인" }}
+              </v-btn>
 
-            <v-list-item @click="goToHome" style="margin-top: 10px;"> <!-- 수정된 부분 -->
-              <v-list-item-title>메인</v-list-item-title>
-            </v-list-item>
+              <v-list-item @click="goToHome" style="margin-top: 10px;"> <!-- 수정된 부분 -->
+                <v-list-item-title>메인</v-list-item-title>
+              </v-list-item>
 
-            <v-list-item @click="goToAbout"> <!-- 수정된 부분 -->
-              <v-list-item-title>키워드</v-list-item-title>
-            </v-list-item>
+              <v-list-item @click="goToAbout"> <!-- 수정된 부분 -->
+                <v-list-item-title>키워드</v-list-item-title>
+              </v-list-item>
 
-            <v-list-item @click="goToCody"> <!-- 수정된 부분 -->
-              <v-list-item-title>코디</v-list-item-title>
-            </v-list-item>
+              <v-list-item @click="goToCody"> <!-- 수정된 부분 -->
+                <v-list-item-title>코디</v-list-item-title>
+              </v-list-item>
 
-            <v-list-item @click="goToInformation"> <!-- 수정된 부분 -->
-              <v-list-item-title>정보</v-list-item-title>
-            </v-list-item>
+              <v-list-item @click="goToInformation"> <!-- 수정된 부분 -->
+                <v-list-item-title>정보</v-list-item-title>
+              </v-list-item>
 
             </v-list-item-group>
             <v-list nav dense v-if="isAuthenticated" style="margin-top: 400px;">
@@ -67,103 +54,57 @@
         </v-navigation-drawer>
       </v-row>
 
-        <!-- 메뉴 버튼 -->
-        <v-row style="display: flex; align-items: center;">
-          <v-btn
-            @click="goToAbout"
-            text
-            color="black"
-            class="ml-1 move-left"
-            style="text-decoration: underline; font-size: 20px;"
-          >
-            키워드
-          </v-btn>
-          <v-btn
-            @click="goToHome"
-            text
-            color="black"
-            class="ml-1 move-left"
-            style="text-decoration: underline; font-size: 20px; margin-right: 10px;"
-          >
-            메인
-          </v-btn>
-          <v-btn
-            @click="goToCody"
-            text
-            color="black"
-            class="ml-1"
-            style="text-decoration: underline; font-size: 20px;"
-          >
-            코디
-          </v-btn>
-        </v-row>
+      <!-- 메뉴 버튼 -->
+      <v-row style="display: flex; align-items: center;">
+        <v-btn @click="goToAbout" text color="black" class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px;">
+          키워드
+        </v-btn>
+        <v-btn @click="goToHome" text color="black" class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px; margin-right: 10px;">
+          메인
+        </v-btn>
+        <v-btn @click="goToCody" text color="black" class="ml-1" style="text-decoration: underline; font-size: 20px;">
+          코디
+        </v-btn>
+      </v-row>
 
-        <!-- 로그인/로그아웃 버튼 -->
-        <v-row
-          style="display: flex; justify-content: flex-start; margin-top: -10px"
-        >
+      <!-- 로그인/로그아웃 버튼 -->
+      <v-row style="display: flex; justify-content: flex-start; margin-top: -10px">
         <v-spacer></v-spacer> <!-- 중요: 여백을 추가하여 오른쪽으로 이동시킵니다. -->
-          <!-- 사용자 이름 영역에 v-menu 추가 -->
-          <v-menu v-if="isAuthenticated" offset-y open-on-hover>
-            <template v-slot:activator="{ on }">
-              <v-btn text color="black" class="ml-1" v-on="on" style="font-size: 24px;">
-                {{ nickname }}
-              </v-btn>
-            </template>
+        <!-- 사용자 이름 영역에 v-menu 추가 -->
+        <v-menu v-if="isAuthenticated" offset-y open-on-hover>
+          <template v-slot:activator="{ on }">
+            <v-btn text color="black" class="ml-1" v-on="on" style="font-size: 24px;">
+              {{ nickname }}
+            </v-btn>
+          </template>
 
-            <v-list style="max-width: 200px">
-              <!-- 여기에 소메뉴 항목들을 추가 -->
-              <v-list-item
-                @click="handleSubMenuClick('회원 정보')"
-                class="menu-item"
-              >
-                <v-list-item-title class="menu-title"
-                  >회원 정보</v-list-item-title
-                >
-              </v-list-item>
-              <v-list-item
-                @click="handleSubMenuClick('추가 예정')"
-                class="menu-item"
-              >
-                <v-list-item-title class="menu-title"
-                  >추가 예정</v-list-item-title
-                >
-              </v-list-item>
-              <v-list-item
-                @click="handleSubMenuClick('추가 예정')"
-                class="menu-item"
-              >
-                <v-list-item-title class="menu-title"
-                  >추가 예정</v-list-item-title
-                >
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <v-list style="max-width: 200px">
+            <!-- 여기에 소메뉴 항목들을 추가 -->
+            <v-list-item @click="handleSubMenuClick('회원 정보')" class="menu-item">
+              <v-list-item-title class="menu-title">회원 정보</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="handleSubMenuClick('추가 예정')" class="menu-item">
+              <v-list-item-title class="menu-title">추가 예정</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="handleSubMenuClick('추가 예정')" class="menu-item">
+              <v-list-item-title class="menu-title">추가 예정</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
 
-          <!-- 로그인 버튼 -->
-          <v-btn
-            v-if="!isAuthenticated"
-            @click="handleAuthAction"
-            text
-            color="black"
-            class="ml-1"
-            style="font-size: 24px;"
-          >
-            로그인
-          </v-btn>
+        <!-- 로그인 버튼 -->
+        <v-btn v-if="!isAuthenticated" @click="handleAuthAction" text color="black" class="ml-1"
+          style="font-size: 24px;">
+          로그인
+        </v-btn>
 
-          <!-- 로그아웃 버튼 -->
-          <v-btn
-            v-if="isAuthenticated"
-            @click="handleLogout"
-            text
-            color="black"
-            class="ml-1"
-            style="font-size: 24px;"
-          >
-            로그아웃
-          </v-btn>
-        </v-row>
+        <!-- 로그아웃 버튼 -->
+        <v-btn v-if="isAuthenticated" @click="handleLogout" text color="black" class="ml-1" style="font-size: 24px;">
+          로그아웃
+        </v-btn>
+      </v-row>
     </v-app-bar>
 
     <!-- 라우터 뷰 -->
@@ -173,8 +114,7 @@
 
     <!-- 푸터 -->
     <v-footer app color="grey lighten-1" dark>
-      <span
-        style="
+      <span style="
           display: block;
           margin: 0 auto;
           text-align: center;
@@ -182,8 +122,7 @@
           color: black;
           padding: 10px;
           font-size: 28px;
-        "
-      >
+        ">
         2024 목원대학교 졸업작품 (Turtle)
       </span>
     </v-footer>
@@ -235,7 +174,7 @@ export default {
       }
     },
     goToInformation() {
-      try{
+      try {
         this.$router.push('/information'); // 정보 홈페이지의 경로에 맞게 수정하세요.
       }
       catch (error) {
@@ -317,6 +256,7 @@ export default {
 </style>
 <style scoped>
 .move-left {
-  margin-right: 100px !important; /* 버튼을 왼쪽으로 이동시키는 스타일 */
+  margin-right: 100px !important;
+  /* 버튼을 왼쪽으로 이동시키는 스타일 */
 }
 </style>

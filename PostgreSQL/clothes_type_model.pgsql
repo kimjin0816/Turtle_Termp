@@ -64,3 +64,25 @@ FROM clothes_top;
 
 -- 옷특징 추출 쿼리
 SELECT * FROM bottom_feature WHERE b_f_code = (SELECT b_feature_id FROM clothes_bottom WHERE b_feature_id =  1);
+
+-- clothes table에 url 저장할 수 있는 속성 추가하기
+ALTER TABLE clothes_top ADD COLUMN t_url VARCHAR(255);
+ALTER TABLE clothes_bottom ADD COLUMN t_url VARCHAR(255);
+
+-- clothes table 데이터 삭제
+DELETE FROM clothes_top;
+
+-- clothes table 데이터 전체 조회
+SELECT * FROM clothes_top;
+SELECT * FROM clothes_bottom;
+
+-- clothes table t_shape속성이 같은 데이터만 추출
+SELECT * FROM clothes_top WHERE t_shape = '아웃터' AND t_classification = '패딩' AND t_color = 'blue' AND t_f_code = '31';
+SELECT * FROM clothes_top WHERE t_shape = '아웃터' AND t_classification = '패딩' AND t_color = 'blue' OR t_f_code = '31';
+SELECT * FROM clothes_top WHERE t_shape = '아웃터' AND t_classification = '패딩' AND t_color = 'pink' OR t_f_code = '31';
+
+-- clothes table에 t_url속성을 t_img로 변경
+ALTER TABLE clothes_top RENAME COLUMN t_url TO t_img;
+ALTER TABLE clothes_bottom RENAME COLUMN t_url TO t_img;
+
+ALTER TABLE clothes_top ALTER COLUMN t_img TYPE VARCHAR(10000);
