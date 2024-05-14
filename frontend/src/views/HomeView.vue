@@ -51,7 +51,7 @@
 import axios from 'axios'
 
 export default {
-  name: 'Home',
+  name: "Home",
 
   data() {
     return {
@@ -62,7 +62,6 @@ export default {
       error: null,
     };
   },
-
   methods: {
     async handleImageUpload(keyword) {
       if (this.selectedImage) {

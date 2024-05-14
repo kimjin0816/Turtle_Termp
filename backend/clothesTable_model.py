@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS clothes_top (
                 t_shape VARCHAR(50) NOT NULL,
                 t_classification VARCHAR(50) NOT NULL,
                 t_color VARCHAR(50) NOT NULL,
-                t_f_code INT NOT NULL);
+                t_f_code INT NOT NULL,
+                t_url VARCHAR(255) NOT NULL);
 
 CREATE TABLE IF NOT EXISTS bottom_feature (
                 b_f_code CHAR(50) NOT NULL,
@@ -54,7 +55,8 @@ CREATE TABLE IF NOT EXISTS clothes_bottom (
                 b_shape VARCHAR(50) NOT NULL,
                 b_classification VARCHAR(50) NOT NULL,
                 b_color VARCHAR(50) NOT NULL,
-                b_f_code INT NOT NULL);
+                b_f_code INT NOT NULL,
+                b_url VARCHAR(255) NOT NULL);
             '''
         self.writeDb(clothes_setting)
         self.closeDb()

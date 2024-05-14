@@ -1,8 +1,8 @@
 const express = require("express");
+const router = express.Router();
+
 const UserController = require("./UserController");
 const clothesController = require("./clothesController");
-
-const router = express.Router();
 
 router.post("/signup", UserController.signUp);
 router.post("/login", UserController.login);

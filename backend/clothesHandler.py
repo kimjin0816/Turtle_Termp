@@ -1,11 +1,23 @@
 import psycopg2
 
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+import os
+from PIL import Image
+import shutil
+
+# import requests
+# from io import BytesIO
+
+# from flask import Flask, jsonify
+# from flask_cors import CORS
+
+# driver.quit()
+
+driver = webdriver.Chrome()
+
 class clothesHandler:
-    def __init__(self):
-        self.c_conn = None
-        self.c_cur = None
-        self.m_conn = None
-        self.m_cur = None
 #-----------------------------------------------------------------------------------------------------------------------------------------------
 #region DB connection/close/write methods
     # Clothes DB
@@ -19,24 +31,64 @@ class clothesHandler:
         sCmd = str(cmd) 
         self.c_cur.execute(sCmd)
         self.c_conn.commit()
-    # Member DB
-    def connectMember(self):
-        self.m_conn = psycopg2.connect(host='localhost', database='members', user='postgres', password='1015', port='5432')
-        self.m_cur = self.m_conn.cursor()
-    def closeMember(self):
-        self.m_cur.close()
-        self.m_conn.close()
-    def writeMember(self, cmd):
-        sCmd = str(cmd)
-        self.m_cur.execute(sCmd)
-        self.m_conn.commit()
 #endregion
+    def __init__(self):
+        self.c_conn = None
+        self.c_cur = None
+        self.url = 'http://localhost:8080/'
+        driver.get(self.url)
 #-----------------------------------------------------------------------------------------------------------------------------------------------
     # binary => decimal
     def decimal(self, binary): 
         code = int(binary, 2)
         return code
+    # current username get
+    def get_current_user_id(self):
+        print(os.getlogin())
+        return os.getlogin()
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+    # clothes image url
+    def c_img_url(self):
+        img_elements = driver.find_elements(By.TAG_NAME, 'img')
+        for img_element in img_elements:
+            src = img_element.get_attribute('src')
+        return src
+    # background/clothes_top file path copy test folder
+    def image_path(self, image_filename, type_clothes):
+        # clothes 폴더 경로 얻기
+        clothes_path = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', type_clothes)
+        # 이미지 파일 경로
+        image_path = os.path.join(clothes_path, image_filename)
+        
+        # 이미지를 test 폴더로 복사
+        destination_folder = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', 'test')
+        shutil.copy(image_path, destination_folder)
+        
+        # 복사된 이미지 파일의 경로
+        copied_image_path = os.path.join(destination_folder, image_filename)
+        
+        # 복사된 이미지 열기
+        img = Image.open(copied_image_path)
+        # 이미지 출력
+        img.show()
+        
+        return copied_image_path
 # -----------------------------------------------------------------------------------------------------------------------------------------------     
+    # feature code setting
+    def t_f_code(self, feature):
+        hoodVal = int(feature[0])
+        karaVal = int(feature[1])
+        zipperVal = int(feature[2])
+        logoVal = int(feature[3])
+        printerVal = int(feature[4])
+        featureCode = self.decimal(f"{hoodVal}{karaVal}{zipperVal}{logoVal}{printerVal}")
+        return featureCode 
+    def b_f_code(self, feature):
+        joggerVal = int(feature[0])
+        pocketVal = int(feature[1])
+        featureCode = self.decimal(f"{joggerVal}{pocketVal}")
+        return featureCode
+# -----------------------------------------------------------------------------------------------------------------------------------------------
     # top feature data insert(once)
     def t_f_insert(self, hood, kara, zipper, logo, printer):
         self.connectClothes()
@@ -55,44 +107,30 @@ class clothesHandler:
         f_code = self.decimal(f"{jogger_val}{pocket_val}")
         self.writeClothes(f"INSERT INTO bottom_feature VALUES ({f_code}, {jogger}, {pocket});")
         self.closeClothes()   
-
-    # feature code setting
-    def t_f_code(self, feature):
-        hoodVal = int(feature[0])
-        karaVal = int(feature[1])
-        zipperVal = int(feature[2])
-        logoVal = int(feature[3])
-        printerVal = int(feature[4])
-        featureCode = self.decimal(f"{hoodVal}{karaVal}{zipperVal}{logoVal}{printerVal}")
-        return featureCode 
-    def b_f_code(self, feature):
-        joggerVal = int(feature[0])
-        pocketVal = int(feature[1])
-        featureCode = self.decimal(f"{joggerVal}{pocketVal}")
-        return featureCode
-    
+# -----------------------------------------------------------------------------------------------------------------------------------------------    
     # clother data insert
     def t_c_Insert(self, id, shape, classification, color, feature):
         self.connectClothes()
-        # self.connectMember()
         f_code = self.t_f_code(feature)
-        # memberID = self.writeMember()
-        self.writeClothes(f"INSERT INTO clothes_top(t_code, t_shape, t_classification, t_color, t_f_code) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code});")
+        image_path = self.c_img_url()        
+        self.writeClothes(f"INSERT INTO clothes_top(t_code, t_shape, t_classification, t_color, t_f_code, t_img) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
         self.closeClothes()
-        # self.closeMember()
     def b_c_Insert(self, id, shape, classification, color, feature):
         self.connectClothes()
-        # self.connectMember()
         f_code = self.b_f_code(feature)
-        # memberID = self.writeMember()
-        self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code});")
+        image_path = self.c_img_url()        
+        self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code, t_url) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
         self.closeClothes()
-        # self.closeMember()
-
 # -----------------------------------------------------------------------------------------------------------------------------------------------
     def t_c_SelectID(self, id):
         self.connectClothes()
         self.writeClothes(f"SELECT * FROM clothes_top WHERE t_code LIKE '{id}_%';")
+        rows = self.c_cur.fetchall()
+        self.closeClothes()
+        return rows
+    def b_c_SelectID(self, id):
+        self.connectClothes()
+        self.writeClothes(f"SELECT * FROM clothes_bottom WHERE b_code LIKE '{id}_%';")
         rows = self.c_cur.fetchall()
         self.closeClothes()
         return rows
