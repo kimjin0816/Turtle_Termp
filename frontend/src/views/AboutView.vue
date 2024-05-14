@@ -30,7 +30,6 @@ export default {
   },
   methods: {
     saveChanges() {
-      // 변경된 내용을 저장하는 로직을 작성
       console.log('종류:', this.kind);
       console.log('색깔:', this.color);
       console.log('브랜드:', this.brand);
@@ -38,11 +37,9 @@ export default {
       this.dialog = false; // 저장 후 다이얼로그 닫기
     },
     cancelEdit() {
-      // 취소 버튼 클릭 시 다이얼로그 닫기
       this.dialog = false;
     },
     searchImages() {
-      // 검색 버튼 클릭 시 메인 뷰로 이동하면서 키워드 전달
       this.$router.push({
         name: 'home', // 메인 뷰의 이름
         params: {

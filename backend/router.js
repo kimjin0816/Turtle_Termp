@@ -11,6 +11,6 @@ router.put("/updateProfile", UserController.updateProfile);
 router.delete("/deleteProfile", UserController.deleteProfile);
 router.post("/logout", UserController.logout);
 
-router.get("/selectIdClothes", clothesController.findIdClothes);
+// router.get("/selectIdClothes", clothesController.findIdClothes);
 
 module.exports = router;

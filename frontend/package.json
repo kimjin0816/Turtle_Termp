@@ -27,5 +27,6 @@
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-template-compiler": "^2.6.14",
     "vuetify-loader": "^1.7.0"
-  }
+  },
+  "proxy": "http://openapi.naver.com"
 }

@@ -1,27 +1,44 @@
 <template>
   <v-app>
     <!-- 상단 바 -->
-    <v-app-bar app color="grey lighten-1" dark style="max-height: 100px">
-      <v-row style="
+    <v-app-bar app color="grey lighten-1" dark style="max-height: 63px">
+      <v-row
+        style="
           display: flex;
           justify-content: flex-end;
           align-items: center;
           margin-top: -10px;">
 
         <!-- 새로운 메뉴 버튼 -->
-        <div style="margin-right: 170px;">
+        <div style="margin-right: -70px;">
           <v-btn icon @click="drawer = !drawer" class="custom-btn">
             <v-icon color="black">mdi-menu</v-icon>
             <span class="hidden-sm-and-up">메뉴</span>
           </v-btn>
         </div>
-        <div style="margin-left: 50px; display: inline-block;">
-          <span style="color: black; font-size: 36px; position: relative; left: -380px;">C&C</span>
+        <div style="margin-left: 50px; display: inline-block; margin-right: -100px;">
+          <span style="color: black; font-size: 36px; position: relative; left: -50px;">C&C</span>
         </div>
 
-        <v-navigation-drawer v-model="drawer" absolute bottom temporary style="height: calc(100vh - 100px);">
-          <v-list nav dense>
-            <v-list-item-group v-model="group" active-class="light-grey">
+        <div style="margin-left: 100px; display: inline-block ; justify-content: center">
+          <span style="color: black; font-size: 48px; position: relative; left: 380px;">Clothes By Connect</span>
+        </div>
+
+        <v-navigation-drawer
+          v-model="drawer"
+          absolute
+          bottom
+          temporary
+          style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;"
+        >
+          <v-list
+            nav
+            dense
+          >
+            <v-list-item-group
+              v-model="group"
+              active-class="light-grey"
+            >
 
               <v-btn @click="handleAuthAction" text color="white" class="ml-1"
                 style="font-size: 24px; margin-bottom: 40px;">
@@ -55,16 +72,32 @@
       </v-row>
 
       <!-- 메뉴 버튼 -->
-      <v-row style="display: flex; align-items: center;">
-        <v-btn @click="goToAbout" text color="black" class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px;">
+      <v-row style="display: flex; align-items: center; margin-top: 150px !important; justify-content: space-between;">
+        <v-btn
+          @click="goToAbout"
+          text
+          color="black"
+          class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px;"
+        >
           키워드
         </v-btn>
-        <v-btn @click="goToHome" text color="black" class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px; margin-right: 10px;">
+        <v-btn
+          @click="goToHome"
+          text
+          color="black"
+          class="move-left"
+          style="text-decoration: underline; font-size: 20px; margin-right: 20px; margin-left: -40px;"
+        >
           메인
         </v-btn>
-        <v-btn @click="goToCody" text color="black" class="ml-1" style="text-decoration: underline; font-size: 20px;">
+        <v-btn
+          @click="goToCody"
+          text
+          color="black"
+          class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px;"
+        >
           코디
         </v-btn>
       </v-row>
@@ -249,14 +282,29 @@ export default {
 };
 </script>
 
-<style>
-.custom-btn {
-  margin-left: -250px;
-}
-</style>
 <style scoped>
-.move-left {
-  margin-right: 100px !important;
-  /* 버튼을 왼쪽으로 이동시키는 스타일 */
+.custom-btn {
+  margin-left: -150px;
 }
+
+.move-left {
+  margin-right: 170px !important;
+  transform: translateX(-100px);
+}
+
+.v-app-bar {
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    font-family: 'Roboto','Noto Sans KR',sans-serif;
+    letter-spacing: -.4px;
+    min-width: 1180px;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 1920px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+  }
 </style>
