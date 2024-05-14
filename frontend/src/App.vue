@@ -96,12 +96,10 @@
 
         <!-- 로그인 버튼 -->
         <v-btn v-if="!isAuthenticated" @click="handleAuthAction" text color="black" class="ml-1"
-          style="font-size: 24px;">
-          로그인
-        </v-btn>
+          style="font-size: 24px;">로그인</v-btn>
 
         <!-- 로그아웃 버튼 -->
-        <v-btn v-if="isAuthenticated" @click="handleLogout" text color="black" class="ml-1" style="font-size: 24px;">
+        <v-btn v-if="isAuthensticated" @click="handleLogout" text color="black" class="ml-1" style="font-size: 24px;">
           로그아웃
         </v-btn>
       </v-row>
@@ -112,7 +110,7 @@
       <router-view :nickname="nickname" @login-success="handleLoginSuccess" />
     </v-main>
 
-    <!-- 푸터 -->
+    <!-- 푸터
     <v-footer app color="grey lighten-1" dark>
       <span style="
           display: block;
@@ -125,7 +123,7 @@
         ">
         2024 목원대학교 졸업작품 (Turtle)
       </span>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
@@ -185,7 +183,7 @@ export default {
       if (this.isAuthenticated) {
         // 로그아웃
         try {
-          const response = await fetch("http://localhost:3000/logout", {
+          await fetch("http://localhost:3000/logout", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

@@ -9,10 +9,16 @@
       </v-row>
 
       <!-- 이미지 첨부 -->
-      <v-col>
-        <v-file-input label="이미지를 첨부하세요" v-model="selectedImage" accept="image/*"></v-file-input>
-        <v-btn @click="attachImage">이미지 첨부</v-btn>
-      </v-col>
+      <v-container>
+        <v-row>
+          <v-col>
+            <v-form @submit.prevent="submitForm">
+              <v-file-input label="이미지를 첨부하세요" v-model="selectedImage" accept="image/*"></v-file-input>
+              <v-btn type="submit">이미지 첨부</v-btn>
+            </v-form>
+          </v-col>
+        </v-row>
+      </v-container>
 
       <!-- 이미지 결과 -->
       <v-container>
@@ -60,12 +66,18 @@ export default {
   },
 
   methods: {
-    attachImage() {
-      if (this.selectedImage) {
-        this.attachedImages.push({ src: URL.createObjectURL(this.selectedImage) });
-        this.selectedImage = null;
-      }
-    },
+    // attachImage() {
+    //   if (this.selectedImage) {
+    //     a = this.attachedImages.push({ src: URL.createObjectURL(this.selectedImage) });
+    //     console.log(a);
+    //     this.selectedImage = null;
+    //   }
+    // },
+    submitForm() {
+      // 이미지를 서버로 전송하거나 다른 작업 수행
+      // this.attachImage();
+      console.log("Selected Image:", this.selectedImage);
+    }
   },
 };
 </script>

@@ -68,6 +68,10 @@ const UserController = {
 
       if (user.rows.length > 0) {
         req.session.user = user.rows[0]; // 세션에 사용자 정보 저장
+        res.cookie('userId', user.rows[0].MEM_ID, { maxAge: 900000 }); // 쿠키에 사용자 ID 저장
+        // console.log(req.cookies.userId);
+        // // console.log(user.rows[0]);
+        console.log("user: " + JSON.stringify(req.session.user));
         res.status(200).json({
           message: "로그인 성공",
           nickname: user.rows[0].MEM_NICKNAME,
@@ -78,6 +82,28 @@ const UserController = {
     } catch (error) {
       console.error("로그인 오류:", error);
       res.status(500).json({ error: "서버 오류" });
+    }
+  },
+
+  // 로그아웃
+  async logout(req, res) {
+    try {
+      // 세션 지우기
+      req.session.destroy((err) => {
+        if (err) {
+          console.error("세션 삭제 오류:", err);
+          res.status(500).json({ message: "로그아웃 실패" });
+        } else {
+          console.log("세션 삭제 확인" + JSON.stringify(req.session));
+          res.clearCookie("userId", { path: "/", domain: "localhost" }); // 쿠키 삭제   
+          console.log("쿠키 삭제 확인" + JSON.stringify(req.cookies));    
+          console.log("세션 삭제 성공");
+          res.status(200).json({ message: "로그아웃 성공" });
+        }
+      });
+    } catch (error) {
+      console.error("로그아웃 오류:", error);
+      res.status(500).json({ message: "서버 오류" });
     }
   },
 
@@ -184,25 +210,6 @@ const UserController = {
     } catch (error) {
       console.error("회원 삭제 오류:", error);
       res.status(500).json({ error: "서버 오류" });
-    }
-  },
-
-  // 로그아웃
-  async logout(req, res) {
-    try {
-      // 세션 지우기
-      req.session.destroy((err) => {
-        if (err) {
-          console.error("세션 삭제 오류:", err);
-          res.status(500).json({ message: "로그아웃 실패" });
-        } else {
-          console.log("세션 삭제 성공");
-          res.status(200).json({ message: "로그아웃 성공" });
-        }
-      });
-    } catch (error) {
-      console.error("로그아웃 오류:", error);
-      res.status(500).json({ message: "서버 오류" });
     }
   },
 };

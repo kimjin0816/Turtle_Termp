@@ -42,7 +42,7 @@ class clothesHandler:
     def decimal(self, binary): 
         code = int(binary, 2)
         return code
-    # current username get
+    # current username get   
     def get_current_user_id(self):
         print(os.getlogin())
         return os.getlogin()
