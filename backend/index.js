@@ -2,7 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
 const crypto = require("crypto");
-const routes = require("./Router");
+const routes = require("./router");
 
 const app = express();
 const port = 3000;

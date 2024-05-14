@@ -1,21 +1,23 @@
 <template>
-  <v-row class="text-center" style="margin-top: -20px;">
-    <v-col cols="12">
-      <!-- 이미지 결과 -->
-      <v-container>
-        <div class="my-3" style="text-align: center;">
-          <h1>코디 결과</h1>
-        </div>
-        <v-row justify="center">
-          <v-col v-for="(image, index) in attachedImages" :key="index" cols="10" sm="4" md="4">
-            <div class="image-container" style="text-align: center;">
-              <img :src="image.src" alt="Image Result">
-            </div>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-col>
-  </v-row>
+  <div class="background-image">
+    <v-row class="text-center" style="margin-top: -20px;">
+      <v-col cols="12">
+        <!-- 이미지 결과 -->
+        <v-container>
+          <div class="my-3" style="text-align: center;">
+            <h1>코디 결과</h1>
+          </div>
+          <v-row justify="center">
+            <v-col v-for="(image, index) in attachedImages" :key="index" cols="10" sm="4" md="4">
+              <div class="image-container" style="text-align: center;">
+                <img :src="image.src" alt="Image Result">
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -56,9 +58,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.image-container {
-  margin: 20px;
-}
-</style>
