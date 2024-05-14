@@ -45,6 +45,5 @@ exports.findIdClothes = (req, res) => {
   );
 };
 
-exports.findfeatureCode = (req, res) => {};
 
 module.exports = clothesController;

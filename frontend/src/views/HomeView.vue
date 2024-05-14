@@ -39,13 +39,13 @@
           <v-row justify="center">
             <v-col v-for="(image, index) in sampleImages" :key="index" cols="10" sm="4" md="4">
               <div class="image-container" style="text-align: center;">
-                <img :src="image" alt="Image Result">
-              </div>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-col>
-    </v-row>
+              <img :src="image" alt="Similar Image">
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-col>
+  </v-row>
   </div>
 </template>
 
@@ -79,16 +79,13 @@ export default {
       }
     },
     attachImage() {
-      // 이미지 첨부 버튼 클릭 시 첨부된 이미지가 있는지 확인
       if (this.attachedImages.length === 0) {
-        // 첨부된 이미지가 없으면 샘플 이미지를 추가
         this.attachedImages = this.sampleImages.slice();
       }
       this.showImageResults = true; // 이미지 결과를 표시
     },
     gotoCody() {
       this.$router.push('/cody');
-    }
   },
 };
 </script>
