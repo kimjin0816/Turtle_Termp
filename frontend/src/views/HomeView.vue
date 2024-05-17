@@ -1,4 +1,5 @@
 <template>
+  <!-- 이미지 업로드와 검색 버튼 -->
   <v-row class="text-center">
     <v-col cols="12">
       <!-- 이미지 첨부 -->
@@ -7,7 +8,7 @@
           <v-file-input
             v-model="selectedImage"
             accept="image/*"
-            @change="handleImageUpload"
+            @change="handleImageUpload('모르겠음 근데 이 코드 없으면 실행 안됨')"
           ></v-file-input>
         </v-col>
       </v-row>
@@ -34,10 +35,11 @@
         <div class="my-3" style="text-align: center;">
           <h1>이미지 결과</h1>
         </div>
+        <!-- 유사한 이미지 표시 -->
         <v-row justify="center">
-          <v-col v-for="(image, index) in similarImages" :key="index" cols="10" sm="4" md="4">
+          <v-col v-for="(image, index) in similarImages" :key="index" cols="12" sm="6" md="3">
             <div class="image-container" style="text-align: center;">
-              <img :src="image" alt="Similar Image">
+              <img :src="image" alt="Similar Image" style="width: 250px; height: 250px;">
             </div>
           </v-col>
         </v-row>
@@ -47,12 +49,10 @@
 </template>
 
 <script>
-
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   name: "Home",
-
   data() {
     return {
       selectedImage: null,
@@ -77,27 +77,20 @@ export default {
       }
     },
 
-    async fetchSimilarImages(query) {
+    async fetchSimilarImages(keyword) {
       try {
-        const response = await axios.get(`https://openapi.naver.com/v1/search/shop.json?query=${query}`, {
-          headers: {
-            "X-Naver-Client-Id": "zAMBQH5GApM3LsK2hpiw", // 실제 클라이언트 ID로 대체
-            "X-Naver-Client-Secret": "m2rFPTyrqS" // 실제 클라이언트 시크릿으로 대체
-          }
+        const response = await axios.get('http://localhost:4000/api/search-images', {
+          params: { query: keyword },
         });
 
         if (response.status === 200) {
-          if (response.data.items && response.data.items.length > 0) {
-            this.similarImages = response.data.items.map(item => item.image);
-            this.showImageResults = true;
-          } else {
-            throw new Error('응답에서 항목을 찾을 수 없습니다.');
-          }
+          this.similarImages = response.data;
+          this.showImageResults = true;
         } else {
-          throw new Error('Naver API에서 데이터 가져오기 실패');
+          throw new Error('이미지 가져오기에 실패했습니다.');
         }
       } catch (error) {
-        this.handleError("유사한 이미지 가져오기 중 오류 발생:", error);
+        this.handleError("이미지 가져오기 중 오류 발생:", error);
       }
     },
 
@@ -118,5 +111,5 @@ export default {
       this.showImageResults = false;
     }
   }
-}
+};
 </script>
