@@ -52,7 +52,6 @@ import axios from 'axios'
 
 export default {
   name: "Home",
-
   data() {
     return {
       selectedImage: null,
@@ -85,7 +84,6 @@ export default {
             "X-Naver-Client-Secret": "m2rFPTyrqS" // 실제 클라이언트 시크릿으로 대체
           }
         });
-
         if (response.status === 200) {
           if (response.data.items && response.data.items.length > 0) {
             this.similarImages = response.data.items.map(item => item.image);
@@ -105,7 +103,6 @@ export default {
       if (this.attachedImages.length === 0) {
         this.attachedImages = this.sampleImages.slice();
       }
-      this.showImageResults = true;
     },
 
     gotoCody() {
@@ -118,5 +115,4 @@ export default {
       this.showImageResults = false;
     }
   }
-}
 </script>
