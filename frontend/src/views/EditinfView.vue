@@ -76,18 +76,18 @@ export default {
         if (response.status === 200) {
           // 수정 성공 시 HomeView로 이동
           this.$router.push('/');
-        } 
+        }
       } catch (error) {
         console.error("회원 정보 수정 오류:", error);
         alert("회원 정보 수정에 실패했습니다.");
         // 수정 실패 시 입력 필드 초기화
         this.MEM_ID = "";
-          this.MEM_PASSWORD = "";
-          this.MEM_NAME = "";
-          this.MEM_EMAIL = "";
-          this.MEM_TEL = "";
-          this.MEM_NICKNAME = "";
-          this.MEM_ADDRESS = "";
+        this.MEM_PASSWORD = "";
+        this.MEM_NAME = "";
+        this.MEM_EMAIL = "";
+        this.MEM_TEL = "";
+        this.MEM_NICKNAME = "";
+        this.MEM_ADDRESS = "";
       }
     },
   },

@@ -1,19 +1,6 @@
 const { queryMembers } = require("./PostgreDB");
 
 const UserController = {
-  // MEMBERSHIP 테이블 생성
-  createTable(req, res) {
-    queryMembers(
-      "CREATE TABLE IF NOT EXISTS MEMBERSHIP (MEM_ID VARCHAR(255) NOT NULL, MEM_PASSWORD VARCHAR(255) NOT NULL, MEM_NAME   VARCHAR(255) NOT NULL, MEM_EMAIL   VARCHAR(255) NOT NULL, MEM_TEL       VARCHAR(255) NOT NULL, MEM_NICKNAME  VARCHAR(255) NOT NULL, MEM_ADDRESS   VARCHAR(255) NOT NULL, CONSTRAINT MEM PRIMARY KEY (MEM_ID))",
-      (error, results) => {
-        if (error) {
-          throw error;
-        }
-        console.log("MEMBERSHIP 테이블 생성 완료");
-      }
-    );
-  },
-
   // 회원가입
   async signUp(req, res) {
     const {
@@ -67,17 +54,19 @@ const UserController = {
       );
 
       if (user.rows.length > 0) {
-        req.session.user = user.rows[0]; // 세션에 사용자 정보 저장
-        res.cookie('userId', user.rows[0].MEM_ID, { maxAge: 900000 }); // 쿠키에 사용자 ID 저장
-        // console.log(req.cookies.userId);
-        // // console.log(user.rows[0]);
-        console.log("user: " + JSON.stringify(req.session.user));
+        req.session.sessionUserId = user.rows[0].MEM_ID; // 세션에 사용자 정보 저장
+        // console.log(user.rows[0]);
+        console.log(JSON.stringify(req.session));
+        console.log("쿠키 확인 " + JSON.stringify(req.cookies.cookieUserId));
+        console.log("세션 확인 " + JSON.stringify(req.session.sessionUserId));
         res.status(200).json({
           message: "로그인 성공",
           nickname: user.rows[0].MEM_NICKNAME,
+          isLogined: true,
         });
       } else {
         res.status(401).json({ message: "유효하지 않은 사용자 또는 비밀번호" });
+        isLogined = false;
       }
     } catch (error) {
       console.error("로그인 오류:", error);
@@ -94,11 +83,10 @@ const UserController = {
           console.error("세션 삭제 오류:", err);
           res.status(500).json({ message: "로그아웃 실패" });
         } else {
-          console.log("세션 삭제 확인" + JSON.stringify(req.session));
-          res.clearCookie("userId", { path: "/", domain: "localhost" }); // 쿠키 삭제   
-          console.log("쿠키 삭제 확인" + JSON.stringify(req.cookies));    
-          console.log("세션 삭제 성공");
-          res.status(200).json({ message: "로그아웃 성공" });
+          // res.clearCookie("userId", { path: "/", domain: "localhost" }); // 쿠키 삭제
+          // console.log("쿠키 삭제 확인 " + JSON.stringify(req.cookies));
+          console.log("세션 삭제 성공" + JSON.stringify(req.session));
+          res.status(200).json({ message: "로그아웃 성공", isLogined: false });
         }
       });
     } catch (error) {
@@ -211,6 +199,19 @@ const UserController = {
       console.error("회원 삭제 오류:", error);
       res.status(500).json({ error: "서버 오류" });
     }
+  },
+
+  // MEMBERSHIP 테이블 생성
+  createTable(req, res) {
+    queryMembers(
+      "CREATE TABLE IF NOT EXISTS MEMBERSHIP (MEM_ID VARCHAR(255) NOT NULL, MEM_PASSWORD VARCHAR(255) NOT NULL, MEM_NAME   VARCHAR(255) NOT NULL, MEM_EMAIL   VARCHAR(255) NOT NULL, MEM_TEL       VARCHAR(255) NOT NULL, MEM_NICKNAME  VARCHAR(255) NOT NULL, MEM_ADDRESS   VARCHAR(255) NOT NULL, CONSTRAINT MEM PRIMARY KEY (MEM_ID))",
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        console.log("MEMBERSHIP 테이블 생성 완료");
+      }
+    );
   },
 };
 

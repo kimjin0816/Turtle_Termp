@@ -44,6 +44,7 @@ export default {
       username: "",
       password: "",
       nickname: "",
+      sessionId: ""
     };
   },
   methods: {
@@ -54,17 +55,15 @@ export default {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            MEM_ID: this.username,
-            MEM_PASSWORD: this.password,
-          }),
+          body: JSON.stringify({ MEM_ID: this.username, MEM_PASSWORD: this.password }),
         });
 
         const result = await response.json();
 
         if (response.status === 200) {
-          alert(result.message);
-          this.handleLoginSuccess(result.nickname); // 수정된 부분
+          console.log("response(로그인) : " + JSON.stringify(result));
+          alert(result.message + result.isLogined);
+          this.handleLoginSuccess(result.nickname, result.sessionId); // 수정된 부분
         } else {
           alert(result.message);
         }
@@ -74,8 +73,9 @@ export default {
       }
     },
 
-    handleLoginSuccess(nickname) {
+    handleLoginSuccess(nickname, sessionId) {
       this.nickname = nickname;
+      this.sessionId = sessionId;
       this.$emit("login-success", nickname); // 부모(App.vue)에 이벤트 발신
     },
   },

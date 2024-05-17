@@ -10,6 +10,7 @@ def upload_image():
     save_path = 'C:/users/user/Desktop/top_clothes/server/' + uploaded_file.filename
     # 파일을 저장합니다.
     uploaded_file.save(save_path)
+    return 'Image uploaded successfully', 200
     
 @app.route('/<shape>/<type>/<color>')
 def searchUrl_API(shape, type, color):
