@@ -79,7 +79,7 @@ export default {
 
     async fetchSimilarImages(keyword) {
       try {
-        const response = await axios.get('http://localhost:4000/api/search-images', {
+        const response = await axios.get('http://localhost:3000/api/search-images', {
           params: { query: keyword },
         });
 
