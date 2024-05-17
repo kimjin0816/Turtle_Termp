@@ -6,8 +6,8 @@ const app = express();
 app.use(cors());
 
 const queryParams = {
-  query: '흰색 반팔',
-  display: 20
+  query: '흰색 반팔', // 결과 이미지가 나오게 하는 쿼리 값
+  display: 20 // 검색 개수
 };
 
 const clientId = 'MLN5m3nClexyvNU0pp46';

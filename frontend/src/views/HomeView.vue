@@ -8,7 +8,7 @@
           <v-file-input
             v-model="selectedImage"
             accept="image/*"
-            @change="handleImageUpload('selectedImage')"
+            @change="handleImageUpload('모르겠음 근데 이 코드 없으면 실행 안됨')"
           ></v-file-input>
         </v-col>
       </v-row>
