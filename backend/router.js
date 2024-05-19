@@ -3,6 +3,7 @@ const router = express.Router();
 
 const UserController = require("./UserController");
 const clothesController = require("./clothesController");
+const naverAPI = require("./naverAPI");
 
 function ensureAuthenticated(req, res, next) {
   if (req.session && req.session.sessionUserId) {
@@ -18,6 +19,10 @@ router.post("/logout", UserController.logout);
 router.post("/findCredentials", ensureAuthenticated, UserController.findCredentials);
 router.put("/updateProfile", ensureAuthenticated, UserController.updateProfile);
 router.delete("/deleteProfile", ensureAuthenticated, UserController.deleteProfile);
+
+router.post("/api/search-images/:keyword", naverAPI.callNaverShoppingAPI);
+router.get("/api/keyword", naverAPI.postdata);
+// router.get("/api/keywords", naverAPI.getKeywords);
 
 // router.get("/selectIdClothes", clothesController.findIdClothes);
 

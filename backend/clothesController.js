@@ -1,8 +1,7 @@
 const { queryClothes } = require("./PostgreDB");
-
 const clothesController = {
   // entire clothing data results
-  keywordResearch(req, res) {
+  export_keyword(req, res) {
     const clothes_type = req.query;
     queryClothes("SELECT * FROM $1", [clothes_type], (error, results) => {
       if (error) {
@@ -29,6 +28,7 @@ const clothesController = {
     );
   },
   // user register clothes data results
+
   findIdClothes(req, res) {
     const mem_id = req.query.clothes.mem_id;
     const clothes_type = req.query.clothes.clothes_type;
@@ -43,6 +43,6 @@ const clothesController = {
       }
     );
   },
+  findfeatureCode(req, res) {},
 };
-
 module.exports = clothesController;

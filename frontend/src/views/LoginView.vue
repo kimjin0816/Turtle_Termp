@@ -61,9 +61,9 @@ export default {
         const result = await response.json();
 
         if (response.status === 200) {
-          console.log("response(로그인) : " + JSON.stringify(result));
-          alert(result.message + result.isLogined);
-          this.handleLoginSuccess(result.nickname, result.sessionId); // 수정된 부분
+          alert(result.message);
+          this.nickname = nickname;
+          this.$emit("login-success", nickname); // 부모(App.vue)에 이벤트 발신
         } else {
           alert(result.message);
         }
@@ -71,12 +71,6 @@ export default {
         console.error("로그인 오류:", error);
         alert("서버 오류");
       }
-    },
-
-    handleLoginSuccess(nickname, sessionId) {
-      this.nickname = nickname;
-      this.sessionId = sessionId;
-      this.$emit("login-success", nickname); // 부모(App.vue)에 이벤트 발신
     },
   },
 };

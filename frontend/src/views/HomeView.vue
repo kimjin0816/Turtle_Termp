@@ -10,7 +10,7 @@
     <v-row class="text-center" style="margin-top: 20px; position: relative; z-index: 1">
       <v-col cols="12">
         <!-- 이미지 첨부 -->
-        <v-form @submit.prevent="submitForm">
+        <v-form @submit.prevent="handleImageUpload">
           <v-file-input label="Select Image" v-model="selectedImage" accept="image/*" name="image"></v-file-input>
           <v-btn type="submit" color="grey lighten-1" dark>이미지 검색</v-btn> &nbsp;
           <v-btn color="secondary" dark @click="gotoCody">코디 검색</v-btn>
@@ -20,7 +20,7 @@
         <v-row justify="center" v-if="attachedImages.length > 0">
           <v-col v-for="(image, index) in attachedImages" :key="index" cols="12" md="4">
             <div class="image-container" style="text-align: center">
-              <img :src="image.src" alt="Attached Image" />
+              <img :src="image" alt="Attached Image" />
             </div>
           </v-col>
         </v-row>
@@ -31,9 +31,9 @@
             <h1>이미지 결과</h1>
           </div>
           <v-row justify="center">
-            <v-col v-for="(image, index) in sampleImages" :key="index" cols="10" sm="4" md="4">
+            <v-col v-for="(image, index) in similarImages" :key="index" cols="10" sm="4" md="4">
               <div class="image-container" style="text-align: center">
-                <img :src="image" alt="Image Result" />
+                <img :src="image" alt="Image Result" style="width: 100%; max-width: 300px; height: auto;" />
               </div>
             </v-col>
           </v-row>
@@ -48,7 +48,6 @@ import axios from 'axios';
 
 export default {
   name: "Home",
-
   data() {
     return {
       selectedImage: null,
@@ -62,36 +61,32 @@ export default {
         "https://image.msscdn.net/images/goods_img/20230330/3193115/3193115_16856981907690_220.jpg",
       ],
       showImageResults: false, // 이미지 결과를 표시할지 여부를 저장하는 변수
-      IsLogin: false
     };
   },
   methods: {
-    submitForm() {
-      // 현재 로그인이 되어있는 상태인지 확인하는 방법
-      // if (this.$store.getters['auth/isAuthenticated']) {
-      //   this.IsLogin = true;
-      // } else {
-      //   this.IsLogin = false;
-      // }
-      const serverImage = this.selectedImage;
-      this.attachedImages = []; // 이전에 첨부된 이미지 초기화
-      this.attachedImages.push({ src: URL.createObjectURL(this.selectedImage) });
-      this.selectedImage = null;
+    handleImageUpload() {
+      if (this.selectedImage) {
+        // 다시 재검색을 할 때 attachedImages를 초기화
+        if (this.attachedImages.length > 0) {
+          this.attachedImages = [];
+        }
 
-      // FormData 객체 생성
-      let formData = new FormData();
-      // 선택된 이미지를 FormData에 추가
-      formData.append('image', serverImage);
+        // FileReader 객체 생성
+        const reader = new FileReader();
 
-      // Axios를 사용하여 서버로 이미지를 전송
-      axios.post('http://localhost:5000/', formData)
-        .then(response => {
-          console.log('Image uploaded successfully');
-          // 서버 응답을 처리하는 추가적인 작업 수행
-        })
-        .catch(error => {
-          console.error('Error uploading image:', error);
-        });
+        // 이미지 로드 완료 시 동작할 함수 정의
+        reader.onload = (event) => {
+          // FileReader 결과로부터 이미지의 URL을 추출하여 attachedImages 배열에 추가
+          this.attachedImages.unshift(event.target.result);
+          console.log("attachedImage: " + this.attachedImages);
+        };
+
+        // 선택한 이미지를 읽어오기
+        reader.readAsDataURL(this.selectedImage);
+
+        // 선택한 이미지 초기화
+        this.selectedImage = null;
+      }
     },
     attachImage() {
       // 이미지 첨부 버튼 클릭 시 첨부된 이미지가 있는지 확인
@@ -101,10 +96,11 @@ export default {
       }
       this.showImageResults = true; // 이미지 결과를 표시
     },
+
     gotoCody() {
       this.$router.push("/cody");
     },
-  }
+  },
 };
 </script>
 

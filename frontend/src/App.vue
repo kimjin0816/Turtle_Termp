@@ -32,19 +32,19 @@
                 {{ isAuthenticated ? nickname : "로그인" }}
               </v-btn>
 
-              <v-list-item @click="goTo('home')" style="margin-top: 10px;"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('home')" style="margin-top: 10px;"> <!-- 수정된 부분 -->
                 <v-list-item-title>메인</v-list-item-title>
               </v-list-item>
 
-              <v-list-item @click="goTo('about')"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('about')"> <!-- 수정된 부분 -->
                 <v-list-item-title>키워드</v-list-item-title>
               </v-list-item>
 
-              <v-list-item @click="goTo('cody')"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('cody')"> <!-- 수정된 부분 -->
                 <v-list-item-title>코디</v-list-item-title>
               </v-list-item>
 
-              <v-list-item @click="goTo('information')"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('information')"> <!-- 수정된 부분 -->
                 <v-list-item-title>정보</v-list-item-title>
               </v-list-item>
 
@@ -60,15 +60,15 @@
 
       <!-- 메뉴 버튼 -->
       <v-row style="display: flex; align-items: center; margin-top: 150px !important; justify-content: space-between;">
-        <v-btn @click="goTo('about')" text color="black" class="ml-1 move-left"
+        <v-btn @click="goToPage('about')" text color="black" class="ml-1 move-left"
           style="text-decoration: underline; font-size: 20px;">
           키워드
         </v-btn>
-        <v-btn @click="goTo('home')" text color="black" class="move-left"
+        <v-btn @click="goToPage('home')" text color="black" class="move-left"
           style="text-decoration: underline; font-size: 20px; margin-right: 20px; margin-left: -40px;">
           메인
         </v-btn>
-        <v-btn @click="goTo('cody')" text color="black" class="ml-1 move-left"
+        <v-btn @click="goToPage('cody')" text color="black" class="ml-1 move-left"
           style="text-decoration: underline; font-size: 20px;">
           코디
         </v-btn>
@@ -132,6 +132,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "App",
   data() {
@@ -141,55 +143,106 @@ export default {
       drawer: false, // 네비게이션 드로어 표시 여부
     };
   },
-  methods: {
-    async goTo(route) {
-      try {
-        this.$router.push({
-          name: route,
-          params: { nickname: this.nickname }
-        });
-      } catch (error) {
-        console.error("Error navigating to route:", error);
-      }
-    },
-    // 로그인 성공 시 처리하는 메서드
-    handleLoginSuccess(nickname) {
-      this.nickname = nickname;
-      this.isAuthenticated = true;
-      this.goTo("home");
-    },
-    // 소메뉴 항목 클릭 시 처리하는 메서드
-    handleSubMenuClick(item) {
-      if (item === "회원 정보") {
-        // 정보 수정을 클릭했을 때 <abc.vue>를 보이도록 설정하고 경로 변경
-        this.showMemin = true;
-        this.$router.push({ name: "Memin" });
-      } else {
-        alert(`선택한 소메뉴: ${item}`);
-      }
-    },
-    handleLogout() {
-      // 로그아웃 처리
-      try {
-        fetch("http://localhost:3000/logout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
 
-        // 로그아웃 성공 메시지
-        alert("로그아웃 성공");
-        this.nickname = ""; // 닉네임 지우기
-        this.isAuthenticated = false;
-        this.showAbc = false; // 로그아웃 시 <abc.vue> 감추기
-        this.$router.push("/login"); // 로그아웃 후 홈 화면으로 이동
+  methods: {
+    goToPage(pageName) {
+      try {
+        // Vue Router를 이용하여 주어진 페이지로 이동
+        this.$router.push({
+          name: pageName,
+          params: { nickname: this.nickname },
+        });
       } catch (error) {
-        console.error("로그아웃 오류:", error);
-        alert("서버 오류");
+        console.error(`Error navigating to /${pageName}:`, error);
       }
-    }
+    },
+    async handleAuthAction() {
+      if (this.isAuthenticated) {
+        // 로그아웃
+        try {
+          const response = await fetch("http://localhost:3000/logout", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          // 로그아웃 성공 메시지
+          alert("로그아웃 성공");
+          this.nickname = ""; // 닉네임 지우기
+          this.isAuthenticated = false;
+          this.$router.push("/"); // 로그아웃 후 홈 화면으로 이동
+        } catch (error) {
+          console.error("로그아웃 오류:", error);
+          alert("서버 오류");
+        }
+      } else {
+        // 로그인 페이지로 이동
+        this.$router.push({
+          name: "login",
+          params: { nickname: this.nickname },
+        });
+  }
+},
+// 로그인 성공 시 처리하는 메서드
+handleLoginSuccess(nickname) {
+  this.nickname = nickname;
+  this.isAuthenticated = true;
+  this.goTo("home");
+},
+// 소메뉴 항목 클릭 시 처리하는 메서드
+handleSubMenuClick(item) {
+  if (item === "회원 정보") {
+    // 정보 수정을 클릭했을 때 <abc.vue>를 보이도록 설정하고 경로 변경
+    this.showMemin = true;
+    this.$router.push({ name: "Memin" });
+  } else {
+    alert(`선택한 소메뉴: ${item}`);
+  }
+},
+handleLogout() {
+  // 로그아웃 처리
+  try {
+    fetch("http://localhost:3000/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // 로그아웃 성공 메시지
+    alert("로그아웃 성공");
+    this.nickname = ""; // 닉네임 지우기
+    this.isAuthenticated = false;
+    this.showAbc = false; // 로그아웃 시 <abc.vue> 감추기
+    this.$router.push("/login"); // 로그아웃 후 홈 화면으로 이동
+  } catch (error) {
+    console.error("로그아웃 오류:", error);
+    alert("서버 오류");
+  }
+}
   },
+mounted() {
+  // 사용자 인증 상태 확인
+  /* async checkAuthStatus() {
+    try {
+      const response = await fetch("http://localhost:3000/auth/check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const { isAuthenticated, nickname } = await response.json();
+      this.isAuthenticated = isAuthenticated;
+      this.nickname = nickname;
+    } catch (error) {
+      console.error("사용자 인증 상태 확인 오류:", error);
+    }
+  }, */
+  // getData()를 3초마다 출력해줘
+  // setInterval(() => { this.getData(); }, 3000);
+},
 };
 </script>
 

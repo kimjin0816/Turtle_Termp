@@ -22,7 +22,7 @@ class clothesHandler:
 #region DB connection/close/write methods
     # Clothes DB
     def connectClothes(self):
-        self.c_conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='password', port='5432')
+        self.c_conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='1015', port='5432')
         self.c_cur = self.c_conn.cursor()
     def closeClothes(self):
         self.c_cur.close()
