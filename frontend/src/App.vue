@@ -2,8 +2,7 @@
   <v-app>
     <!-- 상단 바 -->
     <v-app-bar app color="grey lighten-1" dark style="max-height: 63px">
-      <v-row
-        style="
+      <v-row style="
           display: flex;
           justify-content: flex-end;
           align-items: center;
@@ -24,40 +23,29 @@
           <span style="color: black; font-size: 48px; position: relative; left: 380px;">Clothes By Connect</span>
         </div>
 
-        <v-navigation-drawer
-          v-model="drawer"
-          absolute
-          bottom
-          temporary
-          style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;"
-        >
-          <v-list
-            nav
-            dense
-          >
-            <v-list-item-group
-              v-model="group"
-              active-class="light-grey"
-            >
+        <v-navigation-drawer v-model="drawer" absolute bottom temporary
+          style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;">
+          <v-list nav dense>
+            <v-list-item-group v-model="group" active-class="light-grey">
 
               <v-btn @click="handleAuthAction" text color="white" class="ml-1"
                 style="font-size: 24px; margin-bottom: 40px;">
                 {{ isAuthenticated ? nickname : "로그인" }}
               </v-btn>
 
-              <v-list-item @click="goToHome" style="margin-top: 10px;"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('home')" style="margin-top: 10px;"> <!-- 수정된 부분 -->
                 <v-list-item-title>메인</v-list-item-title>
               </v-list-item>
 
-              <v-list-item @click="goToAbout"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('about')"> <!-- 수정된 부분 -->
                 <v-list-item-title>키워드</v-list-item-title>
               </v-list-item>
 
-              <v-list-item @click="goToCody"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('cody')"> <!-- 수정된 부분 -->
                 <v-list-item-title>코디</v-list-item-title>
               </v-list-item>
 
-              <v-list-item @click="goToInformation"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('information')"> <!-- 수정된 부분 -->
                 <v-list-item-title>정보</v-list-item-title>
               </v-list-item>
 
@@ -73,31 +61,16 @@
 
       <!-- 메뉴 버튼 -->
       <v-row style="display: flex; align-items: center; margin-top: 150px !important; justify-content: space-between;">
-        <v-btn
-          @click="goToAbout"
-          text
-          color="black"
-          class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px;"
-        >
+        <v-btn @click="goToPage('about')" text color="black" class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px;">
           키워드
         </v-btn>
-        <v-btn
-          @click="goToHome"
-          text
-          color="black"
-          class="move-left"
-          style="text-decoration: underline; font-size: 20px; margin-right: 20px; margin-left: -40px;"
-        >
+        <v-btn @click="goToPage('home')" text color="black" class="move-left"
+          style="text-decoration: underline; font-size: 20px; margin-right: 20px; margin-left: -40px;">
           메인
         </v-btn>
-        <v-btn
-          @click="goToCody"
-          text
-          color="black"
-          class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px;"
-        >
+        <v-btn @click="goToPage('cody')" text color="black" class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px;">
           코디
         </v-btn>
       </v-row>
@@ -163,6 +136,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "App",
   data() {
@@ -172,46 +147,34 @@ export default {
       drawer: false, // 네비게이션 드로어 표시 여부
     };
   },
+
   methods: {
-    goToAbout() {
+    // getData() {
+    //   try {
+    //     const response = axios.post('http://localhost:3000/api/keyword');
+    //     // this.fetchSimilarImages(response.data);
+    //     console.log(response.data);
+    //     let image = this.extractImages(response.data);
+    //     console.log('imageurl: ' + image);
+    //     // this.fetchSimilarImages(image);
+    //   } catch (error) {
+    //     // console.error('getData(): 아직 받은 데이터가 없습니다.');
+    //     console.log(error);
+    //   }
+    // },
+
+    // extractImages(data) {
+    //   return data.map(item => item.image);
+    // },
+    goToPage(pageName) {
       try {
-        // Vue Router를 이용하여 /about 페이지로 이동
+        // Vue Router를 이용하여 주어진 페이지로 이동
         this.$router.push({
-          name: "about",
+          name: pageName,
           params: { nickname: this.nickname },
         });
       } catch (error) {
-        console.error("Error navigating to /about:", error);
-      }
-    },
-    goToHome() {
-      try {
-        // Vue Router를 이용하여 홈 페이지로 이동
-        this.$router.push({
-          name: "home",
-          params: { nickname: this.nickname },
-        });
-      } catch (error) {
-        console.error("Error navigating to /home:", error);
-      }
-    },
-    goToCody() {
-      try {
-        // Vue Router를 이용하여 코디 페이지로 이동
-        this.$router.push({
-          name: "cody",
-          params: { nickname: this.nickname },
-        });
-      } catch (error) {
-        console.error("Error navigating to /cody:", error);
-      }
-    },
-    goToInformation() {
-      try {
-        this.$router.push('/information'); // 정보 홈페이지의 경로에 맞게 수정하세요.
-      }
-      catch (error) {
-        console.error("Error navigating to /information:", error);
+        console.error(`Error navigating to /${pageName}:`, error);
       }
     },
     async handleAuthAction() {
@@ -279,6 +242,27 @@ export default {
       }
     }
   },
+  mounted() {
+    // 사용자 인증 상태 확인
+    /* async checkAuthStatus() {
+      try {
+        const response = await fetch("http://localhost:3000/auth/check", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const { isAuthenticated, nickname } = await response.json();
+        this.isAuthenticated = isAuthenticated;
+        this.nickname = nickname;
+      } catch (error) {
+        console.error("사용자 인증 상태 확인 오류:", error);
+      }
+    }, */
+    // getData()를 3초마다 출력해줘
+    // setInterval(() => { this.getData(); }, 3000);
+  },
 };
 </script>
 
@@ -293,18 +277,18 @@ export default {
 }
 
 .v-app-bar {
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box;
-    font-family: 'Roboto','Noto Sans KR',sans-serif;
-    letter-spacing: -.4px;
-    min-width: 1180px;
-    margin: 0 auto;
-    padding: 0;
-    max-width: 1920px;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    white-space: nowrap;
-  }
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  letter-spacing: -.4px;
+  min-width: 1180px;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1920px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+}
 </style>
