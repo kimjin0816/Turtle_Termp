@@ -63,10 +63,6 @@
               <v-list-item @click="goToPage('cody')">
                 <v-list-item-title>코디</v-list-item-title>
               </v-list-item>
-
-              <v-list-item @click="goToPage('information')">
-                <v-list-item-title>정보</v-list-item-title>
-              </v-list-item>
             </v-list-item-group>
             <v-list nav dense v-if="isAuthenticated" style="margin-top: 400px;">
               <v-btn @click="handleLogout" color="light-grey" dark style="width: 100px;">
