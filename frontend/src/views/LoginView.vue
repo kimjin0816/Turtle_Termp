@@ -85,11 +85,6 @@ export default {
         alert("서버 오류");
       }
     },
-
-    handleLoginSuccess(nickname) {
-      this.nickname = nickname;
-      this.$emit("login-success", nickname); // 부모(App.vue)에 이벤트 발신
-    },
   },
 };
 </script>

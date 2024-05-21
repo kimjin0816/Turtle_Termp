@@ -35,7 +35,6 @@
         <div class="my-3" style="text-align: center;">
           <h1>이미지 결과</h1>
         </div>
-        <!-- 유사한 이미지 표시 -->
         <v-row justify="center">
           <v-col v-for="(image, index) in similarImages" :key="index" cols="12" sm="6" md="3">
             <div class="image-container" style="text-align: center;">
@@ -69,8 +68,6 @@ export default {
           const imageURL = URL.createObjectURL(this.selectedImage);
           this.attachedImages.unshift(imageURL);
           this.selectedImage = null;
-          // 사용자가 입력한 키워드를 사용하여 유사한 이미지를 가져오는 함수 호출
-          await this.fetchSimilarImages(keyword);
         } catch (error) {
           this.handleError("이미지 업로드 처리 중 오류 발생:", error);
         }
@@ -104,12 +101,8 @@ export default {
     gotoCody() {
       this.$router.push('/cody');
     },
-
-    handleError(message, error) {
-      console.error(message, error);
-      this.error = error.message;
-      this.showImageResults = false;
-    }
-  }
-};
+  mounted() {
+    // this.getData();
+  },
+}
 </script>

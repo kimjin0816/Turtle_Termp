@@ -31,17 +31,15 @@
           temporary
           style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;"
         >
-          <v-list
-            nav
-            dense
-          >
-            <v-list-item-group
-              v-model="group"
-              active-class="light-grey"
-            >
-
-              <v-btn @click="handleAuthAction" text color="white" class="ml-1"
-                style="font-size: 24px; margin-bottom: 40px;">
+          <v-list nav dense>
+            <v-list-item-group v-model="group" active-class="light-grey">
+              <v-btn
+                @click="handleAuthAction"
+                text
+                color="white"
+                class="ml-1"
+                style="font-size: 24px; margin-bottom: 40px;"
+              >
                 {{ isAuthenticated ? nickname : "로그인" }}
               </v-btn>
 
@@ -60,7 +58,6 @@
               <v-list-item @click="goToInformation"> <!-- 수정된 부분 -->
                 <v-list-item-title>정보</v-list-item-title>
               </v-list-item>
-
             </v-list-item-group>
             <v-list nav dense v-if="isAuthenticated" style="margin-top: 400px;">
               <v-btn @click="handleLogout" color="light-grey" dark style="width: 100px;">
@@ -177,31 +174,10 @@ export default {
       try {
         // Vue Router를 이용하여 /about 페이지로 이동
         this.$router.push({
-          name: "about",
-          params: { nickname: this.nickname },
-        });
-      } catch (error) {
-        console.error("Error navigating to /about:", error);
-      }
-    },
-    goToHome() {
-      try {
-        // Vue Router를 이용하여 홈 페이지로 이동
-        this.$router.push({
-          name: "home",
-          params: { nickname: this.nickname },
-        });
-      } catch (error) {
-        console.error("Error navigating to /home:", error);
-      }
-    },
-    goToCody() {
-      try {
-        // Vue Router를 이용하여 코디 페이지로 이동
-        this.$router.push({
-          name: "cody",
-          params: { nickname: this.nickname },
-        });
+            name: pageName,
+            params: { nickname: this.nickname },
+          });
+        }
       } catch (error) {
         console.error("Error navigating to /cody:", error);
       }
@@ -247,7 +223,6 @@ export default {
       this.isAuthenticated = true;
       this.$router.push({ name: "home" }); // 로그인 성공 시 Home 페이지로 이동
     },
-    // 소메뉴 항목 클릭 시 처리하는 메서드
     handleSubMenuClick(item) {
       if (item === "회원 정보") {
         // 정보 수정을 클릭했을 때 <abc.vue>를 보이도록 설정하고 경로 변경
