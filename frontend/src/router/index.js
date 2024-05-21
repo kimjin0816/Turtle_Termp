@@ -9,7 +9,6 @@ import FindCreView from "../views/FindCreView.vue";
 import EditinfView from "../views/EditinfView.vue";
 import DeleteView from "../views/DeleteView.vue";
 import MeminfView from "../views/MeminfView.vue";
-import InformationView from "@/views/InformationView.vue";
 
 Vue.use(VueRouter);
 
@@ -58,11 +57,6 @@ const routes = [
     path: "/Memin",
     name: "Memin",
     component: MeminfView,
-  },
-  {
-    path: "/Information",
-    name: "Information",
-    component: InformationView,
   }
 ];
 
