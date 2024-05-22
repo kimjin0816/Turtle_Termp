@@ -42,7 +42,7 @@
               <div class="image-info">
                 <h2 v-html="item.title"></h2>
                 <a :href="item.link">상품 링크</a>
-                <p>{{ item.lprice }}</p>
+                <p>{{ item.lprice | formatPrice }}원</p>
                 <p>{{ item.category2 }}</p>
                 <p>{{ item.category3 }}</p>
               </div>
@@ -67,6 +67,11 @@ export default {
       showImageResults: false,
       keywords: "",
     };
+  },
+  filters: {
+    formatPrice(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
   },
   methods: {
     async submitForm() {
