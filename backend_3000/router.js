@@ -14,7 +14,6 @@ router.post("/logout", UserController.logout);
 
 router.post("/api/search-images/:keyword", naverAPI.callNaverShoppingAPI);
 router.get("/api/keyword", naverAPI.postdata);
-// router.get("/api/keywords", naverAPI.getKeywords);
 
 // router.get("/selectIdClothes", clothesController.findIdClothes);
 

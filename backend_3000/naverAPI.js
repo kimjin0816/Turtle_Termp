@@ -3,7 +3,7 @@ const axios = require("axios");
 const naverAPI = {
   // 네이버 쇼핑 API 호출 함수
   keywords: "",
-  imageUrls: [],
+  extractedData: [],
 
   async callNaverShoppingAPI(req, res) {
     try {
@@ -28,14 +28,23 @@ const naverAPI = {
           },
         }
       );
-      res.json({ status: "ok" });
       console.log(response.data);
       // response.data에서 image키값만 추출하기
       this.keywords = queryParams.query;
-      this.imageUrls = response.data.items.map((item) => item.image);
+      // 이미지 뿐만 아니라 카테고리와 가격과 제목을 가져오기
+
+      this.extractedData = response.data.items.map((item) => ({
+        title: item.title,
+        link: item.link,
+        image: item.image,
+        lprice: item.lprice,
+        category2: item.category2,
+        category3: item.category3,
+      }));
+
       console.log(this.keywords);
-      console.log(this.imageUrls);
-      // await this.postdata(response.data, queryParams.query);
+      console.log(this.extractedData);
+      res.json({ status: "ok" });
     } catch (error) {
       console.error("callNaverShoppingAPI()", error);
     }
@@ -56,8 +65,11 @@ const naverAPI = {
   postdata(req, res) {
     try {
       keywords = this.keywords;
-      imageUrls = this.imageUrls;
-      res.json({ keywords, imageUrls });
+      extractedData = this.extractedData;
+      res.json({ keywords, extractedData });
+      // reset
+      this.keywords = "";
+      this.extractedData = [];
     } catch (error) {
       console.error("postData(): ", error);
     }
