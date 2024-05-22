@@ -7,7 +7,7 @@
           justify-content: flex-end;
           align-items: center;
           margin-top: -10px;">
-
+          
         <!-- 새로운 메뉴 버튼 -->
         <div style="margin-right: -70px;">
           <v-btn icon @click="drawer = !drawer" class="custom-btn">
@@ -33,32 +33,36 @@
           >
         </div>
 
-        <v-navigation-drawer v-model="drawer" absolute bottom temporary
-          style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;">
+        <v-navigation-drawer
+          v-model="drawer"
+          absolute
+          bottom
+          temporary
+          style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;"
+        >
           <v-list nav dense>
             <v-list-item-group v-model="group" active-class="light-grey">
-
-              <v-btn @click="handleAuthAction" text color="white" class="ml-1"
-                style="font-size: 24px; margin-bottom: 40px;">
+              <v-btn
+                @click="handleAuthAction"
+                text
+                color="white"
+                class="ml-1"
+                style="font-size: 24px; margin-bottom: 40px;"
+              >
                 {{ isAuthenticated ? nickname : "로그인" }}
               </v-btn>
 
-              <v-list-item @click="goToPage('home')" style="margin-top: 10px;"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('home')" style="margin-top: 10px;">
                 <v-list-item-title>메인</v-list-item-title>
               </v-list-item>
 
-              <v-list-item @click="goToPage('about')"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('about')">
                 <v-list-item-title>키워드</v-list-item-title>
               </v-list-item>
 
-              <v-list-item @click="goToPage('cody')"> <!-- 수정된 부분 -->
+              <v-list-item @click="goToPage('cody')">
                 <v-list-item-title>코디</v-list-item-title>
               </v-list-item>
-
-              <v-list-item @click="goToPage('information')"> <!-- 수정된 부분 -->
-                <v-list-item-title>정보</v-list-item-title>
-              </v-list-item>
-
             </v-list-item-group>
             <v-list nav dense v-if="isAuthenticated" style="margin-top: 400px;">
               <v-btn @click="handleLogout" color="light-grey" dark style="width: 100px;">
@@ -70,17 +74,44 @@
       </v-row>
 
       <!-- 메뉴 버튼 -->
-      <v-row style="display: flex; align-items: center; margin-top: 150px !important; justify-content: space-between;">
-        <v-btn @click="goToPage('about')" text color="black" class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px;">
+      <v-row
+        style="
+          display: flex;
+          align-items: center;
+          margin-top: 150px !important;
+          justify-content: space-between;
+        "
+      >
+        <v-btn
+          @click="goToPage('about')"
+          text
+          color="black"
+          class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px;"
+        >
           키워드
         </v-btn>
-        <v-btn @click="goToPage('home')" text color="black" class="move-left"
-          style="text-decoration: underline; font-size: 20px; margin-right: 20px; margin-left: -40px;">
+        <v-btn
+          @click="goToPage('home')"
+          text
+          color="black"
+          class="move-left"
+          style="
+            text-decoration: underline;
+            font-size: 20px;
+            margin-right: 20px;
+            margin-left: -40px;
+          "
+        >
           메인
         </v-btn>
-        <v-btn @click="goToPage('cody')" text color="black" class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px;">
+        <v-btn
+          @click="goToPage('cody')"
+          text
+          color="black"
+          class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px;"
+        >
           코디
         </v-btn>
       </v-row>
@@ -174,30 +205,14 @@ export default {
   },
 
   methods: {
-    // getData() {
-    //   try {
-    //     const response = axios.post('http://localhost:3000/api/keyword');
-    //     // this.fetchSimilarImages(response.data);
-    //     console.log(response.data);
-    //     let image = this.extractImages(response.data);
-    //     console.log('imageurl: ' + image);
-    //     // this.fetchSimilarImages(image);
-    //   } catch (error) {
-    //     // console.error('getData(): 아직 받은 데이터가 없습니다.');
-    //     console.log(error);
-    //   }
-    // },
-
-    // extractImages(data) {
-    //   return data.map(item => item.image);
-    // },
     goToPage(pageName) {
       try {
-        // Vue Router를 이용하여 주어진 페이지로 이동
-        this.$router.push({
-          name: pageName,
-          params: { nickname: this.nickname },
-        });
+        if (this.$route.name !== pageName) { // 현재 경로와 이동하려는 경로가 다를 때만 이동
+          this.$router.push({
+            name: pageName,
+            params: { nickname: this.nickname },
+          });
+        }
       } catch (error) {
         console.error(`Error navigating to /${pageName}:`, error);
       }
