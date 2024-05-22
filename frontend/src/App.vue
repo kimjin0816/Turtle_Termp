@@ -7,7 +7,7 @@
           justify-content: flex-end;
           align-items: center;
           margin-top: -10px;">
-          
+
         <!-- 새로운 메뉴 버튼 -->
         <div style="margin-right: -70px;">
           <v-btn icon @click="drawer = !drawer" class="custom-btn">
@@ -15,40 +15,20 @@
             <span class="hidden-sm-and-up">메뉴</span>
           </v-btn>
         </div>
-        <div
-          style="margin-left: 50px; display: inline-block; margin-right: -100px;"
-        >
-          <span
-            style="color: black; font-size: 36px; position: relative; left: -50px;"
-            >C&C</span
-          >
+        <div style="margin-left: 50px; display: inline-block; margin-right: -100px;">
+          <span style="color: black; font-size: 36px; position: relative; left: -50px;">C&C</span>
         </div>
 
-        <div
-          style="margin-left: 100px; display: inline-block ; justify-content: center"
-        >
-          <span
-            style="color: black; font-size: 48px; position: relative; left: 380px;"
-            >Clothes By Connect</span
-          >
+        <div style="margin-left: 100px; display: inline-block ; justify-content: center">
+          <span style="color: black; font-size: 48px; position: relative; left: 380px;">Clothes By Connect</span>
         </div>
 
-        <v-navigation-drawer
-          v-model="drawer"
-          absolute
-          bottom
-          temporary
-          style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;"
-        >
+        <v-navigation-drawer v-model="drawer" absolute bottom temporary
+          style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;">
           <v-list nav dense>
             <v-list-item-group v-model="group" active-class="light-grey">
-              <v-btn
-                @click="handleAuthAction"
-                text
-                color="white"
-                class="ml-1"
-                style="font-size: 24px; margin-bottom: 40px;"
-              >
+              <v-btn @click="handleAuthAction" text color="white" class="ml-1"
+                style="font-size: 24px; margin-bottom: 40px;">
                 {{ isAuthenticated ? nickname : "로그인" }}
               </v-btn>
 
@@ -74,44 +54,26 @@
       </v-row>
 
       <!-- 메뉴 버튼 -->
-      <v-row
-        style="
+      <v-row style="
           display: flex;
           align-items: center;
           margin-top: 150px !important;
           justify-content: space-between;
-        "
-      >
-        <v-btn
-          @click="goToPage('about')"
-          text
-          color="black"
-          class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px;"
-        >
+        ">
+        <v-btn @click="goToPage('about')" text color="black" class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px;">
           키워드
         </v-btn>
-        <v-btn
-          @click="goToPage('home')"
-          text
-          color="black"
-          class="move-left"
-          style="
+        <v-btn @click="goToPage('home')" text color="black" class="move-left" style="
             text-decoration: underline;
             font-size: 20px;
             margin-right: 20px;
             margin-left: -40px;
-          "
-        >
+          ">
           메인
         </v-btn>
-        <v-btn
-          @click="goToPage('cody')"
-          text
-          color="black"
-          class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px;"
-        >
+        <v-btn @click="goToPage('cody')" text color="black" class="ml-1 move-left"
+          style="text-decoration: underline; font-size: 20px;">
           코디
         </v-btn>
       </v-row>
@@ -142,26 +104,13 @@
         </v-menu>
 
         <!-- 로그인 버튼 -->
-        <v-btn
-          v-if="!isAuthenticated"
-          @click="handleAuthAction"
-          text
-          color="black"
-          class="ml-1"
-          style="font-size: 24px;"
-        >
+        <v-btn v-if="!isAuthenticated" @click="handleAuthAction" text color="black" class="ml-1"
+          style="font-size: 24px;">
           로그인
         </v-btn>
 
         <!-- 로그아웃 버튼 -->
-        <v-btn
-          v-if="isAuthenticated"
-          @click="handleLogout"
-          text
-          color="black"
-          class="ml-1"
-          style="font-size: 24px;"
-        >
+        <v-btn v-if="isAuthenticated" @click="handleLogout" text color="black" class="ml-1" style="font-size: 24px;">
           로그아웃
         </v-btn>
       </v-row>
@@ -174,8 +123,7 @@
 
     <!-- 푸터 -->
     <v-footer app color="grey lighten-1" dark>
-      <span
-        style="
+      <span style="
           display: block;
           margin: 0 auto;
           text-align: center;
@@ -183,8 +131,7 @@
           color: black;
           padding: 10px;
           font-size: 28px;
-        "
-      >
+        ">
         2024 목원대학교 졸업작품 (Turtle)
       </span>
     </v-footer>
