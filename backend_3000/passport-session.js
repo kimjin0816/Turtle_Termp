@@ -77,7 +77,7 @@ module.exports = function (app) {
     }
   });
 
-  app.post("/login", ensureNotAuthenticated, (req, res, next) => {
+  app.post("/login", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) {
         return next(err);
