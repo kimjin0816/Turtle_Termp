@@ -1,39 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
+function ensureNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    // 이미 로그인된 경우, 새로운 로그인 요청을 거부(로그인 중복 검사)
+    return res.status(403).json({ message: "Already authenticated." });
+  }
+  next();
+}
+
 const UserController = require("./UserController");
 const clothesController = require("./clothesController");
 const naverAPI = require("./naverAPI");
 
-function ensureAuthenticated(req, res, next) {
-  if (req.session.cookie) {
-    next();
-  } else {
-    res.status(401).send("Unauthorized");
-  }
-}
-
-router.get("/sessioncheck", ensureAuthenticated, (req, res) => {
-  res.status(200).json(req.session.cookie.userId);
-  console.log(req.session);
-});
-
-router.post("/auth/check", ensureAuthenticated, (req, res) => {
-  res.status(200).json(req.session.cookie.userId);
-  console.log(req.session);
-});
-
 router.post("/signup", UserController.signUp);
-// router.post("/login", UserController.login);
-// router.post("/logout", UserController.logout);
-
 router.post("/findCredentials", UserController.findCredentials);
-router.put("/updateProfile", ensureAuthenticated, UserController.updateProfile);
-router.delete(
-  "/deleteProfile",
-  ensureAuthenticated,
-  UserController.deleteProfile
-);
+router.put("/updateProfile", UserController.updateProfile);
+router.delete("/deleteProfile", UserController.deleteProfile);
 
 router.post("/api/search-images/:keyword", naverAPI.callNaverShoppingAPI);
 router.get("/api/keyword", naverAPI.postdata);

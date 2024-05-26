@@ -1,60 +1,7 @@
 const { queryMembers } = require("./PostgreDB");
 
 const UserController = {
-  user: {
-    id: "",
-    nickname: "",
-  },
-  /* 로그인
-  async login(req, res) {
-    const { MEM_ID, MEM_PASSWORD } = req.body;
 
-    try {
-      const user = await queryMembers(
-        'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1 AND "MEM_PASSWORD" = $2',
-        [MEM_ID, MEM_PASSWORD]
-      );
-
-      if (user.rows.length > 0) {
-        res.cookie("loginAuth", true);
-        req.session.user = user.rows[0];
-        console.log("세션:", req.session);
-        return res.status(200).json({
-          message: "로그인 성공",
-          nickname: user.rows[0].MEM_NICKNAME,
-        });
-      } else {
-        return res
-          .status(401)
-          .json({ message: "유효하지 않은 사용자 또는 비밀번호" });
-      }
-    } catch (error) {
-      console.error("로그인 오류:", error);
-      return res.status(500).json({ message: "서버 오류" });
-    }
-  }, */
-
-  /* 로그아웃
-  async logout(req, res) {
-    try {
-      // 세션 지우기
-      req.session.destroy((err) => {
-        res.clearCookie("connect.sid");
-
-        if (err) {
-          console.error("세션 삭제 오류:", err);
-          res.status(500).json({ message: "로그아웃 실패" });
-        } else {
-          console.log("세션: " + req.session);
-          console.log("세션 삭제 성공");
-          res.status(200).json({ message: "로그아웃 성공" });
-        }
-      });
-    } catch (error) {
-      console.error("로그아웃 오류:", error);
-      res.status(500).json({ message: "서버 오류" });
-    }
-  }, */
 
   // MEMBERSHIP 테이블 생성
   createTable(req, res) {
