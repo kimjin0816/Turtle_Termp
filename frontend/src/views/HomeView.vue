@@ -23,6 +23,13 @@
         </v-col>
       </v-row>
 
+      <v-row>
+        <v-col>
+          <v-btn dark @click="sessioncheck">세션 확인</v-btn>
+        </v-col>
+      </v-row>
+
+
       <!-- 이미지 결과 -->
       <v-container v-if="showImageResults" style="margin-top: -20px">
         <div class="my-3" style="text-align: center">
@@ -74,6 +81,14 @@ export default {
     }
   },
   methods: {
+    async sessioncheck() {
+      try {
+        const response = await axios.get('http://localhost:3000/sessioncheck');
+        console.log(response.data);
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async submitForm() {
       this.showImageResults = false;
       let formData = new FormData();

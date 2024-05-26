@@ -12,7 +12,7 @@
         <div style="margin-right: -70px;">
           <v-btn icon @click="drawer = !drawer" class="custom-btn">
             <v-icon color="black">mdi-menu</v-icon>
-            <span class="hidden-sm-and-up">메뉴</span>
+            <!-- <span class="hidden-sm-and-up">메뉴</span> -->
           </v-btn>
         </div>
         <div style="margin-left: 50px; display: inline-block; margin-right: -100px;">
@@ -26,10 +26,10 @@
         <v-navigation-drawer v-model="drawer" absolute bottom temporary
           style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;">
           <v-list nav dense>
-            <v-list-item-group v-model="group" active-class="light-grey">
-              <v-btn @click="handleAuthAction" text color="white" class="ml-1"
-                style="font-size: 24px; margin-bottom: 40px;">
-                {{ isAuthenticated ? nickname : "로그인" }}
+            <v-list-item-group active-class="light-grey">
+              <v-btn v-if="!authenticated" @click="goToPage('login')" text color="white" class="ml-1"
+                style="font-size: 24px; margin-bottom: 40px;"> 로그인
+                <!-- {{ isAuthenticated ? nickname : "로그인" }} -->
               </v-btn>
 
               <v-list-item @click="goToPage('home')" style="margin-top: 10px;">
@@ -44,7 +44,7 @@
                 <v-list-item-title>코디</v-list-item-title>
               </v-list-item>
             </v-list-item-group>
-            <v-list nav dense v-if="isAuthenticated" style="margin-top: 400px;">
+            <v-list nav dense v-if="authenticated" style="margin-top: 400px;">
               <v-btn @click="handleLogout" color="light-grey" dark style="width: 100px;">
                 <v-list-item-title style="color: white; font-size: 24px;">로그아웃</v-list-item-title>
               </v-btn>
@@ -53,7 +53,7 @@
         </v-navigation-drawer>
       </v-row>
 
-      <!-- 메뉴 버튼 -->
+      <!-- 상단 바에 있는 목록 -->
       <v-row style="
           display: flex;
           align-items: center;
@@ -82,15 +82,15 @@
       <v-row style="display: flex; justify-content: flex-start; margin-top: -10px">
         <v-spacer></v-spacer> <!-- 중요: 여백을 추가하여 오른쪽으로 이동시킵니다. -->
         <!-- 사용자 이름 영역에 v-menu 추가 -->
-        <v-menu v-if="isAuthenticated" offset-y open-on-hover>
+        <v-menu v-if="authenticated" offset-y open-on-hover>
           <template v-slot:activator="{ on }">
             <v-btn text color="black" class="ml-1" v-on="on" style="font-size: 24px;">
               {{ nickname }}
             </v-btn>
           </template>
 
+          <!-- 여기에 소메뉴 항목들을 추가 -->
           <v-list style="max-width: 200px">
-            <!-- 여기에 소메뉴 항목들을 추가 -->
             <v-list-item @click="handleSubMenuClick('회원 정보')" class="menu-item">
               <v-list-item-title class="menu-title">회원 정보</v-list-item-title>
             </v-list-item>
@@ -104,13 +104,13 @@
         </v-menu>
 
         <!-- 로그인 버튼 -->
-        <v-btn v-if="!isAuthenticated" @click="handleAuthAction" text color="black" class="ml-1"
+        <v-btn v-if="!authenticated" @click="goToPage('login')" text color="black" class="ml-1"
           style="font-size: 24px;">
           로그인
         </v-btn>
 
         <!-- 로그아웃 버튼 -->
-        <v-btn v-if="isAuthenticated" @click="handleLogout" text color="black" class="ml-1" style="font-size: 24px;">
+        <v-btn v-if="authenticated" @click="handleLogout" text color="black" class="ml-1" style="font-size: 24px;">
           로그아웃
         </v-btn>
       </v-row>
@@ -118,7 +118,8 @@
 
     <!-- 라우터 뷰 -->
     <v-main>
-      <router-view :nickname="nickname" @login-success="handleLoginSuccess" />
+      <!-- <router-view :nickname="nickname" @login-success="handleLoginSuccess" /> -->
+      <router-view />
     </v-main>
 
     <!-- 푸터 -->
@@ -139,16 +140,22 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   name: 'App',
   data() {
     return {
-      nickname: '', // 닉네임을 저장할 변수
-      isAuthenticated: false, // 인증 상태를 저장할 변수
-      drawer: false, // 네비게이션 드로어 표시 여부
+      drawer: false,
+      nickname: '',
+      // authenticated: sessionStorage.getItem('authenticated') === 'true' || false,
+      authenticated: false,
     };
+  },
+
+  created() {
+    this.checkAuthenticationStatus();
+    // this.nickname = localStorage.getItem('nickName');
+    // this.authenticated = sessionStorage.getItem('authenticated');
   },
 
   methods: {
@@ -159,28 +166,51 @@ export default {
             name: pageName,
             params: { nickname: this.nickname },
           });
+          this.$router.go();
+        } else {
+          this.$router.go();
         }
       } catch (error) {
         console.error(`Error navigating to /${pageName}:`, error);
       }
     },
-    async handleAuthAction() {
-      if (this.isAuthenticated) {
-        this.handleLogout();
-      } else {
-        if (this.$route.name !== 'login') { // 현재 경로의 이름과 로그인 페이지 이름이 같지 않을 때만 이동을 수행
-          this.$router.push({
-            name: 'login',
-            params: { nickname: this.nickname },
-          });
+    async checkAuthenticationStatus() {
+      try {
+        const response = await this.$axios.get('http://localhost:3000/check-auth', {
+          withCredentials: true,
+        });
+
+        if (response.data.authenticated) {
+          // 서버에서 사용자가 인증되었다고 알려주면 UI를 업데이트합니다.
+          this.authenticated = true;
+          this.nickname = response.data.nickName;
+          // 사용자의 이름을 서버에서 가져와서 adminName을 설정
+
+        } else {
+          // 인증되지 않았다면 UI를 업데이트합니다.
+          this.authenticated = false;
+          this.nickname = "";
         }
+      } catch (error) {
+        console.error('인증 상태 확인 실패:', error);
       }
     },
-    handleLoginSuccess(nickname) {
-      this.nickname = nickname;
-      this.isAuthenticated = true;
-      this.$router.push({ name: 'home' }); // 로그인 성공 시 Home 페이지로 이동
+
+    async handleLogout() {
+      try {
+        await this.$axios.post('http://localhost:3000/logout', {}, {
+          withCredentials: true,
+        });
+        console.log('로그아웃 성공');
+        alert('로그아웃 성공');
+        // localStorage.setItem('nickName', '');
+        // sessionStorage.setItem('authenticated', 'false');
+        this.goToPage("home");
+      } catch (error) {
+        console.error('로그아웃 실패:', error);
+      }
     },
+    // 사용자 정보 페이지 이동 목록
     handleSubMenuClick(item) {
       if (item === '회원 정보') {
         this.$router.push({ name: 'Memin' });
@@ -188,66 +218,6 @@ export default {
         alert(`선택한 소메뉴: ${item}`);
       }
     },
-    async handleLogout() {
-      // 로그아웃 처리
-      try {
-        await fetch('http://localhost:3000/logout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        // 로그아웃 성공 메시지
-        alert('로그아웃 성공');
-        this.nickname = ''; // 닉네임 지우기
-        this.isAuthenticated = false;
-        if (this.$route.name !== 'home') { // 현재 경로의 이름과 홈 페이지 이름이 같지 않을 때만 이동을 수행
-          this.$router.push('/'); // 로그아웃 후 홈 화면으로 이동
-        }
-      } catch (error) {
-        console.error('로그아웃 오류:', error);
-        alert('서버 오류');
-      }
-    },
-    async checkAuthStatus() {
-      try {
-        const response = await fetch("http://localhost:3000/auth/check", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const { isAuthenticated, nickname } = await response.json();
-        this.isAuthenticated = isAuthenticated;
-        this.nickname = nickname;
-      } catch (error) {
-        console.error("로그아웃 오류:", error);
-        alert("서버 오류");
-      }
-    }
-  },
-  mounted() {
-    // 사용자 인증 상태 확인
-    /* async checkAuthStatus() {
-      try {
-        const response = await fetch("http://localhost:3000/auth/check", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const { isAuthenticated, nickname } = await response.json();
-        this.isAuthenticated = isAuthenticated;
-        this.nickname = nickname;
-      } catch (error) {
-        console.error("사용자 인증 상태 확인 오류:", error);
-      }
-    }, */
-    // getData()를 3초마다 출력해줘
-    // setInterval(() => { this.getData(); }, 3000);
   },
 };
 </script>
