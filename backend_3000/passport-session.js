@@ -80,8 +80,15 @@ module.exports = {
       }
     });
 
-    app.post("/login", (req, res, next) => {
-      passport.authenticate("local", (err, user, info) => {
+  app.post("/login", (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.status(401).json({ message: info.message });
+      }
+      req.login(user, (err) => {
         if (err) {
           return next(err);
         }
