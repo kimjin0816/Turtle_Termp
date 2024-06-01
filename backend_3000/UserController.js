@@ -1,8 +1,6 @@
-const { queryMembers } = require("./PostgreDB");
+const { queryMembers } = require("./postgreDB");
 
 const UserController = {
-
-
   // MEMBERSHIP 테이블 생성
   createTable(req, res) {
     queryMembers(

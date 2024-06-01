@@ -23,13 +23,6 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col>
-          <v-btn dark @click="sessioncheck">세션 확인</v-btn>
-        </v-col>
-      </v-row>
-
-
       <!-- 이미지 결과 -->
       <v-container v-if="showImageResults" style="margin-top: -20px">
         <div class="my-3" style="text-align: center">
@@ -72,7 +65,8 @@ export default {
       attachedImages: [],
       similarImages: [],
       showImageResults: false,
-      keywords: "",
+      keywords: [],
+      keywordArray: [],
     };
   },
   filters: {
@@ -81,30 +75,23 @@ export default {
     }
   },
   methods: {
-    async sessioncheck() {
-      try {
-        const response = await axios.get('http://localhost:3000/sessioncheck');
-        console.log(response.data);
-      } catch (error) {
-        console.log(error)
-      }
-    },
     async submitForm() {
       this.showImageResults = false;
       let formData = new FormData();
-      formData.append('image', this.selectedImage);
-
-      await axios.post('http://localhost:5000/', formData)
-        .then(response => {
-          console.log('Image uploaded successfully');
-          this.showImageResults = true;
-          // this.uploadImage();
-          // this.getData();
-          // this.fetchSimilarImages(this.getData());
-        })
-        .catch(error => {
-          console.error('submit(): ', error);
-        });
+      if (!this.selectedImage) {
+        return alert('이미지를 선택해주세요.')
+      } else {
+        formData.append('image', this.selectedImage);
+        formData.append('userId', localStorage.getItem('userId'));
+        await axios.post('http://localhost:5000/', formData)
+          .then(response => {
+            console.log('Image uploaded successfully');
+            this.showImageResults = true;
+          })
+          .catch(error => {
+            console.error('submit(): ', error);
+          });
+      }
     },
 
     uploadImage() {
@@ -122,10 +109,8 @@ export default {
     async getData() {
       try {
         const response = await axios.get('http://localhost:3000/api/keyword');
-        console.log(response.data);
-        console.log(response.data.extractedData.length);
         this.keywords = response.data.keywords;
-        // getData array from the response data
+        this.keywordArray = response.data.keywordArray;
         this.similarImages = response.data.extractedData.map(item => {
           return {
             title: item.title,
