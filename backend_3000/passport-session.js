@@ -92,29 +92,18 @@ module.exports = {
         if (err) {
           return next(err);
         }
-        if (!user) {
-          return res.status(401).json({ message: info.message });
-        }
-        req.login(user, (err) => {
-          if (err) {
-            return next(err);
-          }
-          this.userId = JSON.stringify(req.session.passport.user);
-          const nickName = req.user.MEM_NICKNAME; // 사용자 이름
-          // console.log(this.userId + ":ID");
-          // console.log("Session after login:", req.session.passport.user);
-          // console.log("req.session : " + req.session);
-          // console.log("nickName:", nickName);
+        const userId = JSON.stringify(req.session.passport.user);
+        const nickName = req.user.MEM_NICKNAME; // 사용자 이름
 
-          return res.json({
-            message: "Login Successful",
-            userNick: nickName ,
-            userId : this.userId
-          });
+        return res.json({
+          message: "Login Successful",
+          userNick: nickName,
+          userId: userId,
         });
-      })(req, res, next);
-    });
-
+      });
+    })(req, res, next);
+  });
+    
     app.post("/logout", (req, res) => {
       req.logout((err) => {
         if (err) {
