@@ -1,7 +1,7 @@
-# 프로젝트명
+# Project
  Clothes by Connect
  
-## 팀명
+## Team
  Turtle 
   * 거북이처럼 느리지만 단단하고 오점 없이 끝따지 목표지점을 향해 달린다
 
@@ -24,7 +24,7 @@
 ![](https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)
 ![](	https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
 
-## 프로잭트 소개
+## Introduce
  사진 속 의류를 AI의 분석을 통해 키워드 가지고 유사한 의류를 제공해주는 웹 사이트
 
 ## 기능
