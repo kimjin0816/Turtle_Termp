@@ -21,15 +21,26 @@ class index:
         
         # Node.js 서버의 URL
         url = 'http://localhost:3000/api/search-images'
-
-        # POST 요청을 보냅니다.
-        response = requests.post(url, json={'keywordArray': keywordArray, 'keywords' : keyword}) 
+        response = requests.post(url, json={'keywordArray': keywordArray, 'keywords' : keyword})
+        
+        image_hash = ch.calculate_image_hash(imageName_global)
+        check_image_duplication = ch.check_image_hash(image_hash)
+        
+        print('user_id_global : ' + user_id_global)
+        print('imageName_global : ' + imageName_global)
+        print('image_URL_global : ' + image_URL_global)
 
         # 응답을 확인합니다.
-        if response.status_code == 200:
-            print("userId: " + user_id_global)
-            print("upload_file : " + imageName_global)
-            ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, featureArray)
+        if response.status_code == 200 and check_image_duplication[0][0] == 0:
+            if user_id_global == 'null':
+                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, featureArray)
+            elif user_id_global != 'null':
+                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, featureArray)
+                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, featureArray)
+            return 'Data sent to Node.js server successfully', 200
+        elif response.status_code == 200 and check_image_duplication[0][0] != 0:
+            if user_id_global != 'null':
+                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, featureArray)
             return 'Data sent to Node.js server successfully', 200
         else:
             return 'Failed to send data to Node.js server', 500
@@ -43,13 +54,9 @@ class index:
         user_id_global = user_Id.replace('"', '')
         imageName_global = uploaded_file.filename
         image_URL_global = img_URL
-        # 파일을 저장할 경로를 지정합니다.
+
         self.save_path = f'C:/users/user/Desktop/top_clothes/server/{uploaded_file.filename}'
-        # 파일을 저장합니다.
         uploaded_file.save(self.save_path)
-        # response = requests.post("http://localhost:3000/api/save_path", files={'image': open(save_path, 'rb')})
-        print("userId: " + user_id_global)
-        print("upload_file : " + imageName_global)
         
         """ 여기 사이에 키워드를 받아 오는 코드 작성 """
 

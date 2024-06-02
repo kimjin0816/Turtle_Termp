@@ -72,7 +72,7 @@ module.exports = {
           });
         } else {
           // 사용자가 로그인하지 않은 상태라면
-          res.json({ authenticated: false });
+          res.json({ authenticated: false  });
         }
       } catch (error) {
         console.error(error);
@@ -80,30 +80,30 @@ module.exports = {
       }
     });
 
-    app.post("/login", (req, res, next) => {
-      passport.authenticate("local", (err, user, info) => {
+  app.post("/login", (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.status(401).json({ message: info.message });
+      }
+      req.login(user, (err) => {
         if (err) {
           return next(err);
         }
-        if (!user) {
-          return res.status(401).json({ message: info.message });
-        }
-        req.login(user, (err) => {
-          if (err) {
-            return next(err);
-          }
-          const userId = JSON.stringify(req.session.passport.user);
-          const nickName = req.user.MEM_NICKNAME; // 사용자 이름
+        const userId = JSON.stringify(req.session.passport.user);
+        const nickName = req.user.MEM_NICKNAME; // 사용자 이름
 
-          return res.json({
-            message: "Login Successful",
-            userNick: nickName,
-            userId: userId,
-          });
+        return res.json({
+          message: "Login Successful",
+          userNick: nickName,
+          userId: userId,
         });
-      })(req, res, next);
-    });
-
+      });
+    })(req, res, next);
+  });
+    
     app.post("/logout", (req, res) => {
       req.logout((err) => {
         if (err) {
