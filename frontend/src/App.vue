@@ -147,6 +147,7 @@ export default {
     return {
       drawer: false,
       nickname: '',
+      userId: '',
       // authenticated: sessionStorage.getItem('authenticated') === 'true' || false,
       authenticated: false,
     };
@@ -166,9 +167,9 @@ export default {
             name: pageName,
             params: { nickname: this.nickname },
           });
-          this.$router.go();
-        } else {
-          this.$router.go();
+          // if (this.$route.name !== 'about') {
+          //   this.$router.go();
+          // }
         }
       } catch (error) {
         console.error(`Error navigating to /${pageName}:`, error);
@@ -179,15 +180,17 @@ export default {
         const response = await this.$axios.get('http://localhost:3000/check-auth', {
           withCredentials: true,
         });
-
+        console.log("checkAuthenticationStatus response: ", response.data);
         if (response.data.authenticated) {
           // 서버에서 사용자가 인증되었다고 알려주면 UI를 업데이트합니다.
+          this.userId = localStorage.setItem('userId', response.data.userId);
           this.authenticated = true;
           this.nickname = response.data.nickName;
           // 사용자의 이름을 서버에서 가져와서 adminName을 설정
-
         } else {
           // 인증되지 않았다면 UI를 업데이트합니다.
+          localStorage.removeItem('userId');
+          this.userId = null;
           this.authenticated = false;
           this.nickname = "";
         }
@@ -205,7 +208,8 @@ export default {
         alert('로그아웃 성공');
         // localStorage.setItem('nickName', '');
         // sessionStorage.setItem('authenticated', 'false');
-        this.goToPage("home");
+        this.goToPage('login');
+        this.$router.go();
       } catch (error) {
         console.error('로그아웃 실패:', error);
       }

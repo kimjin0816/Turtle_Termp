@@ -1,17 +1,15 @@
-const { queryMembers } = require("./PostgreDB");
+const { queryMembers } = require("./postgreDB");
 
 const UserController = {
-
-
-  // MEMBERSHIP 테이블 생성
+  // membership 테이블 생성
   createTable(req, res) {
     queryMembers(
-      "CREATE TABLE IF NOT EXISTS MEMBERSHIP (MEM_ID VARCHAR(255) NOT NULL, MEM_PASSWORD VARCHAR(255) NOT NULL, MEM_NAME   VARCHAR(255) NOT NULL, MEM_EMAIL   VARCHAR(255) NOT NULL, MEM_TEL       VARCHAR(255) NOT NULL, MEM_NICKNAME  VARCHAR(255) NOT NULL, MEM_ADDRESS   VARCHAR(255) NOT NULL, CONSTRAINT MEM PRIMARY KEY (MEM_ID))",
+      "CREATE TABLE IF NOT EXISTS membership (mem_id VARCHAR(255) NOT NULL, mem_password VARCHAR(255) NOT NULL, mem_name   VARCHAR(255) NOT NULL, mem_email   VARCHAR(255) NOT NULL, mem_tel       VARCHAR(255) NOT NULL, mem_nickname  VARCHAR(255) NOT NULL, mem_address   VARCHAR(255) NOT NULL, CONSTRAINT MEM PRIMARY KEY (mem_id))",
       (error, results) => {
         if (error) {
           throw error;
         }
-        console.log("MEMBERSHIP 테이블 생성 완료");
+        console.log("membership 테이블 생성 완료");
       }
     );
   },
@@ -19,19 +17,19 @@ const UserController = {
   // 회원가입
   async signUp(req, res) {
     const {
-      MEM_ID,
-      MEM_PASSWORD,
-      MEM_NAME,
-      MEM_EMAIL,
-      MEM_TEL,
-      MEM_NICKNAME,
-      MEM_ADDRESS,
+      mem_id,
+      mem_password,
+      mem_name,
+      mem_email,
+      mem_tel,
+      mem_nickname,
+      mem_address,
     } = req.body;
 
     try {
       const existingUser = await queryMembers(
-        'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1',
-        [MEM_ID]
+        'SELECT * FROM membership WHERE mem_id = $1',
+        [mem_id]
       );
 
       if (existingUser.rows.length > 0) {
@@ -39,15 +37,15 @@ const UserController = {
       }
 
       await queryMembers(
-        'INSERT INTO "MEMBERSHIP" ("MEM_ID", "MEM_PASSWORD", "MEM_NAME", "MEM_EMAIL", "MEM_TEL", "MEM_NICKNAME", "MEM_ADDRESS") VALUES ($1, $2, $3, $4, $5, $6, $7)',
+        'INSERT INTO membership (mem_id, mem_password, mem_name, mem_email, mem_tel, mem_nickname, mem_address) VALUES ($1, $2, $3, $4, $5, $6, $7)',
         [
-          MEM_ID,
-          MEM_PASSWORD,
-          MEM_NAME,
-          MEM_EMAIL,
-          MEM_TEL,
-          MEM_NICKNAME,
-          MEM_ADDRESS,
+          mem_id,
+          mem_password,
+          mem_name,
+          mem_email,
+          mem_tel,
+          mem_nickname,
+          mem_address,
         ]
       );
 
@@ -60,20 +58,20 @@ const UserController = {
 
   // 아이디 및 비밀번호 찾기
   async findCredentials(req, res) {
-    const { MEM_NAME, MEM_EMAIL } = req.body;
+    const { mem_name, mem_email } = req.body;
 
     try {
       const user = await queryMembers(
-        'SELECT "MEM_ID", "MEM_PASSWORD" FROM "MEMBERSHIP" WHERE "MEM_NAME" = $1 AND "MEM_EMAIL" = $2',
-        [MEM_NAME, MEM_EMAIL]
+        'SELECT mem_id, mem_password FROM membership WHERE mem_name = $1 AND mem_email = $2',
+        [mem_name, mem_email]
       );
 
       if (user.rows.length > 0) {
-        const { MEM_ID, MEM_PASSWORD } = user.rows[0];
+        const { mem_id, mem_password } = user.rows[0];
         res.status(200).json({
           message: "아이디 및 비밀번호 찾기 성공",
-          MEM_ID,
-          MEM_PASSWORD,
+          mem_id,
+          mem_password,
         });
       } else {
         res
@@ -89,19 +87,19 @@ const UserController = {
   // 회원 정보 수정
   async updateProfile(req, res) {
     const {
-      MEM_ID,
-      MEM_PASSWORD,
-      MEM_NAME,
-      MEM_EMAIL,
-      MEM_TEL,
-      MEM_NICKNAME,
-      MEM_ADDRESS,
+      mem_id,
+      mem_password,
+      mem_name,
+      mem_email,
+      mem_tel,
+      mem_nickname,
+      mem_address,
     } = req.body;
 
     try {
       const existingUser = await queryMembers(
-        'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1',
-        [MEM_ID]
+        'SELECT * FROM membership WHERE mem_id = $1',
+        [mem_id]
       );
 
       if (existingUser.rows.length === 0) {
@@ -109,15 +107,15 @@ const UserController = {
       }
 
       await queryMembers(
-        'UPDATE "MEMBERSHIP" SET "MEM_PASSWORD" = $2, "MEM_NAME" = $3, "MEM_EMAIL" = $4, "MEM_TEL" = $5, "MEM_NICKNAME" = $6, "MEM_ADDRESS" = $7 WHERE "MEM_ID" = $1',
+        'UPDATE membership SET mem_password = $2, mem_name = $3, mem_email = $4, mem_tel = $5, mem_nickname = $6, mem_address = $7 WHERE mem_id = $1',
         [
-          MEM_ID,
-          MEM_PASSWORD,
-          MEM_NAME,
-          MEM_EMAIL,
-          MEM_TEL,
-          MEM_NICKNAME,
-          MEM_ADDRESS,
+          mem_id,
+          mem_password,
+          mem_name,
+          mem_email,
+          mem_tel,
+          mem_nickname,
+          mem_address,
         ]
       );
 
@@ -130,12 +128,12 @@ const UserController = {
 
   // 회원 삭제 (탈퇴)
   async deleteProfile(req, res) {
-    const { MEM_ID, MEM_PASSWORD } = req.body;
+    const { mem_id, mem_password } = req.body;
 
     try {
       const existingUser = await queryMembers(
-        'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1 AND "MEM_PASSWORD" = $2',
-        [MEM_ID, MEM_PASSWORD]
+        'SELECT * FROM membership WHERE mem_id = $1 AND mem_password = $2',
+        [mem_id, mem_password]
       );
 
       if (existingUser.rows.length === 0) {
@@ -144,8 +142,8 @@ const UserController = {
         });
       }
 
-      await queryMembers('DELETE FROM "MEMBERSHIP" WHERE "MEM_ID" = $1', [
-        MEM_ID,
+      await queryMembers('DELETE FROM membership WHERE mem_id = $1', [
+        mem_id,
       ]);
 
       // 세션 지우기

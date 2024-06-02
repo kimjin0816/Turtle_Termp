@@ -10,7 +10,7 @@
         <v-text-field label="로고" v-model="logo"></v-text-field>
       </v-card-text>
       <v-card-actions class="justify-center">
-        <v-btn @click="saveChanges">적용</v-btn>
+        <v-btn @click="research">적용</v-btn>
         <v-btn @click="cancelEdit">취소</v-btn>
       </v-card-actions>
     </v-card>
@@ -28,8 +28,15 @@ export default {
       logo: '',
     };
   },
+  watch: {
+    dialog(newVal) {
+      if (!newVal) {
+        this.$router.push("/");
+      }
+    },
+  },
   methods: {
-    saveChanges() {
+    research() {
       console.log('종류:', this.kind);
       console.log('색깔:', this.color);
       console.log('브랜드:', this.brand);
@@ -38,17 +45,6 @@ export default {
     },
     cancelEdit() {
       this.dialog = false;
-    },
-    searchImages() {
-      this.$router.push({
-        name: 'home', // 메인 뷰의 이름
-        params: {
-          kind: this.kind,
-          color: this.color,
-          brand: this.brand,
-          logo: this.logo,
-        },
-      });
     },
   },
 };
