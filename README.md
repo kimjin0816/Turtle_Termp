@@ -2,7 +2,7 @@
  Clothes by Connect
  
 ## 팀명
- ###Turtle 
+ Turtle 
   * 거북이처럼 느리지만 단단하고 오점 없이 끝따지 목표지점을 향해 달린다
   
 ## 프로잭트 소개
