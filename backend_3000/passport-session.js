@@ -72,7 +72,7 @@ module.exports = {
           });
         } else {
           // 사용자가 로그인하지 않은 상태라면
-          res.json({ authenticated: false });
+          res.json({ authenticated: false  });
         }
       } catch (error) {
         console.error(error);

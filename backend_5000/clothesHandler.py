@@ -1,4 +1,5 @@
 import psycopg2
+import hashlib
 
 # from selenium import webdriver
 # from selenium.webdriver.common.by import By
@@ -38,40 +39,57 @@ class clothesHandler:
         # self.url = 'http://localhost:8080/'
         # driver.get(self.url)
 #-----------------------------------------------------------------------------------------------------------------------------------------------
+#region => math functions    
     # binary => decimal
     def decimal(self, binary): 
         code = int(binary, 2)
         return code
+    # image hash code
+    def calculate_image_hash(self, image_name): 
+        path = f'C:/Users/user/Desktop/top_clothes/server/{image_name}'
+        with open(path, 'rb') as f:
+            bytes = f.read()
+            readle_hash = hashlib.sha256(bytes).hexdigest()
+        return readle_hash
+    def check_image_hash(self,image_hash):
+        self.connectClothes()
+        self.writeClothes(f"SELECT COUNT(hash_code) FROM clothes WHERE hash_code = '{image_hash}'")
+        rows = self.c_cur.fetchall()
+        self.closeClothes()
+        return rows
+#endregion
 # -----------------------------------------------------------------------------------------------------------------------------------------------
+#region => clothes image url    
     # clothes image url
-    # def c_img_url(self):
-    #     img_elements = driver.find_elements(By.TAG_NAME, 'img')
-    #     for img_element in img_elements:
-    #         src = img_element.get_attribute('src')
-    #     return src
-    # # background/clothes_top file path copy test folder
-    # def image_path(self, image_filename, type_clothes):
-    #     # clothes 폴더 경로 얻기
-    #     clothes_path = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', type_clothes)
-    #     # 이미지 파일 경로
-    #     image_path = os.path.join(clothes_path, image_filename)
+    def c_img_url(self):
+        img_elements = driver.find_elements(By.TAG_NAME, 'img')
+        for img_element in img_elements:
+            src = img_element.get_attribute('src')
+        return src
+    # background/clothes_top file path copy test folder
+    def image_path(self, image_filename, type_clothes):
+        # clothes 폴더 경로 얻기
+        clothes_path = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', type_clothes)
+        # 이미지 파일 경로
+        image_path = os.path.join(clothes_path, image_filename)
         
-    #     # 이미지를 test 폴더로 복사
-    #     destination_folder = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', 'test')
-    #     shutil.copy(image_path, destination_folder)
+        # 이미지를 test 폴더로 복사
+        destination_folder = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', 'test')
+        shutil.copy(image_path, destination_folder)
         
-    #     # 복사된 이미지 파일의 경로
-    #     copied_image_path = os.path.join(destination_folder, image_filename)
+        # 복사된 이미지 파일의 경로
+        copied_image_path = os.path.join(destination_folder, image_filename)
         
-    #     # 복사된 이미지 열기
-    #     img = Image.open(copied_image_path)
-    #     # 이미지 출력
-    #     img.show()
+        # 복사된 이미지 열기
+        img = Image.open(copied_image_path)
+        # 이미지 출력
+        img.show()
         
-    #     return copied_image_path
+        return copied_image_path
+#endregion
 # -----------------------------------------------------------------------------------------------------------------------------------------------     
-# feature code setting
-#region
+#region => features code
+    # feature code setting
     def t_f_code(self, feature):
         hoodVal = int(feature[0])
         karaVal = int(feature[1])
@@ -105,20 +123,15 @@ class clothesHandler:
     #     self.closeClothes()   
 #endregion
 # -----------------------------------------------------------------------------------------------------------------------------------------------    
-    # clother data insert
+#region => searchLog code    
+    # searchLog data insert
     def searchLog_Insert(self, id, top_bottom, keywordArray, img, feature):
         self.connectClothes()
         f_code = self.t_f_code(feature)
         # image_path = self.c_img_url()        
         self.writeClothes(f"INSERT INTO searchLog(userID, top_bottom, shape, classification, color, img, date, f_code) VALUES ('{id}', '{top_bottom}', '{keywordArray[0]}', '{keywordArray[1]}', '{keywordArray[2]}', '{img}', NOW(), {f_code});")
         self.closeClothes()
-    # def b_c_Insert(self, id, shape, classification, color, feature):
-    #     self.connectClothes()
-    #     f_code = self.b_f_code(feature)
-    #     # image_path = self.c_img_url()        
-    #     self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code, t_url) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
-    #     self.closeClothes()
-# -----------------------------------------------------------------------------------------------------------------------------------------------
+    # searchLog data select
     def searchLog_SelectId(self, id):
         self.connectClothes()
         self.writeClothes(f"SELECT * FROM searchLog WHERE userID = '{id}';")
@@ -126,9 +139,26 @@ class clothesHandler:
         data = [{'userID': row[1], 'top_bottom': row[2], 'shape': row[3], 'classification' : row[4],'color' : row[5], 'img' : row[6], 'date' : row[7], 'f_code' : row[8]} for row in rows]
         self.closeClothes()
         return data
+#endregion
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+    # clothes data insert
+    def clothes_Insert(self, hash_code, top_bottom, keywordArray, img, feature):
+        self.connectClothes()
+        f_code = self.t_f_code(feature)
+        self.writeClothes(f"INSERT INTO clothes(hash_code, top_bottom, shape, classification, color, img, f_code) VALUES ('{hash_code}','{top_bottom}', '{keywordArray[0]}', '{keywordArray[1]}', '{keywordArray[2]}', '{img}', {f_code});")
+        self.closeClothes()
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+
     # def b_c_SelectID(self, id):
     #     self.connectClothes()
     #     self.writeClothes(f"SELECT * FROM clothes_bottom WHERE b_code LIKE '{id}_%';")
     #     rows = self.c_cur.fetchall()
     #     self.closeClothes()
     #     return rows
+
+    # def b_c_Insert(self, id, shape, classification, color, feature):
+    #     self.connectClothes()
+    #     f_code = self.b_f_code(feature)
+    #     # image_path = self.c_img_url()        
+    #     self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code, t_url) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
+    #     self.closeClothes()

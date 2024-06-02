@@ -1,10 +1,11 @@
 CREATE TABLE IF NOT EXISTS clothes(
                 serial SERIAL PRIMARY KEY,
-                code VARCHAR(50) NOT NULL,
+                hash_code VARCHAR(100) NOT NULL,
                 top_bottom VARCHAR(50) NOT NULL,
                 shape VARCHAR(50) NOT NULL,
                 classification VARCHAR(50) NOT NULL,
                 color VARCHAR(50) NOT NULL,
+                img VARCHAR(50) NOT NULL,
                 f_code INT NOT NULL);
 
 CREATE TABLE IF NOT EXISTS searchLog (
