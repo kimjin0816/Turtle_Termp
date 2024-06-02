@@ -1,24 +1,25 @@
 import subprocess
 import os
 import glob
+from pathlib import Path
 
 def detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path):
     # YOLOv5 객체 감지 수행
     detect_command = [
-        'python', detect_script_path, '--source', image_path, '--weights', weights_path,
-        '--img', '768', '--conf', '0.1', '--save-txt', '--save-crop'
+        'python', str(detect_script_path), '--source', str(image_path), '--weights', str(weights_path),
+        '--img', '750', '--conf', '0.1', '--save-txt', '--save-crop'
     ]
     subprocess.run(detect_command, check=True)
     
     # 객체 감지 결과 디렉토리 찾기
-    detect_dir = sorted(glob.glob('runs/detect/*'), key=os.path.getmtime, reverse=True)[0]
-    image_basename = os.path.basename(image_path)
+    detect_dir = sorted(Path(glob.glob('C:\\Users\\user\\Desktop\\Turtle_Termp\\yolov5\\runs\\detect\\*')), key=os.path.getmtime, reverse=True)[0]
+    image_basename = image_path.name
     image_name, image_extension = os.path.splitext(image_basename)
     image_name = image_name  # 확장자 제외
 
-    label_path = os.path.join(detect_dir, 'labels', f'{image_name}.txt')
+    label_path = detect_dir / 'labels' / f'{image_name}.txt'
     
-    if not os.path.isfile(label_path):
+    if not label_path.is_file():
         raise FileNotFoundError("Object detection results not found")
     
     with open(label_path, 'r') as file:
@@ -27,9 +28,9 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
     
     color_keyword_array = []
     for cls in detected_classes:
-        crop_image_path = os.path.join(detect_dir, 'crops', cls, f'{image_name}.jpg')
+        crop_image_path = detect_dir / 'crops' / cls / f'{image_name}.jpg'
         color_keyword_command = [
-            'python', color_feature_script_path, '--image', crop_image_path
+            'python', str(color_feature_script_path), '--image', str(crop_image_path)
         ]
         result = subprocess.run(color_keyword_command, capture_output=True, text=True, check=True)
         color_keyword_array.append(result.stdout.strip())

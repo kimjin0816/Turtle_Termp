@@ -3,21 +3,24 @@ from flask_cors import CORS
 import os
 import requests
 from detection_and_color_extraction import detect_objects_and_extract_colors
+from pathlib import Path
 
 app = Flask(__name__)
 CORS(app)
 
+import os
+
 # 설정 변수
-WEIGHT_PATH = 'Turtle_Termp\yolov5\TopBottomPJ\top_train13\weights\best.pt'
-DETECT_SCRIPT_PATH = 'Turtle_Termp\yolov5\detect.py'  # YOLOv5 detect.py 파일 경로
-COLOR_FEATURE_SCRIPT_PATH = 'Turtle_Termp\yolov5\ClothsColor.py'  # color_feature.py 파일 경로
+WEIGHT_PATH = os.path.abspath('C:/Users/user/Desktop/Turtle_Termp/yolov5/TopBottomPJ/top_train13/weights/best.pt')      # 가중치 파일 경로
+DETECT_SCRIPT_PATH = os.path.abspath('C:/Users/user/Desktop/Turtle_Termp/yolov5/detect.py')                                         # 객체 감지 스크립트 경로
+COLOR_FEATURE_SCRIPT_PATH = os.path.abspath('C:/Users/user/Desktop/Turtle_Termp/yolov5/color_feature.py')                   # 색상 특징 추출 스크립트 경로
 
 @app.route('/', methods = ['POST'])
 def upload_image():
     # 클라이언트가 전송한 파일을 가져옵니다.
     uploaded_file = request.files['image']
     # 파일을 저장할 경로를 지정합니다.
-    save_path = 'C:/users/user/Desktop/top_clothes/server/' + uploaded_file.filename
+    save_path = os.path.abspath(os.path.join('C:/users/user/Desktop/top_clothes/server/', uploaded_file.filename))
     # 파일을 저장합니다.
     uploaded_file.save(save_path)
     try:
@@ -31,9 +34,9 @@ def upload_image():
     color_class_string = f"[{', '.join(color_keywords)}, {', '.join(detected_classes)}]"
     print(color_class_string)
     
-    search_response = searchUrl_API(color_class_array)
+    search_response = search_url_api(color_class_array)
     return search_response
-    
+
 # 키워드 추출되면 이걸로 3000포트번호로 보내면 될듯.
 # 지금은 우선 키워드가 아직 추출이 안됬기 때문에 임의로 route를 만들어서 테스트.
 # 키워드 추출이 되면 @app.route('/api/keywords')는 필요 없어짐
@@ -47,18 +50,6 @@ def search_url_api(keywords):
         return jsonify(response.json()), 200
     else:
         return 'Failed to send data to Node.js server', 500
-# def searchUrl_API(keywords):    
-#     # Node.js 서버의 URL
-#     url = f'http://localhost:3000/api/search-images/{keyword}'
-    
-#     # POST 요청을 보냅니다.
-#     response = requests.post(url)
-    
-#     # 응답을 확인합니다.
-#     if response.status_code == 200:
-#         return 'Data sent to Node.js server successfully', 200
-#     else:
-#         return 'Failed to send data to Node.js server', 500
-    
+
 if __name__ == '__main__':
     app.run('127.0.0.1', 5000, debug=True)
