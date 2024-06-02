@@ -12,7 +12,7 @@ module.exports = {
       new LocalStrategy(async (username, password, done) => {
         try {
           const user = await queryMembers(
-            'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1',
+            'SELECT * FROM membership WHERE mem_id = $1',
             [username]
           );
 
@@ -22,9 +22,9 @@ module.exports = {
           }
           console.log("Found user:", user.rows[0]);
 
-          if (user.rows[0].MEM_PASSWORD !== password) {
+          if (user.rows[0].mem_password !== password) {
             console.log("Incorrect password for user:", username);
-            console.log("Expected password:", user.rows[0].MEM_PASSWORD);
+            console.log("Expected password:", user.rows[0].mem_password);
             console.log("Received password:", password);
             return done(null, false, { message: "Incorrect password." });
           }
@@ -38,13 +38,13 @@ module.exports = {
     );
     passport.serializeUser((user, done) => {
       console.log("Serialized user:", user);
-      done(null, user.MEM_ID); // user.id 대신 user.MEM_ID로 수정
+      done(null, user.mem_id); // user.id 대신 user.mem_id로 수정
     });
 
     passport.deserializeUser(async (id, done) => {
       try {
         const user = await queryMembers(
-          'SELECT * FROM "MEMBERSHIP" WHERE "MEM_ID" = $1',
+          'SELECT * FROM membership WHERE mem_id = $1',
           [id]
         );
 
@@ -63,12 +63,12 @@ module.exports = {
     app.get("/check-auth", async (req, res) => {
       try {
         if (req.isAuthenticated()) {
-          this.userId = req.user.MEM_ID;
+          this.userId = req.user.mem_id;
           // 사용자가 로그인한 상태라면
           res.json({
             authenticated: true,
-            userId: req.user.MEM_ID,
-            nickName: req.user.MEM_NICKNAME,
+            userId: req.user.mem_id,
+            nickName: req.user.mem_nickname,
           });
         } else {
           // 사용자가 로그인하지 않은 상태라면
@@ -93,7 +93,7 @@ module.exports = {
           return next(err);
         }
         const userId = JSON.stringify(req.session.passport.user);
-        const nickName = req.user.MEM_NICKNAME; // 사용자 이름
+        const nickName = req.user.mem_nickname; // 사용자 이름
 
         return res.json({
           message: "Login Successful",

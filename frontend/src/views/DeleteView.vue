@@ -33,7 +33,7 @@ export default {
     async deleteProfile() {
       try {
         const response = await axios.delete('http://localhost:3000/deleteProfile', {
-          data: { MEM_ID: this.userId, MEM_PASSWORD: this.userPassword },
+          data: { mem_id: this.userId, mem_password: this.userPassword },
         });
 
         if (response.status === 200) {

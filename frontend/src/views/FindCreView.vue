@@ -44,8 +44,8 @@ export default {
     async findCredentials() {
       try {
         const response = await axios.post('http://localhost:3000/findCredentials', {
-          MEM_NAME: this.name,
-          MEM_EMAIL: this.email,
+          mem_name: this.name,
+          mem_email: this.email,
         });
 
         const result = response.data;

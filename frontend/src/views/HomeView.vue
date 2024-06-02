@@ -35,6 +35,9 @@
             </v-col>
           </v-row>
         </div>
+        <div v-if="keywords" class="my-3" style="text-align: center">
+          <h2>{{ keywords }}</h2>
+        </div>
         <v-row justify="center">
           <v-col v-for="(item, index) in similarImages" :key="index" cols="10" sm="4" md="4">
             <div class="image-container" style="text-align: center">

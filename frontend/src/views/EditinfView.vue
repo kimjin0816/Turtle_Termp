@@ -3,38 +3,38 @@
     <h2>회원 정보 수정</h2>
     <form @submit.prevent="updateProfile" class="signup-form">
       <div class="form-group">
-        <label for="MEM_ID">아이디:</label>
-        <input v-model="MEM_ID" type="text" required />
+        <label for="mem_id">아이디:</label>
+        <input v-model="mem_id" type="text" required />
       </div>
 
       <div class="form-group">
-        <label for="MEM_PASSWORD">비밀번호:</label>
-        <input v-model="MEM_PASSWORD" type="password" required />
+        <label for="mem_password">비밀번호:</label>
+        <input v-model="mem_password" type="password" required />
       </div>
 
       <div class="form-group">
-        <label for="MEM_NAME">이름:</label>
-        <input v-model="MEM_NAME" type="text" required />
+        <label for="mem_name">이름:</label>
+        <input v-model="mem_name" type="text" required />
       </div>
 
       <div class="form-group">
-        <label for="MEM_EMAIL">이메일:</label>
-        <input v-model="MEM_EMAIL" type="email" required />
+        <label for="mem_email">이메일:</label>
+        <input v-model="mem_email" type="email" required />
       </div>
 
       <div class="form-group">
-        <label for="MEM_TEL">전화번호:</label>
-        <input v-model="MEM_TEL" type="tel" required />
+        <label for="mem_tel">전화번호:</label>
+        <input v-model="mem_tel" type="tel" required />
       </div>
 
       <div class="form-group">
-        <label for="MEM_NICKNAME">닉네임:</label>
-        <input v-model="MEM_NICKNAME" type="text" required />
+        <label for="mem_nickname">닉네임:</label>
+        <input v-model="mem_nickname" type="text" required />
       </div>
 
       <div class="form-group">
-        <label for="MEM_ADDRESS">주소:</label>
-        <input v-model="MEM_ADDRESS" type="text" required />
+        <label for="mem_address">주소:</label>
+        <input v-model="mem_address" type="text" required />
       </div>
 
       <button type="submit">수정하기</button>
@@ -46,13 +46,13 @@
 export default {
   data() {
     return {
-      MEM_ID: "",
-      MEM_PASSWORD: "",
-      MEM_NAME: "",
-      MEM_EMAIL: "",
-      MEM_TEL: "",
-      MEM_NICKNAME: "",
-      MEM_ADDRESS: "",
+      mem_id: "",
+      mem_password: "",
+      mem_name: "",
+      mem_email: "",
+      mem_tel: "",
+      mem_nickname: "",
+      mem_address: "",
     };
   },
   methods: {
@@ -61,13 +61,13 @@ export default {
         const response = await this.$axios.put(
           "http://localhost:3000/updateProfile",
           {
-            MEM_ID: this.MEM_ID,
-            MEM_PASSWORD: this.MEM_PASSWORD,
-            MEM_NAME: this.MEM_NAME,
-            MEM_EMAIL: this.MEM_EMAIL,
-            MEM_TEL: this.MEM_TEL,
-            MEM_NICKNAME: this.MEM_NICKNAME,
-            MEM_ADDRESS: this.MEM_ADDRESS,
+            mem_id: this.mem_id,
+            mem_password: this.mem_password,
+            mem_name: this.mem_name,
+            mem_email: this.mem_email,
+            mem_tel: this.mem_tel,
+            mem_nickname: this.mem_nickname,
+            mem_address: this.mem_address,
           }
         );
 
@@ -81,13 +81,13 @@ export default {
         console.error("회원 정보 수정 오류:", error);
         alert("회원 정보 수정에 실패했습니다.");
         // 수정 실패 시 입력 필드 초기화
-        this.MEM_ID = "";
-          this.MEM_PASSWORD = "";
-          this.MEM_NAME = "";
-          this.MEM_EMAIL = "";
-          this.MEM_TEL = "";
-          this.MEM_NICKNAME = "";
-          this.MEM_ADDRESS = "";
+        this.mem_id = "";
+          this.mem_password = "";
+          this.mem_name = "";
+          this.mem_email = "";
+          this.mem_tel = "";
+          this.mem_nickname = "";
+          this.mem_address = "";
       }
     },
   },
