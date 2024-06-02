@@ -6,7 +6,7 @@
   * 거북이처럼 느리지만 단단하고 오점 없이 끝따지 목표지점을 향해 달린다
 
 ## SKILL
-![]("https://img.shields.io/badge/Xamarin-3498DB?style=for-the-badge&logo=xamarin&logoColor=white")
+![](https://img.shields.io/badge/Xamarin-3498DB?style=for-the-badge&logo=xamarin&logoColor=white)
   
 ## 프로잭트 소개
  사진 속 의류를 AI의 분석을 통해 키워드 가지고 유사한 의류를 제공해주는 웹 사이트
