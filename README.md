@@ -20,15 +20,10 @@
 ![](https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
 ![](https://img.shields.io/badge/Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)
--- 개발 환경
+-- 개발 환경 --
 ![](https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)
---
 ![](	https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
-![]()
-![]()
-![]()
-![]()
-![]()
+
 ## 프로잭트 소개
  사진 속 의류를 AI의 분석을 통해 키워드 가지고 유사한 의류를 제공해주는 웹 사이트
 
