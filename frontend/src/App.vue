@@ -91,15 +91,15 @@
 
           <!-- 여기에 소메뉴 항목들을 추가 -->
           <v-list style="max-width: 200px">
-            <v-list-item @click="handleSubMenuClick('회원 정보')" class="menu-item">
+            <v-list-item @click="goToPage('Memin')" class="menu-item">
               <v-list-item-title class="menu-title">회원 정보</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="handleSubMenuClick('추가 예정')" class="menu-item">
+            <!-- <v-list-item @click="goToPage('')" class="menu-item">
               <v-list-item-title class="menu-title">추가 예정</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="handleSubMenuClick('추가 예정')" class="menu-item">
+            <v-list-item @click="goToPage('')" class="menu-item">
               <v-list-item-title class="menu-title">추가 예정</v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
           </v-list>
         </v-menu>
 
@@ -214,14 +214,14 @@ export default {
         console.error('로그아웃 실패:', error);
       }
     },
-    // 사용자 정보 페이지 이동 목록
-    handleSubMenuClick(item) {
-      if (item === '회원 정보') {
-        this.$router.push({ name: 'Memin' });
-      } else {
-        alert(`선택한 소메뉴: ${item}`);
-      }
-    },
+    // // 사용자 정보 페이지 이동 목록
+    // handleSubMenuClick(item) {
+    //   if (item === '회원 정보') {
+    //     this.$router.push({ name: 'Memin' });
+    //   } else {
+    //     alert(`선택한 소메뉴: ${item}`);
+    //   }
+    // },
   },
 };
 </script>
