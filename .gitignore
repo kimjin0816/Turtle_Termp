@@ -4,6 +4,7 @@ backend/package-lock.json
 
 frontend/node_modules
 frontend/package-lock.json
+yolov5
 
 node_modules
 package-lock.json
