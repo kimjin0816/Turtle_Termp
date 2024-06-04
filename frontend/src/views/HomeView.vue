@@ -9,7 +9,7 @@
             <v-file-input label="Select Image" v-model="selectedImage" accept="image/*" name="image"
               @change="uploadImage(); showImageResults = false"></v-file-input>
             <v-btn type="submit" color="grey lighten-1" dark>이미지 분석</v-btn>
-            <v-btn color="secondary" dark @click="gotoCody">코디 검색</v-btn>
+            <!-- <v-btn color="secondary" dark @click="gotoCody">코디 검색</v-btn> -->
           </v-form>
         </v-col>
       </v-row>
@@ -114,6 +114,7 @@ export default {
         const response = await axios.get('http://localhost:3000/api/keyword');
         this.keywords = response.data.keywords;
         this.keywordArray = response.data.keywordArray;
+        this.$bus.emit('keywordArray', response.data.keywordArray);
         this.similarImages = response.data.extractedData.map(item => {
           return {
             title: item.title,
@@ -129,10 +130,6 @@ export default {
         console.log(error)
       }
     },
-
-    gotoCody() {
-      this.$router.push('/cody');
-    }
   },
   mounted() {
     // this.getData();

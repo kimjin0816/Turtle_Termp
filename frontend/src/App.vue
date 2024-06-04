@@ -40,9 +40,9 @@
                 <v-list-item-title>키워드</v-list-item-title>
               </v-list-item>
 
-              <v-list-item @click="goToPage('cody')">
+              <!-- <v-list-item @click="goToPage('cody')">
                 <v-list-item-title>코디</v-list-item-title>
-              </v-list-item>
+              </v-list-item> -->
             </v-list-item-group>
             <v-list nav dense v-if="authenticated" style="margin-top: 400px;">
               <v-btn @click="handleLogout" color="light-grey" dark style="width: 100px;">
@@ -72,10 +72,10 @@
           ">
           메인
         </v-btn>
-        <v-btn @click="goToPage('cody')" text color="black" class="ml-1 move-left"
+        <!-- <v-btn @click="goToPage('cody')" text color="black" class="ml-1 move-left"
           style="text-decoration: underline; font-size: 20px;">
           코디
-        </v-btn>
+        </v-btn> -->
       </v-row>
 
       <!-- 로그인/로그아웃 버튼 -->
@@ -92,7 +92,7 @@
           <!-- 여기에 소메뉴 항목들을 추가 -->
           <v-list style="max-width: 200px">
             <v-list-item @click="goToPage('Memin')" class="menu-item">
-              <v-list-item-title class="menu-title">회원 정보</v-list-item-title>
+              <v-list-item-title class="menu-title">검색 기록 확인</v-list-item-title>
             </v-list-item>
             <!-- <v-list-item @click="goToPage('')" class="menu-item">
               <v-list-item-title class="menu-title">추가 예정</v-list-item-title>
@@ -123,7 +123,7 @@
     </v-main>
 
     <!-- 푸터 -->
-    <v-footer app color="grey lighten-1" dark>
+    <!-- <v-footer app color="grey lighten-1" dark>
       <span style="
           display: block;
           margin: 0 auto;
@@ -135,7 +135,7 @@
         ">
         2024 목원대학교 졸업작품 (Turtle)
       </span>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
