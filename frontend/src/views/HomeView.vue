@@ -12,14 +12,6 @@
           </v-form>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col>
-          <v-btn @click="getData" text color="black" class="ml-1 move-left"
-            style="text-decoration: underline; font-size: 20px;">
-            테스트 용도
-          </v-btn>
-        </v-col>
-      </v-row>
 
       <!-- 첨부한 이미지 표시 -->
       <v-row justify="center" v-if="attachedImages.length > 0">
@@ -84,17 +76,14 @@ export default {
           this.attachedImages = []; // 첨부된 이미지 초기화
           const imageURL = URL.createObjectURL(this.selectedImage);
           this.attachedImages.unshift({ src: imageURL });
-          this.selectedImage = null;
         } catch (error) {
           console.error('uploadImage:', error);
         }
       }
     },
-
     async getData() {
       try {
         const response = await axios.get('http://localhost:3000/api/keyword');
-        // this.fetchSimilarImages(response.data);
         console.log(response.data);
         // let image = this.extractImages(response.data);
         this.fetchSimilarImages(response.data.imageUrls);
@@ -112,10 +101,6 @@ export default {
         console.log('fetchSimilarImages():', error);
       }
     },
-
-    gotoCody() {
-      this.$router.push('/cody');
-    }
   },
   mounted() {
     // this.getData();

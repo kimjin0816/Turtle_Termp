@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import AboutView from "../views/AboutView.vue";
-import CodyView from "../views/CodyView.vue";
 import LoginView from "../views/LoginView.vue";
 import SignUpView from "../views/SignUpView.vue";
 import FindCreView from "../views/FindCreView.vue";
@@ -22,11 +21,6 @@ const routes = [
     path: "/about",
     name: "about",
     component: AboutView,
-  },
-  {
-    path: "/cody",
-    name: "cody",
-    component: CodyView,
   },
   {
     path: "/login",

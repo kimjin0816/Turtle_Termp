@@ -59,10 +59,6 @@
               <v-list-item @click="goToPage('about')">
                 <v-list-item-title>키워드</v-list-item-title>
               </v-list-item>
-
-              <v-list-item @click="goToPage('cody')">
-                <v-list-item-title>코디</v-list-item-title>
-              </v-list-item>
             </v-list-item-group>
             <v-list nav dense v-if="isAuthenticated" style="margin-top: 400px;">
               <v-btn @click="handleLogout" color="light-grey" dark style="width: 100px;">
@@ -105,15 +101,6 @@
         >
           메인
         </v-btn>
-        <v-btn
-          @click="goToPage('cody')"
-          text
-          color="black"
-          class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px;"
-        >
-          코디
-        </v-btn>
       </v-row>
 
       <!-- 로그인/로그아웃 버튼 -->
@@ -128,7 +115,6 @@
           </template>
 
           <v-list style="max-width: 200px">
-            <!-- 여기에 소메뉴 항목들을 추가 -->
             <v-list-item @click="handleSubMenuClick('회원 정보')" class="menu-item">
               <v-list-item-title class="menu-title">회원 정보</v-list-item-title>
             </v-list-item>
@@ -192,7 +178,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   name: 'App',
@@ -263,14 +248,6 @@ export default {
         alert('서버 오류');
       }
     },
-    async checkAuthStatus() {
-      try {
-        const response = await fetch("http://localhost:3000/auth/check", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
 
         const { isAuthenticated, nickname } = await response.json();
         this.isAuthenticated = isAuthenticated;

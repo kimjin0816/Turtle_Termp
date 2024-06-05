@@ -4,7 +4,6 @@
       <v-card-title class="text-center">키워드 입력</v-card-title>
       <v-card-text>
         <!-- 키워드 수정 내용 -->
-        <v-text-field label="종류" v-model="kind"></v-text-field>
         <v-text-field label="색깔" v-model="color"></v-text-field>
         <v-text-field label="브랜드" v-model="brand"></v-text-field>
         <v-text-field label="로고" v-model="logo"></v-text-field>
@@ -30,7 +29,6 @@ export default {
   },
   methods: {
     saveChanges() {
-      console.log('종류:', this.kind);
       console.log('색깔:', this.color);
       console.log('브랜드:', this.brand);
       console.log('로고:', this.logo);
@@ -38,17 +36,6 @@ export default {
     },
     cancelEdit() {
       this.dialog = false;
-    },
-    searchImages() {
-      this.$router.push({
-        name: 'home', // 메인 뷰의 이름
-        params: {
-          kind: this.kind,
-          color: this.color,
-          brand: this.brand,
-          logo: this.logo,
-        },
-      });
     },
   },
 };
