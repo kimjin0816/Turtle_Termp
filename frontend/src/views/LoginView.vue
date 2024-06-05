@@ -48,30 +48,31 @@ export default {
   },
   methods: {
     async login() {
+      const userData = {
+        username: this.username,
+        password: this.password,
+      };
+      console.log('Login data:', userData);  // 확인용 로그 추가
+
       try {
-        const response = await fetch("http://localhost:3000/login", {
-          method: "POST",
+        const response = await this.$axios.post('http://localhost:3000/login', userData, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            MEM_ID: this.username,
-            MEM_PASSWORD: this.password,
-          }),
+          withCredentials: true,
         });
-
-        const result = await response.json();
-
-        if (response.status === 200) {
-          alert(result.message);
-          this.nickname = nickname;
-          this.$emit("login-success", nickname); // 부모(App.vue)에 이벤트 발신
-        } else {
-          alert(result.message);
-        }
+        console.log("response userNick: " + response.data.userNick);
+        console.log("response userId: ", response.data.userId);
+        // sessionStorage.setItem('authenticated', 'true');
+        localStorage.setItem('userId', response.data.userId);
+        console.log("userId: " + localStorage.getItem('userId'));
+        // localStorage.setItem('nickName', response.data.user.nickName);
+        alert('로그인 성공');
+        this.$router.push("/")
+        this.$router.go();
       } catch (error) {
-        console.error("로그인 오류:", error);
-        alert("서버 오류");
+        alert('로그인 실패');
+        console.error('Login failed:', error.response.data.error);
       }
     },
   },

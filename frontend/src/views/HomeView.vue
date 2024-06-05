@@ -6,9 +6,9 @@
       <v-row justify="center" style="margin-top: 50px;">
         <v-col cols="12" md="2">
           <v-form @submit.prevent="submitForm">
-            <v-file-input label="Select Image" v-model="selectedImage" accept="image/*" name="image"></v-file-input>
-            <v-btn type="submit" color="grey lighten-1" dark>이미지 검색</v-btn>
-            <v-btn color="secondary" dark @click="gotoCody">코디 검색</v-btn>
+            <v-file-input label="Select Image" v-model="selectedImage" accept="image/*" name="image"
+              @change="uploadImage(); showImageResults = false"></v-file-input>
+            <v-btn type="submit" color="grey lighten-1" dark>이미지 분석</v-btn>
           </v-form>
         </v-col>
       </v-row>
@@ -25,12 +25,29 @@
       <!-- 이미지 결과 -->
       <v-container v-if="showImageResults" style="margin-top: -20px">
         <div class="my-3" style="text-align: center">
-          <h1>이미지 결과</h1>
+          <v-row>
+            <v-col>
+              <v-btn @click="getData" text color="black" class="ml-1 move-left"
+                style="text-decoration: underline; font-size: 20px;">
+                결과 보기
+              </v-btn>
+            </v-col>
+          </v-row>
+        </div>
+        <div v-if="keywords" class="my-3" style="text-align: center">
+          <h2>{{ keywords }}</h2>
         </div>
         <v-row justify="center">
-          <v-col v-for="(image, index) in similarImages" :key="index" cols="10" sm="4" md="4">
+          <v-col v-for="(item, index) in similarImages" :key="index" cols="10" sm="4" md="4">
             <div class="image-container" style="text-align: center">
-              <img :src="image" alt="Image Result" style="width: 100%; max-width: 300px; height: auto;" />
+              <img :src="item.image" alt="Image Result" style="width: 100%; max-width: 300px; height: auto;" />
+              <div class="image-info">
+                <h2 v-html="item.title"></h2>
+                <a :href="item.link">상품 링크</a>
+                <p>{{ item.lprice | formatPrice }}원</p>
+                <p>{{ item.category2 }}</p>
+                <p>{{ item.category3 }}</p>
+              </div>
             </div>
           </v-col>
         </v-row>
@@ -50,24 +67,33 @@ export default {
       attachedImages: [],
       similarImages: [],
       showImageResults: false,
-      keywords: ""
+      keywords: [],
+      keywordArray: [],
     };
   },
+  filters: {
+    formatPrice(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  },
   methods: {
-    submitForm() {
+    async submitForm() {
+      this.showImageResults = false;
       let formData = new FormData();
-      formData.append('image', this.selectedImage);
-
-      axios.post('http://localhost:5000/', formData)
-        .then(response => {
-          console.log('Image uploaded successfully');
-          this.uploadImage();
-          this.getData();
-          // this.fetchSimilarImages(this.getData());
-        })
-        .catch(error => {
-          console.error('submit(): ', error);
-        });
+      if (!this.selectedImage) {
+        return alert('이미지를 선택해주세요.')
+      } else {
+        formData.append('image', this.selectedImage);
+        formData.append('userId', localStorage.getItem('userId'));
+        await axios.post('http://localhost:5000/', formData)
+          .then(response => {
+            console.log('Image uploaded successfully');
+            this.showImageResults = true;
+          })
+          .catch(error => {
+            console.error('submit(): ', error);
+          });
+      }
     },
 
     uploadImage() {
@@ -76,6 +102,7 @@ export default {
           this.attachedImages = []; // 첨부된 이미지 초기화
           const imageURL = URL.createObjectURL(this.selectedImage);
           this.attachedImages.unshift({ src: imageURL });
+          // this.selectedImage = null;
         } catch (error) {
           console.error('uploadImage:', error);
         }
@@ -84,21 +111,21 @@ export default {
     async getData() {
       try {
         const response = await axios.get('http://localhost:3000/api/keyword');
-        console.log(response.data);
-        // let image = this.extractImages(response.data);
-        this.fetchSimilarImages(response.data.imageUrls);
-      } catch (error) {
-        console.log(error)
-        // console.error('getData(): 아직 받은 데이터가 없습니다.');
-      }
-    },
-
-    async fetchSimilarImages(result) {
-      try {
-        this.similarImages = result;
+        this.keywords = response.data.keywords;
+        this.keywordArray = response.data.keywordArray;
+        this.similarImages = response.data.extractedData.map(item => {
+          return {
+            title: item.title,
+            link: item.link,
+            image: item.image,
+            lprice: item.lprice,
+            category2: item.category2,
+            category3: item.category3,
+          };
+        });
         this.showImageResults = true;
       } catch (error) {
-        console.log('fetchSimilarImages():', error);
+        console.log(error)
       }
     },
   },

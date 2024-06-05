@@ -3,78 +3,78 @@
     <h1>회원가입</h1>
     <form @submit.prevent="signup" class="signup-form">
       <div class="form-group">
-        <label for="MEM_ID">아이디:</label>
+        <label for="mem_id">아이디:</label>
         <input
-          v-model="MEM_ID"
+          v-model="mem_id"
           type="text"
-          id="MEM_ID"
-          name="MEM_ID"
+          id="mem_id"
+          name="mem_id"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="MEM_PASSWORD">비밀번호:</label>
+        <label for="mem_password">비밀번호:</label>
         <input
-          v-model="MEM_PASSWORD"
+          v-model="mem_password"
           type="password"
-          id="MEM_PASSWORD"
-          name="MEM_PASSWORD"
+          id="mem_password"
+          name="mem_password"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="MEM_NAME">이름:</label>
+        <label for="mem_name">이름:</label>
         <input
-          v-model="MEM_NAME"
+          v-model="mem_name"
           type="text"
-          id="MEM_NAME"
-          name="MEM_NAME"
+          id="mem_name"
+          name="mem_name"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="MEM_EMAIL">이메일:</label>
+        <label for="mem_email">이메일:</label>
         <input
-          v-model="MEM_EMAIL"
+          v-model="mem_email"
           type="email"
-          id="MEM_EMAIL"
-          name="MEM_EMAIL"
+          id="mem_email"
+          name="mem_email"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="MEM_TEL">전화번호:</label>
+        <label for="mem_tel">전화번호:</label>
         <input
-          v-model="MEM_TEL"
+          v-model="mem_tel"
           type="tel"
-          id="MEM_TEL"
-          name="MEM_TEL"
+          id="mem_tel"
+          name="mem_tel"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="MEM_NICKNAME">닉네임:</label>
+        <label for="mem_nickname">닉네임:</label>
         <input
-          v-model="MEM_NICKNAME"
+          v-model="mem_nickname"
           type="text"
-          id="MEM_NICKNAME"
-          name="MEM_NICKNAME"
+          id="mem_nickname"
+          name="mem_nickname"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="MEM_ADDRESS">주소:</label>
+        <label for="mem_address">주소:</label>
         <input
-          v-model="MEM_ADDRESS"
+          v-model="mem_address"
           type="text"
-          id="MEM_ADDRESS"
-          name="MEM_ADDRESS"
+          id="mem_address"
+          name="mem_address"
           required
         />
       </div>
@@ -88,13 +88,13 @@
 export default {
   data() {
     return {
-      MEM_ID: "",
-      MEM_PASSWORD: "",
-      MEM_NAME: "",
-      MEM_EMAIL: "",
-      MEM_TEL: "",
-      MEM_NICKNAME: "",
-      MEM_ADDRESS: "",
+      mem_id: "",
+      mem_password: "",
+      mem_name: "",
+      mem_email: "",
+      mem_tel: "",
+      mem_nickname: "",
+      mem_address: "",
     };
   },
   methods: {
@@ -106,13 +106,13 @@ export default {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            MEM_ID: this.MEM_ID,
-            MEM_PASSWORD: this.MEM_PASSWORD,
-            MEM_NAME: this.MEM_NAME,
-            MEM_EMAIL: this.MEM_EMAIL,
-            MEM_TEL: this.MEM_TEL,
-            MEM_NICKNAME: this.MEM_NICKNAME,
-            MEM_ADDRESS: this.MEM_ADDRESS,
+            mem_id: this.mem_id,
+            mem_password: this.mem_password,
+            mem_name: this.mem_name,
+            mem_email: this.mem_email,
+            mem_tel: this.mem_tel,
+            mem_nickname: this.mem_nickname,
+            mem_address: this.mem_address,
           }),
         });
 
