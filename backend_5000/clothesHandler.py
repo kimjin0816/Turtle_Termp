@@ -1,3 +1,7 @@
+# from lib2to3.pgen2 import driver
+# import os
+# import shutil
+# from tkinter import Image
 import psycopg2
 import hashlib
 
@@ -61,31 +65,31 @@ class clothesHandler:
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #region => clothes image url    
     # clothes image url
-    def c_img_url(self):
-        img_elements = driver.find_elements(By.TAG_NAME, 'img')
-        for img_element in img_elements:
-            src = img_element.get_attribute('src')
-        return src
-    # background/clothes_top file path copy test folder
-    def image_path(self, image_filename, type_clothes):
-        # clothes 폴더 경로 얻기
-        clothes_path = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', type_clothes)
-        # 이미지 파일 경로
-        image_path = os.path.join(clothes_path, image_filename)
+    # def c_img_url(self):
+    #     img_elements = driver.find_elements(By.TAG_NAME, 'img')
+    #     for img_element in img_elements:
+    #         src = img_element.get_attribute('src')
+    #     return src
+    # # background/clothes_top file path copy test folder
+    # def image_path(self, image_filename, type_clothes):
+    #     # clothes 폴더 경로 얻기
+    #     clothes_path = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', type_clothes)
+    #     # 이미지 파일 경로
+    #     image_path = os.path.join(clothes_path, image_filename)
         
-        # 이미지를 test 폴더로 복사
-        destination_folder = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', 'test')
-        shutil.copy(image_path, destination_folder)
+    #     # 이미지를 test 폴더로 복사
+    #     destination_folder = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', 'test')
+    #     shutil.copy(image_path, destination_folder)
         
-        # 복사된 이미지 파일의 경로
-        copied_image_path = os.path.join(destination_folder, image_filename)
+    #     # 복사된 이미지 파일의 경로
+    #     copied_image_path = os.path.join(destination_folder, image_filename)
         
-        # 복사된 이미지 열기
-        img = Image.open(copied_image_path)
-        # 이미지 출력
-        img.show()
+    #     # 복사된 이미지 열기
+    #     img = Image.open(copied_image_path)
+    #     # 이미지 출력
+    #     img.show()
         
-        return copied_image_path
+    #     return copied_image_path
 #endregion
 # -----------------------------------------------------------------------------------------------------------------------------------------------     
 #region => features code
