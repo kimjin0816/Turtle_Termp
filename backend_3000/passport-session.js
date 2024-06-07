@@ -49,22 +49,18 @@ module.exports = {
         );
 
         if (!user.rows || user.rows.length === 0) {
-          console.log("deserialization error: No user with this id", id);
           return done(new Error("No user with this id"), null);
         }
-        console.log("Deserialized user:", user.rows[0]);
         return done(null, user.rows[0]);
       } catch (err) {
         return done(err);
       }
     });
 
-    // 사용자의 인증 상태를 확인하는 엔드포인트 추가
     app.get("/check-auth", async (req, res) => {
       try {
         if (req.isAuthenticated()) {
           this.userId = req.user.mem_id;
-          // 사용자가 로그인한 상태라면
           res.json({
             authenticated: true,
             userId: req.user.mem_id,
@@ -75,7 +71,6 @@ module.exports = {
           res.json({ authenticated: false  });
         }
       } catch (error) {
-        console.error(error);
         res.status(500).json({ message: "서버 오류" });
       }
     });
@@ -107,20 +102,17 @@ module.exports = {
     app.post("/logout", (req, res) => {
       req.logout((err) => {
         if (err) {
-          console.error("Logout error:", err);
           return res.status(500).send("Logout error");
         }
 
         req.session.destroy((err) => {
           if (err) {
-            console.error("Session destroy error:", err);
             return res.status(500).send("Session destroy error");
           }
           res.clearCookie("connect.sid"); // 세션 쿠키 삭제
           res.json({ message: "Logout Successful" });
         });
       });
-      console.log("Session after logout:", req.session);
     });
   },
 };

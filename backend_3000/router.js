@@ -18,7 +18,6 @@ router.post("/findCredentials", UserController.findCredentials);
 router.put("/updateProfile", UserController.updateProfile);
 router.delete("/deleteProfile", UserController.deleteProfile);
 
-// router.post("/api/save_path", naverAPI.getImgPath);
 router.post("/api/search-images", naverAPI.callNaverShoppingAPI);
 router.get("/api/keyword", naverAPI.postData);
 
