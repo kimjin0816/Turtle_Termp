@@ -14,14 +14,11 @@ ch = clothesHandler()
 user_id_global = ''
 imageName_global = ''
 image_URL_global = ''
-keywordArray_global= ['','','']
 
-class Index:   
+class index:   
     def postData(self, keywordArray, featureArray):    
         # 모형/종류/색상
-        #keyword = f'{keywordArray[2]} {keywordArray[1]} {keywordArray[0]}'
         # 글자만 추출
-        #  keywordArrary 배열을 keywordArray_global에 넣고 싶어
         keywordArray1 = ['','','']
         
         for k in keywordArray :
@@ -77,16 +74,16 @@ class Index:
         
         """ 객체 감지 및 색상 추출 """
         image_path = self.save_path
-        weights_path = Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/TopBottomPJ/top_train13/weights/best.pt')
-        detect_script_path = Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/detect.py')
-        color_feature_script_path = Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/color_feature.py')
+        weights_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/TopBottomPJ/top_train13/weights/best.pt')
+        detect_script_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/detect.py')
+        color_feature_script_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/color_feature.py')
 
         # detect_objects_and_extract_colors 실행 후 결과 받아오기
         keywordArray_global = detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path)
         print(keywordArray_global)
         return self.postData(keywordArray_global, featureArray=[True, True, True, True, True])
 
-Index = Index()
+Index = index()
 
 @app.route('/', methods=['POST'])
 def formData():

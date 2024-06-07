@@ -12,7 +12,7 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
     subprocess.run(detect_command, check=True)
     
     # 객체 감지 결과 디렉토리 찾기
-    detect_dir = sorted(Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/runs/detect').glob('*'), key=os.path.getmtime, reverse=True)[0]
+    detect_dir = sorted(Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/runs/detect').glob('*'), key=os.path.getmtime, reverse=True)[0]
     image_basename = image_path.name
     image_name, image_extension = os.path.splitext(image_basename)
 

@@ -4,20 +4,18 @@
       <v-card-title class="text-center">키워드 입력</v-card-title>
       <v-form @submit.prevent="researchForm">
         <v-card-text>
-          <v-text-field label="색깔" \v-model="keyword.color"></v-text-field>
+          <v-text-field label="색깔" v-model="keyword.color"></v-text-field>
           <v-text-field label="분류" v-model="keyword.classification"></v-text-field>
           <v-text-field label="종류" v-model="keyword.shape"></v-text-field>
         </v-card-text>
         <v-card-actions class="justify-center">
           <v-btn type="submit">재검색</v-btn>
           <v-btn type="reset">다시 쓰기</v-btn>
-          <v-btn @click="this.dialog = false">취소</v-btn>
-        </v-card-actions>
+          <v-btn @click="closeDialog">취소</v-btn> </v-card-actions>
       </v-form>
     </v-card>
   </v-dialog>
 </template>
-
 <script>
 export default {
   data() {
@@ -37,12 +35,15 @@ export default {
       }
     },
   },
-  mounted() {
-    this.$bus.on("keywordArray", function (data) {
-      this.keyword = data;
-    });
-  },
+  // mounted() {
+  //   this.$bus.on("keywordArray", function (data) {
+  //     this.keyword = data;
+  //   });
+  // },
   methods: {
+    closeDialog() {
+      this.dialog = false;
+    },
     researchForm() {
       response = this.axios.post('http://localhost:3000/api/search-images', {
         color: this.keyword.color,
