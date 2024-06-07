@@ -22,10 +22,12 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
         raise FileNotFoundError("Object detection results not found")
     
     with open(label_path, 'r', encoding='cp949') as file:
-        lines = file.readlines()
-        detected_classes = sorted(set(line.split()[0] for line in lines))
-        
     
+        lines = file.readlines()
+        #print(lines)
+        detected_classes = sorted(set(line.split()[0] for line in lines))
+        print(detected_classes[0])
+        
     color_keyword_array = []
     for cls in detected_classes:
         crop_image_path = detect_dir / 'crops' / cls / f'{image_name}.jpg'
@@ -33,6 +35,12 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
             'python', str(color_feature_script_path), '--image', str(crop_image_path)
         ]
         result = subprocess.run(color_keyword_command, capture_output=True, text=True, check=True)
-        color_keyword_array.append(result.stdout.strip())
+        #print('result:', result.stdout)
+        color_keyword_array.append(result.stdout.strip()) 
+        
+        #print('color_keyword_array : ', color_keyword_array)
+        # print(detected_classes)
+        
+        output = [color_keyword_array[0],  detected_classes[0]]
     
-    return color_keyword_array, detected_classes
+    return  output
