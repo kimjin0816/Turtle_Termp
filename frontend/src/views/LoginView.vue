@@ -66,8 +66,10 @@ export default {
         });
         console.log("response userNick: " + response.data.userNick);
         console.log("response userId: ", response.data.userId);
+        // sessionStorage.setItem('authenticated', 'true');
         localStorage.setItem('userId', response.data.userId);
         console.log("userId: " + localStorage.getItem('userId'));
+        // localStorage.setItem('nickName', response.data.user.nickName);
         alert('로그인 성공');
         this.$router.push("/")
         this.$router.go();
