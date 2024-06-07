@@ -129,7 +129,7 @@ class clothesHandler:
         self.connectClothes()
         f_code = self.t_f_code(feature)
         # image_path = self.c_img_url()        
-        self.writeClothes(f"INSERT INTO searchLog(userID, top_bottom, shape, classification, color, img, date, f_code) VALUES ('{id}', '{top_bottom}', '{keywordArray[0]}', '{keywordArray[1]}', '{keywordArray[2]}', '{img}', NOW(), {f_code});")
+        self.writeClothes(f"INSERT INTO searchLog(userID, top_bottom, shape, classification, color, img, date, f_code) VALUES ('{id}', '{top_bottom}', '{keywordArray[0]}', 'shape', '{keywordArray[1]}', '{img}', NOW(), {f_code});")
         self.closeClothes()
     # searchLog data select
     def searchLog_SelectId(self, id):
@@ -145,7 +145,7 @@ class clothesHandler:
     def clothes_Insert(self, hash_code, top_bottom, keywordArray, img, feature):
         self.connectClothes()
         f_code = self.t_f_code(feature)
-        self.writeClothes(f"INSERT INTO clothes(hash_code, top_bottom, shape, classification, color, img, f_code) VALUES ('{hash_code}','{top_bottom}', '{keywordArray[0]}', '{keywordArray[1]}', '{keywordArray[2]}', '{img}', {f_code});")
+        self.writeClothes(f"INSERT INTO clothes(hash_code, top_bottom, shape, classification, color, img, f_code) VALUES ('{hash_code}','{top_bottom}', '{keywordArray[0]}', 'shape', '{keywordArray[1]}', '{img}', {f_code});")
         self.closeClothes()
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -38,7 +38,7 @@ export default {
       try {
         for (let i = 0; i < this.extractedData.img.length; i++) {
           let imageName = this.extractedData.img[i];
-          const response = await this.$axios.get(`http://localhost:5000${imageName}`, {
+          const response = await this.$axios.get(`${imageName}`, {
             responseType: 'arraybuffer',
           });
           let base64 = btoa(
