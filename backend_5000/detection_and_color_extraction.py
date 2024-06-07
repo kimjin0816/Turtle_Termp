@@ -1,6 +1,6 @@
 import subprocess
 import os
-import glob
+# import glob
 from pathlib import Path
 
 def detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path):
