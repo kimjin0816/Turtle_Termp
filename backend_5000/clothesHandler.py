@@ -76,12 +76,8 @@ class clothesHandler:
     #     # 이미지 출력
     #     img.show()
         
-<<<<<<< HEAD
-        return copied_image_path
-=======
     #     return copied_image_path
 #endregion
->>>>>>> main
 # -----------------------------------------------------------------------------------------------------------------------------------------------     
     # feature code setting
     def t_f_code(self, feature):
@@ -121,14 +117,9 @@ class clothesHandler:
     def t_c_Insert(self, id, shape, classification, color, feature):
         self.connectClothes()
         f_code = self.t_f_code(feature)
-<<<<<<< HEAD
-        image_path = self.c_img_url()        
-        self.writeClothes(f"INSERT INTO clothes_top(t_code, t_shape, t_classification, t_color, t_f_code, t_img) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
-=======
         # image_path = self.c_img_url()        
         # self.writeClothes(f"INSERT INTO searchLog(userID, top_bottom, shape, classification, color, img, date, f_code) VALUES ('{id}', '{top_bottom}', '{keywordArray[0]}', '{keywordArray[1]}', '{keywordArray[2]}', '{img}', NOW(), {f_code});")
         self.writeClothes(f"INSERT INTO searchLog(userID, top_bottom, shape, classification, color, img, date, f_code) VALUES ('{id}', '{top_bottom}', '{keywordArray[0]}', 'shape', '{keywordArray[1]}', '{img}', NOW(), {f_code});")
->>>>>>> main
         self.closeClothes()
     def b_c_Insert(self, id, shape, classification, color, feature):
         self.connectClothes()
@@ -145,14 +136,9 @@ class clothesHandler:
         return rows
     def b_c_SelectID(self, id):
         self.connectClothes()
-<<<<<<< HEAD
-        self.writeClothes(f"SELECT * FROM clothes_bottom WHERE b_code LIKE '{id}_%';")
-        rows = self.c_cur.fetchall()
-=======
         f_code = self.t_f_code(feature)
         # self.writeClothes(f"INSERT INTO clothes(hash_code, top_bottom, shape, classification, color, img, f_code) VALUES ('{hash_code}','{top_bottom}', '{keywordArray[0]}', '{keywordArray[1]}', '{keywordArray[2]}', '{img}', {f_code});")
         self.writeClothes(f"INSERT INTO clothes(hash_code, top_bottom, shape, classification, color, img, f_code) VALUES ('{hash_code}','{top_bottom}', '{keywordArray[0]}', 'shape', '{keywordArray[1]}', '{img}', {f_code});")
         
->>>>>>> main
         self.closeClothes()
         return rows
