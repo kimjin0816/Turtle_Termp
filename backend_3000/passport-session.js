@@ -1,5 +1,6 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const NaverStrategy = require("passport-naver").Strategy;
 const { queryMembers } = require("./postgreDB");
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
       new LocalStrategy(async (username, password, done) => {
         try {
           const user = await queryMembers(
-            'SELECT * FROM membership WHERE mem_id = $1',
+            'SELECT * FROM membership WHERE mem_id = $1 AND mem_name IS NOT NULL',
             [username]
           );
 
@@ -36,9 +37,46 @@ module.exports = {
         }
       })
     );
+
+    passport.use(
+      new NaverStrategy({
+        clientID: 'wMDKpAS4spWQCbsbJuI6',
+        clientSecret: 'uRm738QZ0C',
+        callbackURL: 'http://localhost:3000/auth/naver/callback'
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          const naverProfile = profile._json;
+          let user = await queryMembers('SELECT * FROM membership WHERE mem_id = $1', [naverProfile.id]);
+
+          if (!user.rows || user.rows.length === 0) {
+            user = {
+              mem_id: naverProfile.id,
+              mem_password: '', 
+              mem_name: naverProfile.nickname, // 닉네임을 mem_name으로 사용
+              mem_email: naverProfile.email,
+              mem_tel: '',
+              mem_nickname: naverProfile.nickname,
+              mem_address: ''
+            };
+
+            await queryMembers(
+              'INSERT INTO membership (mem_id, mem_password, mem_name, mem_email, mem_tel, mem_nickname, mem_address) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+              [user.mem_id, user.mem_password, user.mem_name, user.mem_email, user.mem_tel, user.mem_nickname, user.mem_address]
+            );
+          } else {
+            user = user.rows[0];
+          }
+
+          return done(null, user);
+        } catch (err) {
+          return done(err);
+        }
+      })
+    );
+
     passport.serializeUser((user, done) => {
-      console.log("Serialized user:", user);
-      done(null, user.mem_id); // user.id 대신 user.mem_id로 수정
+      done(null, user.mem_id);
     });
 
     passport.deserializeUser(async (id, done) => {
@@ -49,78 +87,69 @@ module.exports = {
         );
 
         if (!user.rows || user.rows.length === 0) {
-          console.log("deserialization error: No user with this id", id);
           return done(new Error("No user with this id"), null);
         }
-        console.log("Deserialized user:", user.rows[0]);
         return done(null, user.rows[0]);
       } catch (err) {
         return done(err);
       }
     });
 
-    // 사용자의 인증 상태를 확인하는 엔드포인트 추가
     app.get("/check-auth", async (req, res) => {
       try {
         if (req.isAuthenticated()) {
           this.userId = req.user.mem_id;
-          // 사용자가 로그인한 상태라면
           res.json({
             authenticated: true,
             userId: req.user.mem_id,
             nickName: req.user.mem_nickname,
           });
         } else {
-          // 사용자가 로그인하지 않은 상태라면
-          res.json({ authenticated: false  });
+          res.json({ authenticated: false });
         }
       } catch (error) {
-        console.error(error);
         res.status(500).json({ message: "서버 오류" });
       }
     });
 
-  app.post("/login", (req, res, next) => {
-    passport.authenticate("local", (err, user, info) => {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        return res.status(401).json({ message: info.message });
-      }
-      req.login(user, (err) => {
+    app.post("/login", (req, res, next) => {
+      passport.authenticate("local", (err, user, info) => {
         if (err) {
           return next(err);
         }
-        const userId = JSON.stringify(req.session.passport.user);
-        const nickName = req.user.mem_nickname; // 사용자 이름
+        if (!user) {
+          return res.status(401).json({ message: info.message });
+        }
+        req.login(user, (err) => {
+          if (err) {
+            return next(err);
+          }
+          const userId = JSON.stringify(req.session.passport.user);
+          const nickName = req.user.mem_nickname;
 
-        return res.json({
-          message: "Login Successful",
-          userNick: nickName,
-          userId: userId,
+          return res.json({
+            message: "Login Successful",
+            userNick: nickName,
+            userId: userId,
+          });
         });
-      });
-    })(req, res, next);
-  });
-    
+      })(req, res, next);
+    });
+
     app.post("/logout", (req, res) => {
       req.logout((err) => {
         if (err) {
-          console.error("Logout error:", err);
           return res.status(500).send("Logout error");
         }
 
         req.session.destroy((err) => {
           if (err) {
-            console.error("Session destroy error:", err);
             return res.status(500).send("Session destroy error");
           }
-          res.clearCookie("connect.sid"); // 세션 쿠키 삭제
+          res.clearCookie("connect.sid");
           res.json({ message: "Logout Successful" });
         });
       });
-      console.log("Session after logout:", req.session);
     });
   },
 };

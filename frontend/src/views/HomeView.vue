@@ -9,7 +9,6 @@
             <v-file-input label="Select Image" v-model="selectedImage" accept="image/*" name="image"
               @change="uploadImage(); showImageResults = false"></v-file-input>
             <v-btn type="submit" color="grey lighten-1" dark>이미지 분석</v-btn>
-            <v-btn color="secondary" dark @click="gotoCody">코디 검색</v-btn>
           </v-form>
         </v-col>
       </v-row>
@@ -129,10 +128,6 @@ export default {
         console.log(error)
       }
     },
-
-    gotoCody() {
-      this.$router.push('/cody');
-    }
   },
   mounted() {
     // this.getData();

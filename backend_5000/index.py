@@ -21,13 +21,8 @@ class Index:
         # 모형/종류/색상
         #keyword = f'{keywordArray[2]} {keywordArray[1]} {keywordArray[0]}'
         # 글자만 추출
-        #  keywordArrary 배열을 keywordArray_global에 넣고 싶어
-        keywordArray1 = ['','','']
-        
-        for k in keywordArray :
-            keywordArray1.append(k)
-
-        keyword = ' '.join([word for sublist in keywordArray for word in sublist])
+       
+        keyword = ''.join([word for sublist in keywordArray for word in sublist])
         print(keyword)
         # Node.js 서버의 URL
         url = 'http://localhost:3000/api/search-images'
@@ -43,22 +38,19 @@ class Index:
         # 응답을 확인합니다.
         if response.status_code == 200 and check_image_duplication[0][0] == 0:
             if user_id_global == 'null':
-                ch.clothes_Insert(image_hash, 'top', keywordArray1, image_URL_global, featureArray)
-                keywordArray1= ['','','']
+                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, featureArray)
 
             elif user_id_global != 'null':
-                ch.clothes_Insert(image_hash, 'top', keywordArray1, image_URL_global, featureArray)
-                ch.searchLog_Insert(user_id_global, 'top', keywordArray1, image_URL_global, featureArray)
-                keywordArray1= ['','','']
+                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, featureArray)
+                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, featureArray)
+
 
             return 'Data sent to Node.js server successfully', 200
         elif response.status_code == 200 and check_image_duplication[0][0] != 0:
             if user_id_global != 'null':
-                ch.searchLog_Insert(user_id_global, 'top', keywordArray1, image_URL_global, featureArray)
-                keywordArray1= ['','','']
-            return 'Data sent to Node.js server successfully', 200
+                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, featureArray)
+                return 'Data sent to Node.js server successfully', 200
         else:
-            keywordArray1= ['','','']
             return 'Failed to send data to Node.js server', 500
         
     def processFormData(self, uploaded_file, user_Id, img_URL):
@@ -83,7 +75,7 @@ class Index:
 
         # detect_objects_and_extract_colors 실행 후 결과 받아오기
         keywordArray_global = detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path)
-        print(keywordArray_global)
+        #print('keywordArray_global :  ', keywordArray_global)
         return self.postData(keywordArray_global, featureArray=[True, True, True, True, True])
 
 Index = Index()
