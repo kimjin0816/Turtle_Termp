@@ -9,4 +9,4 @@ yolov5
 node_modules
 package-lock.json
 
-backend_5000\__pycache__
+backend_5000/__pycache__
