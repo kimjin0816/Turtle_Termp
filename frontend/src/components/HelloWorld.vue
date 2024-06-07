@@ -1,69 +1,145 @@
 <template>
-  <v-row class="text-center" style="margin-top: -20px;">
-    <v-col cols="12">
-      <!-- 첨부한 이미지 표시 영역 -->
-      <v-row>
-        <v-col v-for="(image, index) in attachedImages" :key="index" cols="10">
-          <v-img :src="image.src" alt="Attached Image"></v-img>
-        </v-col>
-      </v-row>
-
-      <!-- 이미지 첨부 -->
-      <v-col>
-        <v-file-input label="이미지를 첨부하세요" v-model="selectedImage" accept="image/*"></v-file-input>
-        <v-btn @click="attachImage">이미지 첨부</v-btn>
-      </v-col>
-
-      <!-- 이미지 결과 -->
-      <v-container>
-        <div class="my-3" style="text-align: center;">
-          <h1>이미지 결과</h1>
+  <v-app>
+    <!-- 상단 바 -->
+    <v-app-bar app color="grey lighten-1" dark style="max-height: 63px">
+      <v-row style="display: flex; justify-content: flex-end; align-items: center; margin-top: -10px;">
+        <div style="margin-right: -70px;">
+          <v-btn icon @click="drawer = !drawer" class="custom-btn">
+            <v-icon color="black">mdi-menu</v-icon>
+          </v-btn>
         </div>
-        <v-row justify="center">
-          <v-col v-for="(image, index) in attachedImages" :key="index" cols="10" sm="4" md="4">
-            <div class="image-container" style="text-align: center;">
-              <img :src="image.src" alt="Image Result">
-            </div>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-col>
-  </v-row>
+        <div style="margin-left: 50px; display: inline-block; margin-right: -100px;">
+          <span style="color: black; font-size: 36px; position: relative; left: -50px;">C&C</span>
+        </div>
+        <div style="margin-left: 100px; display: inline-block; justify-content: center">
+          <span style="color: black; font-size: 48px; position: relative; left: 300px;">Clothes By Connect</span>
+        </div>
+        <v-navigation-drawer v-model="drawer" absolute bottom temporary style="height: calc(100vh - 100px); left: 0; right: auto; z-index: 1000;">
+          <v-list nav dense>
+            <v-list-item-group active-class="light-grey">
+              <v-btn v-if="!authenticated" @click="goToPage('login')" text color="white" class="ml-1" style="font-size: 24px; margin-bottom: 40px;"> 로그인 </v-btn>
+              <v-list-item @click="goToPage('home')" style="margin-top: 10px;">
+                <v-list-item-title>메인</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="goToPage('about')">
+                <v-list-item-title>키워드</v-list-item-title>
+              </v-list-item>
+            </v-list-item-group>
+            <v-list nav dense v-if="authenticated" style="margin-top: 400px;">
+              <v-btn @click="handleLogout" color="light-grey" dark style="width: 100px;">
+                <v-list-item-title style="color: white; font-size: 24px;">로그아웃</v-list-item-title>
+              </v-btn>
+            </v-list>
+          </v-list>
+        </v-navigation-drawer>
+      </v-row>
+      <v-row style="display: flex; align-items: center; margin-top: 150px !important; justify-content: space-between;">
+        <v-btn @click="goToPage('about')" text color="black" class="ml-1 move-left" 
+        style="text-decoration: underline; font-size: 20px;"> 
+        키워드 
+      </v-btn>
+        <v-btn @click="goToPage('home')" text color="black" class="move-left" 
+        style="text-decoration: underline; font-size: 20px; margin-right: 20px; margin-left: -40px;"> 
+        메인 </v-btn>
+      </v-row>
+      <v-row style="display: flex; justify-content: flex-start; margin-top: -10px">
+        <v-spacer></v-spacer>
+        <v-menu v-if="authenticated" offset-y open-on-hover>
+          <template v-slot:activator="{ on }">
+            <v-btn text color="black" class="ml-1" v-on="on" style="font-size: 24px;">
+              {{ nickname }}
+            </v-btn>
+          </template>
+          <v-list style="max-width: 200px">
+            <v-list-item @click="handleSubMenuClick('회원 정보')" class="menu-item">
+              <v-list-item-title class="menu-title">회원 정보</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-btn v-if="!authenticated" @click="goToPage('login')" text color="black" class="ml-1" style="font-size: 24px;">
+          로그인
+        </v-btn>
+        <v-btn v-if="authenticated" @click="handleLogout" text color="black" class="ml-1" style="font-size: 24px;">
+          로그아웃
+        </v-btn>
+      </v-row>
+    </v-app-bar>
+    <v-main>
+      <router-view />
+    </v-main>
+    <v-footer app color="grey lighten-1" dark>
+      <span style="display: block; margin: 0 auto; text-align: center; background-color: grey lighten; color: black; padding: 10px; font-size: 28px;">
+        2024 목원대학교 졸업작품 (Turtle)
+      </span>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
 export default {
-  name: 'Home',
-
+  name: 'App',
   data() {
     return {
-      selectedImage: null,
-      attachedImages: [],
-      sampleImages: [
-        'https://example.com/path/to/image1.jpg',
-        'https://example.com/path/to/image2.jpg',
-        'https://example.com/path/to/image3.jpg',
-        'https://example.com/path/to/image4.jpg',
-        'https://example.com/path/to/image5.jpg',
-        'https://example.com/path/to/image6.jpg',
-        'https://example.com/path/to/image7.jpg',
-        'https://example.com/path/to/image8.jpg',
-        'https://example.com/path/to/image9.jpg',
-      ],
+      drawer: false,
+      nickname: '',
+      userId: '',
+      authenticated: false,
     };
   },
 
-  mounted() {
-    this.attachedImages = this.sampleImages
-      .slice(0, 9) // Slice the array to ensure it has a maximum of 9 items
-      .map(src => ({ src }));
+  created() {
+    this.checkAuthenticationStatus();
   },
 
   methods: {
-    attachImage() {
-      if (this.selectedImage) {
-        this.attachedImages.push({ src: URL.createObjectURL(this.selectedImage) });
-        this.selectedImage = null;
+    goToPage(pageName) {
+      try {
+        if (this.$route.name !== pageName) {
+          this.$router.push({ name: pageName, params: { nickname: this.nickname } });
+        }
+      } catch (error) {
+        console.error(`Error navigating to /${pageName}:`, error);
+      }
+    },
+    async checkAuthenticationStatus() {
+      try {
+        const response = await this.$axios.get('http://localhost:3000/check-auth', {
+          withCredentials: true,
+        });
+        console.log("checkAuthenticationStatus response: ", response.data);
+        if (response.data.authenticated) {
+          this.userId = localStorage.setItem('userId', response.data.userId);
+          this.authenticated = true;
+          this.nickname = response.data.nickName;
+        } else {
+          localStorage.removeItem('userId');
+          this.userId = null;
+          this.authenticated = false;
+          this.nickname = "";
+        }
+      } catch (error) {
+        console.error('인증 상태 확인 실패:', error);
+      }
+    },
+
+    async handleLogout() {
+      try {
+        await this.$axios.post('http://localhost:3000/logout', {}, {
+          withCredentials: true,
+        });
+        console.log('로그아웃 성공');
+        alert('로그아웃 성공');
+        this.goToPage('login');
+        this.$router.go();
+      } catch (error) {
+        console.error('로그아웃 실패:', error);
+      }
+    },
+    handleSubMenuClick(item) {
+      if (item === '회원 정보') {
+        this.$router.push({ name: 'Memin' });
+      } else {
+        alert(`선택한 소메뉴: ${item}`);
       }
     },
   },
@@ -71,7 +147,28 @@ export default {
 </script>
 
 <style scoped>
-.image-container {
-  margin: 20px;
+.custom-btn {
+  margin-left: -150px;
+}
+
+.move-left {
+  margin-right: 170px !important;
+  transform: translateX(-100px);
+}
+
+.v-app-bar {
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  letter-spacing: -.4px;
+  min-width: 1180px;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1920px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
 }
 </style>

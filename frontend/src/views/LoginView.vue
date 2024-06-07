@@ -17,6 +17,9 @@
         <button type="submit">로그인</button>
       </form>
 
+      <!-- 네이버 로그인 버튼 추가 -->
+      <button @click="loginWithNaver" class="naver-login-button">네이버 로그인</button>
+
       <!-- 회원가입, 아이디/비밀번호 찾기 링크 -->
       <div class="links">
         <router-link to="/signup">
@@ -63,10 +66,8 @@ export default {
         });
         console.log("response userNick: " + response.data.userNick);
         console.log("response userId: ", response.data.userId);
-        // sessionStorage.setItem('authenticated', 'true');
         localStorage.setItem('userId', response.data.userId);
         console.log("userId: " + localStorage.getItem('userId'));
-        // localStorage.setItem('nickName', response.data.user.nickName);
         alert('로그인 성공');
         this.$router.push("/")
         this.$router.go();
@@ -74,6 +75,9 @@ export default {
         alert('로그인 실패');
         console.error('Login failed:', error.response.data.error);
       }
+    },
+    loginWithNaver() {
+      window.location.href = "http://localhost:3000/auth/naver";
     },
   },
 };
@@ -86,13 +90,11 @@ export default {
   align-items: center;
   height: 100vh;
   background-color: #f5f5f5;
-  /* 배경색 추가 */
 }
 
 .center-box {
   text-align: center;
   background-color: #fff;
-  /* 중앙 박스 배경색 추가 */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -100,7 +102,6 @@ export default {
 
 h1 {
   color: #333;
-  /* 제목 색상 변경 */
   font-size: 24px;
   margin-bottom: 20px;
 }
@@ -119,7 +120,6 @@ label {
   margin-bottom: 8px;
   font-weight: bold;
   color: #555;
-  /* 라벨 색상 변경 */
 }
 
 input {
@@ -141,32 +141,38 @@ button {
   font-size: 16px;
   font-weight: bold;
   transition: background-color 0.3s;
-  /* 부드러운 색상 전환을 위한 트랜지션 추가 */
 }
 
 button:hover {
   background-color: grey;
 }
 
+.naver-login-button {
+  background-color: #1ec800; /* 네이버 색상 */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 .links {
   margin-top: 20px;
   display: flex;
-  /* 버튼을 가로로 나열하기 위해 추가 */
   justify-content: space-between;
-  /* 버튼 사이에 간격 주기 위해 추가 */
 }
 
 .router-link {
   flex: 1;
-  /* 버튼의 공간을 동일하게 나누기 위해 추가 */
   margin-right: 10px;
-  /* 여백 추가 */
   margin-left: 10px;
 }
 
 .router-link button {
   width: 100%;
-  /* 버튼을 가로로 꽉 채우기 위해 추가 */
   color: white;
   background-color: #007bff;
   border: none;
@@ -176,16 +182,9 @@ button:hover {
   font-size: 14px;
   font-weight: bold;
   transition: background-color 0.3s;
-  /* 부드러운 색상 전환을 위한 트랜지션 추가 */
 }
 
 .router-link button:hover {
   background-color: #007bff;
-}
-
-.nickname-display {
-  margin-top: 20px;
-  font-size: 18px;
-  color: #333;
 }
 </style>
