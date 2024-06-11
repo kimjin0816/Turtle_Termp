@@ -12,7 +12,7 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
     subprocess.run(detect_command, check=True)
     
     # 객체 감지 결과 디렉토리 찾기
-    detect_dir = sorted(Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/runs/detect').glob('*'), key=os.path.getmtime, reverse=True)[0]
+    detect_dir = sorted(Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/runs/detect').glob('*'), key=os.path.getmtime, reverse=True)[0]
     image_basename = image_path.name
     image_name, image_extension = os.path.splitext(image_basename)
 
@@ -22,9 +22,7 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
         raise FileNotFoundError("Object detection results not found")
     
     with open(label_path, 'r', encoding='cp949') as file:
-    
         lines = file.readlines()
-        #print(lines)
         detected_classes = sorted(set(line.split()[0] for line in lines))
         print(detected_classes[0])
         
@@ -35,11 +33,7 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
             'python', str(color_feature_script_path), '--image', str(crop_image_path)
         ]
         result = subprocess.run(color_keyword_command, capture_output=True, text=True, check=True)
-        #print('result:', result.stdout)
         color_keyword_array.append(result.stdout.strip()) 
-        
-        #print('color_keyword_array : ', color_keyword_array)
-        # print(detected_classes)
         
         output = [color_keyword_array[0],  detected_classes[0]]
     

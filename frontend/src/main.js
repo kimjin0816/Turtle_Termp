@@ -6,7 +6,7 @@ import vuetify from "./plugins/vuetify";
 
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
-Vue.prototype.$bus = new Vue(); // 이벤트 버스용 빈 인스턴스 생성
+Vue.prototype.$bus = new Vue();
 
 new Vue({
   router,
