@@ -6,13 +6,13 @@ const UserController = require("./userController");
 const clothesController = require("./clothesController");
 const naverAPI = require("./naverAPI");
 
-function ensureAuthenticated(req, res, next) {
+/* function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     this.userId = req.user._id;
     return next();
   }
   res.status(401).json({ message: "Unauthorized" });
-}
+} */
 
 router.post("/signup", UserController.signUp);
 router.post("/findCredentials", UserController.findCredentials);

@@ -15,7 +15,7 @@
 export default {
   data() {
     return {
-      userId: localStorage.getItem('userId'),
+      // userId: localStorage.getItem('userId'),
       showMemin: true,
       // 추가: 화면에 보이도록 여부를 관리할 변수
       extractedData: {
