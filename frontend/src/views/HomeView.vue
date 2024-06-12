@@ -7,7 +7,7 @@
         <v-col cols="12" md="2">
           <v-form @submit.prevent="submitForm">
             <v-file-input label="Select Image" v-model="selectedImage" accept="image/*" name="image"
-              @change="uploadImage(); showImageResults = false"></v-file-input>
+              @change="uploadImage()"></v-file-input>
             <v-btn type="submit" color="grey lighten-1" dark>이미지 분석</v-btn>
           </v-form>
         </v-col>
@@ -22,33 +22,18 @@
         </v-col>
       </v-row>
 
-      <!-- 이미지 결과 -->
-      <v-container v-if="showImageResults" style="margin-top: -20px">
+      <v-container v-if="showImageResult" style="margin-top: -20px">
         <div class="my-3" style="text-align: center">
-          <v-row>
-            <v-col>
-              <v-btn @click="getData" text color="black" class="ml-1 move-left"
-                style="text-decoration: underline; font-size: 20px;">
-                결과 보기
-              </v-btn>
-            </v-col>
-          </v-row>
+          <v-row><v-col><h2>이미지 분석 결과</h2></v-col></v-row>
         </div>
-        <div v-if="keywords" class="my-3" style="text-align: center">
+
+        <div class="my-3" style="text-align: center">
           <h2>{{ keywords }}</h2>
         </div>
-        <v-row justify="center">
-          <v-col v-for="(item, index) in similarImages" :key="index" cols="10" sm="4" md="4">
-            <div class="image-container" style="text-align: center">
-              <img :src="item.image" alt="Image Result" style="width: 100%; max-width: 300px; height: auto;" />
-              <div class="image-info">
-                <h2 v-html="item.title"></h2>
-                <a :href="item.link">상품 링크</a>
-                <p>{{ item.lprice | formatPrice }}원</p>
-                <p>{{ item.category2 }}</p>
-                <p>{{ item.category3 }}</p>
-              </div>
-            </div>
+
+        <v-row>
+          <v-col v-for="(item, index) in extractedData" :key="index" cols="10" sm="4" md="4">
+            <ImageResult :item="item" />
           </v-col>
         </v-row>
       </v-container>
@@ -57,18 +42,23 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import ImageResult from "./ImageResult.vue";
 export default {
-  name: "Home",
+  name: "HomeView",
+  // inject: ['dataFromGetData'],
+
+  components: {
+    ImageResult,
+  },
   data() {
     return {
       selectedImage: null,
       attachedImages: [],
-      similarImages: [],
-      showImageResults: false,
-      keywords: [],
-      keywordArray: [],
+      showImageResult: false,
+      keywords: '',
+      // keywordArray: [],
+      extractedData: [],
+      result:[]
     };
   },
   filters: {
@@ -76,24 +66,36 @@ export default {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   },
-  methods: {
+  methods: {    
     async submitForm() {
-      this.showImageResults = false;
       let formData = new FormData();
       if (!this.selectedImage) {
         return alert('이미지를 선택해주세요.')
       } else {
-        formData.append('image', this.selectedImage);
-        formData.append('userId', localStorage.getItem('userId'));
-        await axios.post('http://localhost:5000/', formData)
-          .then(response => {
-            console.log('Image uploaded successfully');
-            this.showImageResults = true;
-          })
-          .catch(error => {
-            console.error('submit(): ', error);
-          });
+        try {
+          this.showImageResult = false;
+          if (localStorage.getItem('userId') == null) {
+            localStorage.setItem('userId', null);
+            console.log('userid get' + localStorage.getItem('userId'));
+            formData.append('userId', localStorage.getItem('userId'));
+          } else {
+            formData.append('userId', localStorage.getItem('userId'));
+          }
+          formData.append('image', this.selectedImage);
+          const response = await this.$axios.post('http://localhost:5000/', formData);
+          if (response.status == 200) {
+            const result = await this.fetchData();
+            this.keywords = result.keywords;
+            // this.keywordArray = result.keywordArray;
+            this.extractedData = result.extractedData;
+            this.showImageResult = true;
+            localStorage.setItem('keywordArray', JSON.stringify(result.keywordArray));
+          }
+        } catch (e) {
+          console.error('submitForm:', e);
+        }
       }
+     
     },
 
     uploadImage() {
@@ -102,35 +104,22 @@ export default {
           this.attachedImages = []; // 첨부된 이미지 초기화
           const imageURL = URL.createObjectURL(this.selectedImage);
           this.attachedImages.unshift({ src: imageURL });
-          // this.selectedImage = null;
         } catch (error) {
           console.error('uploadImage:', error);
         }
       }
     },
-    async getData() {
+    async fetchData() {
       try {
-        const response = await axios.get('http://localhost:3000/api/keyword');
-        this.keywords = response.data.keywords;
-        this.keywordArray = response.data.keywordArray;
-        this.similarImages = response.data.extractedData.map(item => {
-          return {
-            title: item.title,
-            link: item.link,
-            image: item.image,
-            lprice: item.lprice,
-            category2: item.category2,
-            category3: item.category3,
-          };
-        });
-        this.showImageResults = true;
+        const response = await this.$axios.get("http://localhost:3000/api/keyword");
+        if (response.status == 200) {
+          return response.data;
+        }
       } catch (error) {
-        console.log(error)
+        console.error("Error fetching shopping data:", error);
       }
-    },
+    }
   },
-  mounted() {
-    // this.getData();
-  },
+  
 }
 </script>

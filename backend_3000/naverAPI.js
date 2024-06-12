@@ -1,5 +1,4 @@
-const clothesController = require("./clothesController");
-const userController = require("./userController");
+
 const ps = require("./passport-session");
 const axios = require("axios");
 
@@ -9,7 +8,7 @@ const naverAPI = {
   keywordArray: [],
   extractedData: [],
   save_path: "",
-  userId: "",
+
   // naverAPI call
   async callNaverShoppingAPI(req, res) {
     try {
@@ -18,9 +17,8 @@ const naverAPI = {
         display: 20, // 검색 개수
       };
       queryParams.query = req.body.keywords;
-      this.userId = ps.userId;
-      this.keywordArray = req.body.keywordArray;
       this.keywords = req.body.keywords;
+      this.keywordArray = req.body.keywordArray;
 
       clientId = "MLN5m3nClexyvNU0pp46";
       clientSecret = "fOYgb7iZsf";
@@ -38,8 +36,6 @@ const naverAPI = {
           },
         }
       );
-
-      // get data filter
       this.extractedData = response.data.items.map((item) => ({
         title: item.title,
         link: item.link,
@@ -48,7 +44,9 @@ const naverAPI = {
         category2: item.category2,
         category3: item.category3,
       }));
-      res.json({ status: "ok" });
+      if (response.status == 200) {
+        res.json({ status: "ok" });
+      }
     } catch (error) {
       console.error("callNaverShoppingAPI()", error);
     }
@@ -60,33 +58,21 @@ const naverAPI = {
         keywords: this.keywords,
         keywordArray: this.keywordArray,
         extractedData: this.extractedData,
+        showImageResult : true
       });
       // reset
-      this.keywords = "";
-      this.keywordArray = [];
-      this.extractedData = [];
-      if (!ps.userId) {
-        this.userId = "";
-      } else {
-        this.userId = ps.userId;
-      }
+      // this.keywords = "";
+      // this.keywordArray = [];
+      // this.extractedData = [];
+      // if (!ps.userId) {
+      //   this.userId = "";
+      // } else {
+      //   this.userId = ps.userId;
+      // }
     } catch (error) {
       console.error("postData(): ", error);
     }
   },
 };
-
-/* async postdata() {
-  try {
-    const result = app.post("http://localhost:8080/api/keyword", {
-      keyword: this.keyword,
-      items: this.items,
-    });
-    console.log("여기까지 올까? " + result.data);
-  } catch (error) {
-    console.error("postData(): ", error);
-    throw error;
-  }
-}, */
 
 module.exports = naverAPI;
