@@ -40,6 +40,8 @@ export default {
           console.log('회원 탈퇴 성공');
           alert('회원 탈퇴 성공');
           this.$router.push('/');
+          location.reload();
+          localStorage.removeItem("userId");
         } else {
           console.error('서버 응답 오류:', response.data.message);
           alert('아이디 및 비밀번호가 일치하지 않습니다.');

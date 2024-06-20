@@ -28,7 +28,13 @@
           </template>
           <v-list style="max-width: 200px">
             <v-list-item @click="goToPage('Memin')" class="menu-item">
-              <v-list-item-title class="menu-title">회원 정보</v-list-item-title>
+              <v-list-item-title class="menu-title">이미지 검색 정보</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="goToPage('updateProfile')" class="menu-item">
+              <v-list-item-title class="menu-title">회원 정보 수정</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="goToPage('deleteProfile')" class="menu-item">
+              <v-list-item-title class="menu-title">회원 정보 탈퇴</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -61,7 +67,7 @@ export default {
     };
   },
 
-  created() {
+  mounted() {
     this.checkAuthenticationStatus();
   },
 

@@ -28,12 +28,6 @@
         <router-link to="/findCredentials">
           <button class="router-link">아이디/비밀번호 찾기</button>
         </router-link>
-        <router-link to="/updateProfile">
-          <button class="router-link">회원정보 수정</button>
-        </router-link>
-        <router-link to="/deleteProfile">
-          <button class="router-link">회원 탈퇴</button>
-        </router-link>
       </div>
     </div>
   </div>
