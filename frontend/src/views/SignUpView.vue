@@ -4,79 +4,37 @@
     <form @submit.prevent="signup" class="signup-form">
       <div class="form-group">
         <label for="mem_id">아이디:</label>
-        <input
-          v-model="mem_id"
-          type="text"
-          id="mem_id"
-          name="mem_id"
-          required
-        />
+        <input v-model="mem_id" type="text" id="mem_id" name="mem_id" required />
       </div>
 
       <div class="form-group">
         <label for="mem_password">비밀번호:</label>
-        <input
-          v-model="mem_password"
-          type="password"
-          id="mem_password"
-          name="mem_password"
-          required
-        />
+        <input v-model="mem_password" type="password" id="mem_password" name="mem_password" required />
       </div>
 
       <div class="form-group">
         <label for="mem_name">이름:</label>
-        <input
-          v-model="mem_name"
-          type="text"
-          id="mem_name"
-          name="mem_name"
-          required
-        />
+        <input v-model="mem_name" type="text" id="mem_name" name="mem_name" required />
       </div>
 
       <div class="form-group">
         <label for="mem_email">이메일:</label>
-        <input
-          v-model="mem_email"
-          type="email"
-          id="mem_email"
-          name="mem_email"
-          required
-        />
+        <input v-model="mem_email" type="email" id="mem_email" name="mem_email" required />
       </div>
 
       <div class="form-group">
         <label for="mem_tel">전화번호:</label>
-        <input
-          v-model="mem_tel"
-          type="tel"
-          id="mem_tel"
-          name="mem_tel"
-          required
-        />
+        <input v-model="mem_tel" type="tel" id="mem_tel" name="mem_tel" required />
       </div>
 
       <div class="form-group">
         <label for="mem_nickname">닉네임:</label>
-        <input
-          v-model="mem_nickname"
-          type="text"
-          id="mem_nickname"
-          name="mem_nickname"
-          required
-        />
+        <input v-model="mem_nickname" type="text" id="mem_nickname" name="mem_nickname" required />
       </div>
 
       <div class="form-group">
         <label for="mem_address">주소:</label>
-        <input
-          v-model="mem_address"
-          type="text"
-          id="mem_address"
-          name="mem_address"
-          required
-        />
+        <input v-model="mem_address" type="text" id="mem_address" name="mem_address" required />
       </div>
 
       <button type="submit">회원가입</button>
@@ -134,8 +92,10 @@ export default {
 
 <style scoped>
 .signup-container {
-  max-width: 650px; /* 수정된 부분: 박스 크기를 600px로 조정 */
-  margin: 20px auto; /* 수정된 부분: 상단 여백을 주고 가운데 정렬 */
+  max-width: 650px;
+  /* 수정된 부분: 박스 크기를 600px로 조정 */
+  margin: 20px auto;
+  /* 수정된 부분: 상단 여백을 주고 가운데 정렬 */
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;

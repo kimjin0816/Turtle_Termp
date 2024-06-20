@@ -16,7 +16,7 @@
         </v-card-text>
         <v-card-actions class="justify-center">
           <v-btn @click="research">재검색</v-btn>
-          <v-btn @click="dialog = false; resultOpen = true">취소</v-btn>
+          <v-btn @click="closeDialog">취소</v-btn>
           <v-btn @click="getKeyword">최근 검색어</v-btn>
         </v-card-actions>
       </v-card>
@@ -24,9 +24,11 @@
     <v-main v-if="resultOpen" style="margin-top: -20px">
       <v-container>
         <div class="my-3" style="text-align: center">
-          <v-row><v-col>
+          <v-row>
+            <v-col>
               <h2>재검색 결과</h2>
-            </v-col></v-row>
+            </v-col>
+          </v-row>
         </div>
         <div class="my-3" style="text-align: center">
           <h2>{{ keywords }}</h2>
@@ -52,14 +54,6 @@ export default {
     ImageResult,
   },
 
-  // watch: {
-  //   dialog(newVal) {
-  //     if (!newVal) {
-  //       this.$router.push("/about");
-  //     }
-  //   },
-  // },
-
   data() {
     return {
       dialog: true,
@@ -77,7 +71,16 @@ export default {
 
   methods: {
     openDialog() {
-      this.dialog = true; // 'dialogOpen'은 다이얼로그의 열림 상태를 제어하는 데이터 속성이어야 합니다.
+      this.dialog = true;
+    },
+    closeDialog() {
+      this.dialog = false;
+      if (this.keywords.length === 0 || this.extractedData.length === 0) {
+        this.$router.push("/");
+        this.resultOpen = false;
+      } else {
+        this.resultOpen = true;
+      }
     },
     getKeyword() {
       if (localStorage.getItem("keywordArray") != null) {
@@ -100,11 +103,15 @@ export default {
         if (response.status == 200) {
           const result = await this.fetchData();
           console.log("result :" + JSON.stringify(result));
-          this.keywords = result.keywords;
-          // this.keywordArray = result.keywordArray;
-          this.extractedData = result.extractedData;
-          this.dialog = false;
-          localStorage.setItem('keywordArray', JSON.stringify(result.keywordArray));
+          if (result.status == 200) {
+            this.keywords = result.data.keywords;
+            this.extractedData = result.data.extractedData;
+            // this.keywordArray = result.keywordArray;
+            this.dialog = false;
+            localStorage.setItem('keywordArray', JSON.stringify(result.data.keywordArray));
+          } else {
+            alert('검색 결과가 없습니다.');
+          }
         }
       } catch (error) {
         console.log(error)
@@ -115,7 +122,7 @@ export default {
       try {
         const response = await this.$axios.get("http://localhost:3000/api/keyword");
         if (response.status == 200) {
-          return response.data;
+          return response;
         }
       } catch (error) {
         console.error("Error fetching shopping data:", error);

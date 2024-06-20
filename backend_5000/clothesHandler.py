@@ -41,60 +41,20 @@ class clothesHandler:
         return rows
 #endregion
 # -----------------------------------------------------------------------------------------------------------------------------------------------
-#region => clothes image url    
-    # clothes image url
-    # def c_img_url(self):
-    #     img_elements = driver.find_elements(By.TAG_NAME, 'img')
-    #     for img_element in img_elements:
-    #         src = img_element.get_attribute('src')
-    #     return src
-    # # background/clothes_top file path copy test folder
-    # def image_path(self, image_filename, type_clothes):
-    #     # clothes 폴더 경로 얻기
-    #     clothes_path = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', type_clothes)
-    #     # 이미지 파일 경로
-    #     image_path = os.path.join(clothes_path, image_filename)
-        
-    #     # 이미지를 test 폴더로 복사
-    #     destination_folder = os.path.join(os.path.expanduser('~'), 'Desktop/top_clothes', 'test')
-    #     shutil.copy(image_path, destination_folder)
-        
-    #     # 복사된 이미지 파일의 경로
-    #     copied_image_path = os.path.join(destination_folder, image_filename)
-        
-    #     # 복사된 이미지 열기
-    #     img = Image.open(copied_image_path)
-    #     # 이미지 출력
-    #     img.show()
-        
-    #     return copied_image_path
-#endregion
-# -----------------------------------------------------------------------------------------------------------------------------------------------     
 #region => features code
     # feature code setting
     def t_f_code(self, feature):
-        hoodVal = int(feature[0])
-        karaVal = int(feature[1])
-        zipperVal = int(feature[2])
-        logoVal = int(feature[3])
-        printerVal = int(feature[4])
-        featureCode = self.decimal(f"{hoodVal}{karaVal}{zipperVal}{logoVal}{printerVal}")
+        logoVal = int(feature[0])
+        printerVal = int(feature[1])
+        featureCode = self.decimal(f"{logoVal}{printerVal}")
         return featureCode 
-    # def b_f_code(self, feature):
-    #     joggerVal = int(feature[0])
-    #     pocketVal = int(feature[1])
-    #     featureCode = self.decimal(f"{joggerVal}{pocketVal}")
-    #     return featureCode
-    # top feature data insert(once)
-    def t_f_insert(self, hood, kara, zipper, logo, printer):
+
+    def t_f_insert(self, logo, printer):
         self.connectClothes()
-        hood_val = int(hood)
-        kara_val = int(kara)
-        zipper_val = int(zipper)
         logo_val = int(logo)
         printer_val = int(printer)
-        f_code = self.decimal(f"{hood_val}{kara_val}{zipper_val}{logo_val}{printer_val}")
-        self.writeClothes(f"INSERT INTO top_feature VALUES ({f_code}, {hood}, {kara}, {zipper}, {logo}, {printer});")
+        f_code = self.decimal(f"{logo_val}{printer_val}")
+        self.writeClothes(f"INSERT INTO top_feature VALUES ({f_code}, {logo}, {printer});")
         self.closeClothes()
     # def b_f_insert(self, jogger, pocket):
     #     self.connectClothes()
@@ -103,6 +63,12 @@ class clothesHandler:
     #     f_code = self.decimal(f"{jogger_val}{pocket_val}")
     #     self.writeClothes(f"INSERT INTO bottom_feature VALUES ({f_code}, {jogger}, {pocket});")
     #     self.closeClothes()   
+    # def b_f_code(self, feature):
+    #     joggerVal = int(feature[0])
+    #     pocketVal = int(feature[1])
+    #     featureCode = self.decimal(f"{joggerVal}{pocketVal}")
+    #     return featureCode
+    # top feature data insert(once)
 #endregion
 # -----------------------------------------------------------------------------------------------------------------------------------------------    
 #region => searchLog code    
@@ -130,17 +96,3 @@ class clothesHandler:
         self.writeClothes(f"INSERT INTO clothes(hash_code, top_bottom, shape, classification, color, img, f_code) VALUES ('{hash_code}','{top_bottom}', '{keywordArray[0]}', 'shape', '{keywordArray[1]}', '{img}', {f_code});")
         self.closeClothes()
 # -----------------------------------------------------------------------------------------------------------------------------------------------
-
-    # def b_c_SelectID(self, id):
-    #     self.connectClothes()
-    #     self.writeClothes(f"SELECT * FROM clothes_bottom WHERE b_code LIKE '{id}_%';")
-    #     rows = self.c_cur.fetchall()
-    #     self.closeClothes()
-    #     return rows
-
-    # def b_c_Insert(self, id, shape, classification, color, feature):
-    #     self.connectClothes()
-    #     f_code = self.b_f_code(feature)
-    #     # image_path = self.c_img_url()        
-    #     self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code, t_url) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
-    #     self.closeClothes()

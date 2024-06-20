@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS clothes(
                 shape VARCHAR(50) NOT NULL,
                 classification VARCHAR(50) NOT NULL,
                 color VARCHAR(50) NOT NULL,
-                img VARCHAR(50) NOT NULL,
+                img VARCHAR(100) NOT NULL,
                 f_code INT NOT NULL);
 
 CREATE TABLE IF NOT EXISTS searchLog (
@@ -15,19 +15,25 @@ CREATE TABLE IF NOT EXISTS searchLog (
                 shape VARCHAR(50) NOT NULL,
                 classification VARCHAR(50) NOT NULL,
                 color VARCHAR(50) NOT NULL,
-                img VARCHAR(50) NOT NULL,    
+                img VARCHAR(100) NOT NULL,    
                 date DATE NOT NULL,
                 f_code INT NOT NULL);
-
-
+                
 CREATE TABLE IF NOT EXISTS top_feature (
                 f_code CHAR(50) NOT NULL,
-                f_hood BOOLEAN NOT NULL,
-                f_kara BOOLEAN NOT NULL,
-                f_zipper BOOLEAN NOT NULL,
                 f_logo BOOLEAN NOT NULL,
                 f_printer BOOLEAN NOT NULL,
                 CONSTRAINT t_f_code_pk PRIMARY KEY (f_code));
+
+
+-- CREATE TABLE IF NOT EXISTS top_feature (
+--                 f_code CHAR(50) NOT NULL,
+--                 f_hood BOOLEAN NOT NULL,
+--                 f_kara BOOLEAN NOT NULL,
+--                 f_zipper BOOLEAN NOT NULL,
+--                 f_logo BOOLEAN NOT NULL,
+--                 f_printer BOOLEAN NOT NULL,
+--                 CONSTRAINT t_f_code_pk PRIMARY KEY (f_code));
 -- CREATE SEQUENCE IF NOT EXISTS top_sequence START 1;
 
 CREATE TABLE IF NOT EXISTS bottom_feature (
