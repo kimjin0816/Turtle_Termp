@@ -2,7 +2,7 @@
   <div class="signup-container">
     <h1>회원 탈퇴</h1>
     <form @submit.prevent="deleteProfile" class="signup-form">
-      <div v-if="!resultMessage" class="form-content">
+      <div class="form-content">
         <div class="form-group">
           <label for="userId">사용자 ID:</label>
           <input v-model="userId" type="text" id="userId" required>
@@ -40,19 +40,20 @@ export default {
           console.log('회원 탈퇴 성공');
           alert('회원 탈퇴 성공');
           this.$router.push('/');
-          location.reload();
+          this.$router.go();
           localStorage.removeItem("userId");
+        } else if (response.status === 403) {
+          console.error('서버 응답 오류:', response.data.message);
+          alert('로그인 상태가 아닙니다. 로그인 후 다시 시도해주세요.');
         } else {
           console.error('서버 응답 오류:', response.data.message);
-          alert('아이디 및 비밀번호가 일치하지 않습니다.');
-
+          alert('1아이디 및 비밀번호가 일치하지 않습니다.');
         }
       } catch (error) {
         console.error('클라이언트 오류:', error.message);
-        alert('아이디 및 비밀번호가 일치하지 않습니다.');
-
+        alert('2아이디 및 비밀번호가 일치하지 않습니다.');
       }
-    },
+    }
   },
 };
 </script>

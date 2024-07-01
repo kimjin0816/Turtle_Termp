@@ -1,4 +1,3 @@
-
 <template>
   <div class="signup-container">
     <h2>회원 정보 수정</h2>
@@ -10,7 +9,7 @@
 
       <div class="form-group">
         <label for="mem_password">비밀번호:</label>
-        <input v-model="mem_password" type="password" required />
+        <input v-model="mem_password" type="text" required />
       </div>
 
       <div class="form-group">
@@ -56,7 +55,28 @@ export default {
       mem_address: "",
     };
   },
+  mounted() {
+    this.getProfile();
+  },
   methods: {
+    async getProfile() {
+      const userId = localStorage.getItem("userId");
+      console.log('userid: '  + userId);
+      const response = await this.$axios.post("http://localhost:3000/getProfile", {
+        mem_id: userId
+      });
+      console.log("response: " + JSON.stringify(response.data));
+
+      if (response.status == 200) {
+        this.mem_id = response.data.mem_id;
+        this.mem_password = response.data.mem_password;
+        this.mem_name = response.data.mem_name;
+        this.mem_email = response.data.mem_email;
+        this.mem_tel = response.data.mem_tel;
+        this.mem_nickname = response.data.mem_nickname;
+        this.mem_address = response.data.mem_address;
+      }
+    },
     async updateProfile() {
       try {
         const response = await this.$axios.put(
@@ -71,24 +91,23 @@ export default {
             mem_address: this.mem_address,
           }
         );
-
         alert(response.data.message);
-
         if (response.status === 200) {
           // 수정 성공 시 HomeView로 이동
           this.$router.push('/');
-        } 
+          this.$router.go();
+        }
       } catch (error) {
         console.error("회원 정보 수정 오류:", error);
         alert("회원 정보 수정에 실패했습니다.");
         // 수정 실패 시 입력 필드 초기화
         this.mem_id = "";
-          this.mem_password = "";
-          this.mem_name = "";
-          this.mem_email = "";
-          this.mem_tel = "";
-          this.mem_nickname = "";
-          this.mem_address = "";
+        this.mem_password = "";
+        this.mem_name = "";
+        this.mem_email = "";
+        this.mem_tel = "";
+        this.mem_nickname = "";
+        this.mem_address = "";
       }
     },
   },
