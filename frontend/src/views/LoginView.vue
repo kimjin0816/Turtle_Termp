@@ -1,40 +1,36 @@
 <template>
   <div class="home-container">
     <div class="center-box">
-      <h1>로그인</h1>
       <!-- 로그인 폼 -->
       <form @submit.prevent="login" class="login-form">
-        <div class="form-group">
-          <label for="username">아이디:</label>
-          <input v-model="username" type="text" id="username" name="username" required />
-        </div>
+        <p>
+          <img src="../assets/logo.svg" alt="logo" style="width: 50px; height: 50px; margin-left: 5px;" />
+        <h2>안녕하세요!</h2>
+        <h2>CLOTHES BY CONNECT입니다.</h2>
+        </p>
 
-        <div class="form-group">
-          <label for="password">비밀번호:</label>
-          <input v-model="password" type="password" id="password" name="password" required />
+        <div class="input_tag">
+          <input class="input_log" v-model="username" type="text" id="username" name="username" required
+            placeholder="아이디를 입력해주세요" />
+          <input class="input_log" v-model="password" type="password" id="password" name="password" required
+            placeholder="비밀번호를 입력해주세요." />
+          <input type="submit" value="로그인" id="submit" />
         </div>
-
-        <button type="submit">로그인</button>
       </form>
-
-      <!-- 네이버 로그인 버튼 추가 -->
-      <button @click="loginWithNaver" class="naver-login-button">네이버 로그인</button>
-
-      <!-- 회원가입, 아이디/비밀번호 찾기 링크 -->
-      <div class="links">
+      <div class="router-link">
         <router-link to="/signup">
-          <button class="router-link">회원가입</button>
+          <button class="logon_findID" style="justify-content: flex-start;">회원가입</button>
         </router-link>
         <router-link to="/findCredentials">
-          <button class="router-link">아이디/비밀번호 찾기</button>
-        </router-link>
-        <router-link to="/updateProfile">
-          <button class="router-link">회원정보 수정</button>
-        </router-link>
-        <router-link to="/deleteProfile">
-          <button class="router-link">회원 탈퇴</button>
+          <button class="logon_findID" style="justify-content: flex-end;">아이디/비밀번호 찾기</button>
         </router-link>
       </div>
+
+      <!-- 네이버 로그인 버튼 추가 -->
+      <button @click="loginWithNaver" class="naver-login-button">
+        <img src="../assets/naver_icon.png" width="20" alt="네이버 아이콘" /> &nbsp;
+        네이버로 로그인
+      </button>
     </div>
   </div>
 </template>
@@ -64,12 +60,7 @@ export default {
           },
           withCredentials: true,
         });
-        console.log("response userNick: " + response.data.userNick);
-        console.log("response userId: ", response.data.userId);
-        // sessionStorage.setItem('authenticated', 'true');
         localStorage.setItem('userId', response.data.userId);
-        console.log("userId: " + localStorage.getItem('userId'));
-        // localStorage.setItem('nickName', response.data.user.nickName);
         alert('로그인 성공');
         this.$router.push("/")
         this.$router.go();
@@ -86,107 +77,96 @@ export default {
 </script>
 
 <style scoped>
-.home-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f5f5f5;
+h2 {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 130%;
 }
 
 .center-box {
   text-align: center;
   background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.login-form {
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #555;
+  padding: 50px;
 }
 
 input {
-  width: 100%;
+  background: #F0F0F0;
+  width: 10cm;
   padding: 10px;
   margin-bottom: 10px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  padding: 12px 20px;
   border: none;
-  border-radius: 3px;
-  cursor: pointer;
+
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
   font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  line-height: 130%;
 }
 
-button:hover {
-  background-color: grey;
-}
-
-.naver-login-button {
-  background-color: #1ec800; /* 네이버 색상 */
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.links {
-  margin-top: 20px;
+.input_tag {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input_log {
+  padding: 12px 28px;
+}
+
+#submit {
+  justify-content: center;
+  align-items: center;
+  padding: 12px 28px;
+  background: #262626;
+  color: white;
+}
+
+#submit:hover {
+  background: grey;
 }
 
 .router-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* justify-content: space-between; */
+  justify-content: center;
+}
+
+.logon_findID {
   flex: 1;
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
-.router-link button {
-  width: 100%;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 3px;
-  padding: 8px 16px;
-  cursor: pointer;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
   font-size: 14px;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  line-height: 140%;
+  text-decoration-line: underline;
+  color: #262626;
+  padding: 0px 110px;
 }
 
-.router-link button:hover {
-  background-color: #007bff;
+.naver-login-button {
+  width: 20%;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  background-color: #1ec800;
+  color: white;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  margin-top: 30px;
+  border-radius: 15px;
+}
+
+.naver-login-button img {
+  vertical-align: middle;
+  margin-bottom: 3px;
+
 }
 </style>

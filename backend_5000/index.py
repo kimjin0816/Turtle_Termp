@@ -16,16 +16,29 @@ imageName_global = ''
 image_URL_global = ''
 
 class Index:   
-    def postData(self, keywordArray, featureArray):    
-        # 모형/종류/색상
-        #keyword = f'{keywordArray[2]} {keywordArray[1]} {keywordArray[0]}'
-        # 글자만 추출
-       
-        keyword = ''.join([word for sublist in keywordArray for word in sublist])
+    def featureArray_keyword(self, featureArray):
+        # featureArray[0] = logo / featureArray[1] = printer
+        if featureArray[0] == True and featureArray[1] == True:
+            # return 특징 키워드
+            pass
+        elif featureArray[0] == True and featureArray[1] == False:
+            # return 특징 키워드
+            pass
+        elif featureArray[0] == False and featureArray[1] == True:
+            # return 특징 키워드
+            pass
+        elif featureArray[0] == False and featureArray[1] == False:
+            # return 특징 키워드
+            pass
+    def postData(self, keywordArray, featureArray): 
+        # 모형-종류-색상
+        # 키워드배열에서 0번째 인덱스는 모형, 1번째 인덱스는 종류, 2번째 인덱스는 색상 각각 띄어 쓰기하기
+
+        keyword = ' '.join(keywordArray)
         print('키워드 : ' + keyword)
         # Node.js 서버의 URL
         url = 'http://localhost:3000/api/search-images'
-        response = requests.post(url, json={'keywordArray': keywordArray, 'keywords': keyword})
+        response = requests.post(url, json={'featureAarry': featureArray,'keywordArray': keywordArray, 'keywords': keyword})
         
         image_hash = ch.calculate_image_hash(imageName_global)
         check_image_duplication = ch.check_image_hash(image_hash)
@@ -69,9 +82,9 @@ class Index:
         color_feature_script_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/color_feature.py')
 
         # detect_objects_and_extract_colors 실행 후 결과 받아오기
-        keywordArray = detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path)
+        keywordArray, featureAarry = detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path)
         #print('keywordArray_global :  ', keywordArray_global)
-        return self.postData(keywordArray, featureArray=[True, True, True, True, True])
+        return self.postData(keywordArray, featureAarry)
 
 Index = Index()
 

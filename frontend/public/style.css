@@ -1,0 +1,8 @@
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/path/to/pretendard.woff2') format('woff2'),
+       url('/path/to/pretendard.woff') format('woff'),
+       url('/path/to/pretendard.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
