@@ -2,19 +2,6 @@ const { queryMembers } = require("./PostgreDB");
 const { userId } = require("./passport-session");
 
 const UserController = {
-  // membership 테이블 생성
-  createTable(req, res) {
-    queryMembers(
-      "CREATE TABLE IF NOT EXISTS membership (mem_id VARCHAR(255) NOT NULL, mem_password VARCHAR(255) NOT NULL, mem_name   VARCHAR(255) NOT NULL, mem_email   VARCHAR(255) NOT NULL, mem_tel       VARCHAR(255) NOT NULL, mem_nickname  VARCHAR(255) NOT NULL, mem_address   VARCHAR(255) NOT NULL, CONSTRAINT MEM PRIMARY KEY (mem_id))",
-      (error, results) => {
-        if (error) {
-          throw error;
-        }
-        console.log("membership 테이블 생성 완료");
-      }
-    );
-  },
-
   // 회원가입
   async signUp(req, res) {
     const {
@@ -165,6 +152,7 @@ const UserController = {
     }
   },
 
+  // ID 존재 여부 확인
   async getProfile(req, res) {
     try {
       const mem_id = req.body.mem_id;
@@ -174,7 +162,7 @@ const UserController = {
         [mem_id]
       );
       if (existingUser.rows.length === 0) {
-        res.status(404).json({ message: "존재하지 않는 사용자입니다." });
+        res.status(200).json({ id_possible: true });
       } else {
         res.status(200).json({
           mem_id: existingUser.rows[0].mem_id,
@@ -184,6 +172,8 @@ const UserController = {
           mem_tel: existingUser.rows[0].mem_tel,
           mem_nickname: existingUser.rows[0].mem_nickname,
           mem_address: existingUser.rows[0].mem_address,
+          logon_posiible: false,
+          id_possible: false,
         });
       }
     } catch (error) {

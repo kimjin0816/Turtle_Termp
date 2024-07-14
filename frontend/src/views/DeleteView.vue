@@ -1,21 +1,21 @@
 <template>
   <div class="signup-container">
-    <h1>회원 탈퇴</h1>
+    <h2>회원 탈퇴</h2>
     <form @submit.prevent="deleteProfile" class="signup-form">
       <div class="form-content">
         <div class="form-group">
-          <label for="userId">사용자 ID:</label>
-          <input v-model="userId" type="text" id="userId" required>
+          <label for="userId">사용자 ID</label>
+          <input v-model="userId" type="text" id="userId" required placeholder="아이디를 입력해주세요">
         </div>
 
         <div class="form-group">
-          <label for="userPassword">비밀번호:</label>
-          <input v-model="userPassword" type="password" id="userPassword" required>
+          <label for="userPassword">비밀번호</label>
+          <input v-model="userPassword" type="password" id="userPassword" required placeholder="비밀번호를 입력해주세요">
         </div>
 
-        <button type="submit">회원 탈퇴</button>
+        <div class="form-group"><button type="submit">탈퇴 하기</button></div>
       </div>
-  </form>
+    </form>
   </div>
 </template>
 
@@ -35,23 +35,15 @@ export default {
         const response = await axios.delete('http://localhost:3000/deleteProfile', {
           data: { mem_id: this.userId, mem_password: this.userPassword },
         });
-
         if (response.status === 200) {
           console.log('회원 탈퇴 성공');
           alert('회원 탈퇴 성공');
           this.$router.push('/');
           this.$router.go();
           localStorage.removeItem("userId");
-        } else if (response.status === 403) {
-          console.error('서버 응답 오류:', response.data.message);
-          alert('로그인 상태가 아닙니다. 로그인 후 다시 시도해주세요.');
-        } else {
-          console.error('서버 응답 오류:', response.data.message);
-          alert('1아이디 및 비밀번호가 일치하지 않습니다.');
-        }
+        } 
       } catch (error) {
-        console.error('클라이언트 오류:', error.message);
-        alert('2아이디 및 비밀번호가 일치하지 않습니다.');
+        alert('아이디 및 비밀번호가 일치하지 않습니다.');
       }
     }
   },
@@ -60,62 +52,84 @@ export default {
 
 <style scoped>
 .signup-container {
-max-width: 650px;
-margin: 20px auto;
-padding: 20px;
-border: 1px solid #ccc;
-border-radius: 10px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-text-align: center;
-margin-top: 150px;
+  max-width: 650px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
 }
 
-h1 {
-font-size: 24px;
-margin-bottom: 20px;
+h2 {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 130%;
+  margin-bottom: 20px;
 }
 
-.signup-form {
-max-width: 300px;
-margin: 0 auto;
-}
-
-.form-content {
-display: flex;
-flex-direction: column;
-align-items: center;
-}
-
-.form-group {
-margin-bottom: 16px;
+span {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 130%;
+  margin-bottom: 20px;
+  color: black;
 }
 
 label {
-display: block;
-margin-bottom: 8px;
-font-weight: bold;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-align: left;
 }
 
 input {
-width: 100%;
-padding: 10px;
-margin-bottom: 10px;
-box-sizing: border-box;
-border: 1px solid #ccc;
-border-radius: 3px;
+  background: #F0F0F0;
+  width: 10cm;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
 }
 
-button {
-background-color: #007bff;
-color: white;
-padding: 12px 20px;
-border: none;
-border-radius: 3px;
-cursor: pointer;
-font-size: 16px;
-font-weight: bold;
-transition: background-color 0.3s;
-margin-top: 10px;
+.form-group button {
+  background: #262626;
+  color: white;
+  width: 10cm;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 3px;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+}
+
+.signup-form {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 10px;
 }
 
 button:hover {

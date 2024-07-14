@@ -1,25 +1,13 @@
 <template>
-  <v-app>
-    <v-app-bar app color="grey lighten-1" dark style="max-height: 63px">
-      <v-row style="display: flex; justify-content: flex-end; align-items: center; margin-top: -10px;">
-        <div style="margin-left: 50px; display: inline-block; margin-right: -100px;">
-          <span style="color: black; font-size: 36px; position: relative; left: -50px;">C&C</span>
-        </div>
-        <div style="margin-left: 100px; display: inline-block; justify-content: center">
-          <span style="color: black; font-size: 48px; position: relative; left: 300px;">Clothes By Connect</span>
-        </div>
-      </v-row>
-      <v-row style="display: flex; align-items: center; margin-top: 150px !important; justify-content: space-between;">
-        <v-btn @click="goToPage('about')" text color="black" class="ml-1 move-left"
-          style="text-decoration: underline; font-size: 20px;">
-          키워드
-        </v-btn>
-        <v-btn @click="goToPage('home')" text color="black" class="move-left"
-          style="text-decoration: underline; font-size: 20px; margin-right: 20px; margin-left: -40px;">
-          메인 </v-btn>
-      </v-row>
-      <v-row style="display: flex; justify-content: flex-start; margin-top: -10px">
-        <v-spacer></v-spacer>
+  <v-app id="app-bar">
+    <v-app-bar app color="grey lighten-2" elevation="0">
+      <div class="align_left">
+        <img src="../assets/logo_letter.svg" alt="logo" style="width: 50px; height: 50px; margin-left: 5px;" />
+      </div>
+      <div class="align_center">
+        <span>Clothes By Connect</span>
+      </div>
+      <div class="align_right">
         <v-menu v-if="authenticated" offset-y open-on-hover>
           <template v-slot:activator="{ on }">
             <v-btn text color="black" class="ml-1" v-on="on" style="font-size: 24px;">
@@ -28,26 +16,34 @@
           </template>
           <v-list style="max-width: 200px">
             <v-list-item @click="goToPage('Memin')" class="menu-item">
-              <v-list-item-title class="menu-title">이미지 검색 정보</v-list-item-title>
+              <v-list-item-title class="menu-title">검색 기록 확인</v-list-item-title>
             </v-list-item>
             <v-list-item @click="goToPage('updateProfile')" class="menu-item">
               <v-list-item-title class="menu-title">회원 정보 수정</v-list-item-title>
             </v-list-item>
             <v-list-item @click="goToPage('deleteProfile')" class="menu-item">
-              <v-list-item-title class="menu-title">회원 정보 탈퇴</v-list-item-title>
+              <v-list-item-title class="menu-title">회원 탈퇴</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn v-if="!authenticated" @click="goToPage('login')" text color="black" class="ml-1"
-          style="font-size: 24px;">
-          로그인
-        </v-btn>
-        <v-btn v-if="authenticated" @click="handleLogout" text color="black" class="ml-1" style="font-size: 24px;">
+        <v-btn v-if="authenticated" @click="handleLogout" text color="white" class="log_button">
           로그아웃
         </v-btn>
-      </v-row>
+        <v-btn v-if="!authenticated" @click="goToPage('login')" text color="white" class="log_button">
+          로그인
+        </v-btn>
+      </div>
     </v-app-bar>
-
+    <div id="two_function">
+    <v-btn @click="goToPage('about')" text class="function" :class="{ 'home-button-active': isKeywordPage }"
+      style="margin-right: 200px;">
+      <span>키워드</span>
+    </v-btn>
+    <v-btn @click="goToPage('home')" text class="function" :class="{ 'home-button-active': isHomePage }"
+      style="margin-left: 200px;">
+      <span>메인</span>
+    </v-btn>
+    </div>
     <v-main>
       <router-view />
     </v-main>
@@ -66,7 +62,14 @@ export default {
       authenticated: false,
     };
   },
-
+  computed: {
+    isHomePage() {
+      return this.$route.name === 'home'; 
+    },
+    isKeywordPage() {
+      return this.$route.name === 'about';
+    }
+  },
   mounted() {
     this.checkAuthenticationStatus();
   },
@@ -90,7 +93,7 @@ export default {
         const response = await this.$axios.get('http://localhost:3000/check-auth', {
           withCredentials: true,
         });
-        console.log("checkAuthenticationStatus response: ", response.data);
+        console.log(" checkAuthenticationStatus response: ", response.data);
         if (response.data.authenticated) {
           this.userId = localStorage.setItem('userId', response.data.userId);
           this.authenticated = true;
@@ -126,28 +129,79 @@ export default {
 </script>
 
 <style scoped>
-.custom-btn {
-  margin-left: -150px;
+.menu-item{  
+    /* Pre_R_16 */
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+
+}
+#app-bar {
+  display: flex;
+  flex-direction: row;
 }
 
-.move-left {
-  margin-right: 170px !important;
-  transform: translateX(-100px);
+.align_left {
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
 }
 
-.v-app-bar {
-  font-size: 14px;
-  color: #333;
-  box-sizing: border-box;
-  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
-  letter-spacing: -.4px;
-  min-width: 1180px;
-  margin: 0 auto;
-  padding: 0;
-  max-width: 1920px;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  white-space: nowrap;
+.align_center {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  font-family: 'KIMM_Bold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 130%;
+  color: #000000;
+  text-transform: uppercase;
+}
+
+.align_right {
+  display: flex;
+  flex: 1;
+  justify-content: end;
+}
+
+.log_button {
+  font-family: 'KIMM_Bold';
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  background-color: #262626;
+}
+
+#two_function {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 75px;
+}
+
+.function {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  text-decoration-color: rgba(173, 173, 173, 0.854902);
+  color: rgba(173, 173, 173, 0.854902);
+}
+
+.home-button-active {
+  color: black !important;
+  font-weight: bold !important;
+  text-decoration-line: underline;
+  text-decoration-color: black;
 }
 </style>

@@ -1,27 +1,27 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" v-if="dialog" max-width="500px">
+    <v-dialog v-model="dialog" v-if="dialog" max-width="300px">
       <v-card>
         <v-card-title class="text-center">키워드 입력</v-card-title>
         <v-card-text>
           <!-- 키워드 수정 내용 -->
           <v-text-field label="종류" v-if="keywordArray" v-model="keywordArray[1]">
-            <p>현재 종류: {{ keywordArray[1] }}</p>
+            <!-- <p>현재 종류: {{ keywordArray[1] }}</p> -->
           </v-text-field>
           <v-text-field label="색깔" v-if="keywordArray" v-model="keywordArray[0]">
-            <p>현재 색깔: {{ keywordArray[0] }}</p>
+            <!-- <p>현재 색깔: {{ keywordArray[0] }}</p> -->
           </v-text-field>
           <!-- <v-text-field label="브랜드" v-model="brand"></v-text-field>
           <v-text-field label="로고" v-model="logo"></v-text-field> -->
         </v-card-text>
         <v-card-actions class="justify-center">
-          <v-btn @click="research">재검색</v-btn>
-          <v-btn @click="closeDialog">취소</v-btn>
-          <v-btn @click="getKeyword">최근 검색어</v-btn>
+          <input type="button" value="취소" @click="closeDialog" class="custom-cancel" />
+          <input type="button" value="적용" @click="research" class="custom-btn" />
+          <input type="button" value="최근 검색어" @click="getKeyword" class="custom-btn" />
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-main v-if="resultOpen" style="margin-top: -20px">
+    <v-main v-if="resultOpen">
       <v-container>
         <div class="my-3" style="text-align: center">
           <v-row>
@@ -33,11 +33,13 @@
         <div class="my-3" style="text-align: center">
           <h2>{{ keywords }}</h2>
         </div>
-        <v-row>
-          <v-col v-for="(item, index) in extractedData" :key="index" cols="10" sm="4" md="4">
-            <ImageResult :item="item" />
-          </v-col>
-        </v-row>
+        <div>
+          <v-row>
+            <v-col v-for="(item, index) in extractedData" :key="index" cols="6" sm="3" md="2.4">
+              <ImageResult :item="item" />
+            </v-col>
+          </v-row>
+        </div>
       </v-container>
     </v-main>
   </div>
@@ -90,7 +92,6 @@ export default {
       }
     },
 
-    // 작업중
     async research() {
       try {
         localStorage.setItem('keywordArray', JSON.stringify(this.keywordArray));
@@ -131,3 +132,48 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.text-center {
+  font-family: 'KIMM_Bold';
+  font-style: normal;
+  font-weight: bold;
+  line-height: 130%;
+}
+
+.custom-cancel {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  width: 100%;
+  height: 48px;
+  background: #F0F0F0;
+  color: #000000;
+  border: 1;
+  cursor: pointer;
+}
+
+.custom-btn {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  margin: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+  background: rgb(0, 0, 0);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+input:hover{
+  background: grey;
+}
+</style>

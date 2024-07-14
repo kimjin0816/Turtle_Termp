@@ -1,18 +1,24 @@
 <template>
-  <div v-show="showMemin">
+  <div v-show="showMemin" id="div-container">
+    <h2>회원님의 검색 기록</h2>
     <div class="grid-container">
-      <div v-if="extractedData.userId.length > 0" class="grid-item" v-for="(item, index) in extractedData.userId"
-        :key="index">
-        <p>{{ extractedData.top_bottom[index] }}</p>
-        <p>{{ extractedData.shape[index] }}</p>
-        <p>{{ extractedData.classification[index] }}</p>
-        <p>{{ extractedData.color[index] }}</p>
-        <p>{{ extractedData.date[index] }}</p>
-        <img :src="imgURL[index]" alt="Image Result" style="width: 100%; max-width: 300px; height: auto;" />
+      <div v-if="paginatedData.length > 0" class="grid-item" v-for="(item, index) in paginatedData" :key="index">
+        <p style="text-align: right;">
+          <b>로그검색</b><br>
+          분류 &nbsp;&nbsp;&nbsp;<b>{{ item.top_bottom }}</b><br>
+          타입 &nbsp;&nbsp;&nbsp;<b>{{ item.shape }}</b><br>
+          종류 &nbsp;&nbsp;&nbsp;<b>{{ item.classification }}</b><br>
+          색상 &nbsp;&nbsp;&nbsp;<b>{{ item.color }}</b><br>
+          검색 날짜 &nbsp;&nbsp;&nbsp;<b>{{ item.date }}</b><br>
+        </p>&nbsp;&nbsp;&nbsp;&nbsp;
+        <img :src="item.imgURL" alt="Image Result" style="width: 150px; height: auto;" />
       </div>
       <div v-else class="NotFindLog">
         <p> 검색 기록이 없습니다.</p>
       </div>
+    </div>
+    <div class="text-xs-center">
+      <v-pagination v-model="page" :length="totalPages" :total-visible="10"></v-pagination>
     </div>
   </div>
 </template>
@@ -21,6 +27,8 @@
 export default {
   data() {
     return {
+      page: 1,
+      itemsPerPage: 4,
       showMemin: true,
       extractedData: {
         userId: [],
@@ -35,6 +43,24 @@ export default {
       imgURL: []
 
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.extractedData.userId.length / this.itemsPerPage);
+    },
+    paginatedData() {
+      const start = (this.page - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.extractedData.userId.slice(start, end).map((userId, index) => ({
+        userId,
+        top_bottom: this.extractedData.top_bottom[start + index],
+        shape: this.extractedData.shape[start + index],
+        classification: this.extractedData.classification[start + index],
+        color: this.extractedData.color[start + index],
+        date: this.extractedData.date[start + index],
+        imgURL: this.imgURL[start + index]
+      }));
+    }
   },
   methods: {
     NotFindLog() {
@@ -70,7 +96,7 @@ export default {
           withCredentials: true,
         });
         console.log("SearchLog : " + JSON.stringify(response.data));
-        if(response.data.data_list.length == 0){
+        if (response.data.data_list.length == 0) {
           this.NotFindLog();
         } else {
           response.data.data_list.forEach(item => {
@@ -106,15 +132,39 @@ export default {
 </script>
 
 <style scoped>
+#div-container {
+  /* margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h2 {
+  width: 222px;
+  height: 39px;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 130%;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: fit-content;
+  height: fit-content;
   gap: 10px;
 }
 
 .grid-item {
-  border: 1px solid #ccc;
   padding: 10px;
 }
 </style>
