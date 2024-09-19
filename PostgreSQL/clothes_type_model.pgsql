@@ -20,9 +20,12 @@ CREATE TABLE IF NOT EXISTS searchLog (
                 f_code INT NOT NULL);
                 
 CREATE TABLE IF NOT EXISTS top_feature (
-                f_code CHAR(50) NOT NULL,
-                f_logo BOOLEAN NOT NULL,
+                f_code INT NOT NULL,
+                f_hood BOOLEAN NOT NULL,
                 f_printer BOOLEAN NOT NULL,
+                f_henley BOOLEAN NOT NULL,
+                f_kara BOOLEAN NOT NULL,
+                f_pockey BOOLEAN NOT NULL,
                 CONSTRAINT t_f_code_pk PRIMARY KEY (f_code));
 
 

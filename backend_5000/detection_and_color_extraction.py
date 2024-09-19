@@ -34,9 +34,12 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
         ]
         result = subprocess.run(color_keyword_command, capture_output=True, text=True, check=True)
         color_keyword_array.append(result.stdout.strip()) 
-        feture_logo = True
-        feture_printer = True
-        feature = [feture_logo, feture_printer]
+        feature_hood = True
+        feature_printer = True
+        feature_henley = True
+        feature_kara = True
+        feature_pocket = True
+        feature = [feature_hood, feature_printer, feature_henley, feature_kara, feature_pocket]
         output = [color_keyword_array[0],  detected_classes[0]]
 
     return  output, feature

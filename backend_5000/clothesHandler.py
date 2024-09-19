@@ -44,39 +44,37 @@ class clothesHandler:
 #region => features code
     # feature code setting
     def t_f_code(self, feature):
-        logoVal = int(feature[0])
-        printerVal = int(feature[1])
-        featureCode = self.decimal(f"{logoVal}{printerVal}")
-        return featureCode 
-
-    def t_f_insert(self, logo, printer):
-        self.connectClothes()
-        logo_val = int(logo)
-        printer_val = int(printer)
-        f_code = self.decimal(f"{logo_val}{printer_val}")
-        self.writeClothes(f"INSERT INTO top_feature VALUES ({f_code}, {logo}, {printer});")
-        self.closeClothes()
-    # def b_f_insert(self, jogger, pocket):
+        hood_val = int(feature[0])
+        printer_val = int(feature[1])
+        henley_val = int(feature[2])
+        kara_val = int(feature[3])
+        pocket_val = int(feature[4])
+        f_code = self.decimal(f"{hood_val}{printer_val}{henley_val}{kara_val}{pocket_val}")
+        return f_code
+    
+    # def t_f_select(self, f_code):
     #     self.connectClothes()
-    #     jogger_val = int(jogger)
-    #     pocket_val = int(pocket)
-    #     f_code = self.decimal(f"{jogger_val}{pocket_val}")
-    #     self.writeClothes(f"INSERT INTO bottom_feature VALUES ({f_code}, {jogger}, {pocket});")
-    #     self.closeClothes()   
-    # def b_f_code(self, feature):
-    #     joggerVal = int(feature[0])
-    #     pocketVal = int(feature[1])
-    #     featureCode = self.decimal(f"{joggerVal}{pocketVal}")
-    #     return featureCode
-    # top feature data insert(once)
-#endregion
+    #     self.writeClothes(f"SELECT * FROM top_feature WHERE f_code = {f_code};")
+    #     rows = self.c_cur.fetchall()
+    #     f_data = [{'f_code': row[0], 'hood': row[1], 'printer': row[2], 'henley': row[3], 'kara': row[4], 'pocket': row[5]} for row in rows]
+    #     self.closeClothes()
+    #     return f_data
+
+    def t_f_insert(self, hood, printer, henley, kara, pocket):
+        self.connectClothes()
+        hood_val = int(hood)
+        printer_val = int(printer)
+        henley_val = int(henley)
+        kara_val = int(kara)
+        pocket_val = int(pocket)
+        f_code = self.decimal(f"{hood_val}{printer_val}{henley_val}{kara_val}{pocket_val}")
+        self.writeClothes(f"INSERT INTO top_feature VALUES ({f_code}, {hood}, {printer}, {henley}, {kara}, {pocket});")
+        self.closeClothes()
 # -----------------------------------------------------------------------------------------------------------------------------------------------    
 #region => searchLog code    
     # searchLog data insert
-    def searchLog_Insert(self, id, top_bottom, keywordArray, img, feature):
+    def searchLog_Insert(self, id, top_bottom, keywordArray, img, f_code):
         self.connectClothes()
-        f_code = self.t_f_code(feature)
-        # image_path = self.c_img_url()        
         self.writeClothes(f"INSERT INTO searchLog(userID, top_bottom, shape, classification, color, img, date, f_code) VALUES ('{id}', '{top_bottom}', '{keywordArray[0]}', 'shape', '{keywordArray[1]}', '{img}', NOW(), {f_code});")
         self.closeClothes()
     # searchLog data select
@@ -90,9 +88,8 @@ class clothesHandler:
 #endregion
 # -----------------------------------------------------------------------------------------------------------------------------------------------
     # clothes data insert
-    def clothes_Insert(self, hash_code, top_bottom, keywordArray, img, feature):
+    def clothes_Insert(self, hash_code, top_bottom, keywordArray, img, f_code):
         self.connectClothes()
-        f_code = self.t_f_code(feature)
         self.writeClothes(f"INSERT INTO clothes(hash_code, top_bottom, shape, classification, color, img, f_code) VALUES ('{hash_code}','{top_bottom}', '{keywordArray[0]}', 'shape', '{keywordArray[1]}', '{img}', {f_code});")
         self.closeClothes()
 # -----------------------------------------------------------------------------------------------------------------------------------------------

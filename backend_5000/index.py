@@ -1,8 +1,9 @@
 from flask import Flask, request, url_for, jsonify, send_from_directory
 from flask_cors import CORS
 import requests
+import json
 # import os
-from clothesHandler import clothesHandler
+from clothesHandler import clothesHandler 
 from pathlib import Path
 from detection_and_color_extraction import detect_objects_and_extract_colors
 
@@ -15,26 +16,23 @@ user_id_global = ''
 imageName_global = ''
 image_URL_global = ''
 
-class Index:   
+class Index:      
     def featureArray_keyword(self, featureArray):
-        # featureArray[0] = logo / featureArray[1] = printer
-        if featureArray[0] == True and featureArray[1] == True:
-            # return 특징 키워드
-            pass
-        elif featureArray[0] == True and featureArray[1] == False:
-            # return 특징 키워드
-            pass
-        elif featureArray[0] == False and featureArray[1] == True:
-            # return 특징 키워드
-            pass
-        elif featureArray[0] == False and featureArray[1] == False:
-            # return 특징 키워드
-            pass
-    def postData(self, keywordArray, featureArray): 
-        # 모형-종류-색상
-        # 키워드배열에서 0번째 인덱스는 모형, 1번째 인덱스는 종류, 2번째 인덱스는 색상 각각 띄어 쓰기하기
+        with open('../backend_5000/feature_keyword.json','r', encoding='utf-8') as f:
+        # 후드 / 프린트 / 헨리넥 / 카라 / 포켓
+            json_data = json.load(f)
+            f_code = ch.t_f_code(featureArray)
+            print(type(f_code))
+            feature_keywords= json_data[str(f_code)]
+            print('feature_keywords : ', feature_keywords)
+        return feature_keywords, f_code
 
+    def postData(self, keywordArray, featureArray): 
+        # 후드/프린트/헨리넥/카라/포켓
+        f_keyword, f_code = self.featureArray_keyword(featureArray)
+        # 모형/종류/색상
         keyword = ' '.join(keywordArray)
+
         print('키워드 : ' + keyword)
         # Node.js 서버의 URL
         url = 'http://localhost:3000/api/search-images'
@@ -48,14 +46,14 @@ class Index:
         # 응답을 확인합니다.
         if response_status == 'ok' and check_image_duplication[0][0] == 0:
             if user_id_global == 'null' :
-                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, featureArray)
+                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, f_code)
             elif user_id_global != 'null':
-                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, featureArray)
-                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, featureArray)
+                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, f_code)
+                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, f_code)
             return 'Data sent to Node.js server successfully', 200
         elif response_status == 'ok' and check_image_duplication[0][0] != 0:
             if user_id_global != 'null':
-                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, featureArray)
+                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, f_code)
             return 'Data sent to Node.js server successfully', 200
         return 'Failed to send data to Node.js server', 500
         
