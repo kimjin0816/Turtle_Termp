@@ -91,10 +91,16 @@ export default {
           if (response.status == 200) {
             const result = await this.fetchData();
             this.keywords = result.keywords;
+            this.feature_keyword = result.feature_keyword;
+            this.clo_color = result.clo_color;
+            this.clo_name = result.clo_name;
             this.extractedData = result.extractedData;
             this.showImageResult = true;
             this.isLoading = false;
-            localStorage.setItem('keywordArray', JSON.stringify(result.keywordArray));
+            localStorage.setItem('feature_keyword', JSON.stringify(this.feature_keyword));
+            localStorage.setItem('clo_color', JSON.stringify(this.clo_color));
+            localStorage.setItem('clo_name', JSON.stringify(this.clo_name));
+            // localStorage.setItem('keywordArray', JSON.stringify(result.keywordArray));
           }
         } catch (e) {
           console.error('submitForm:', e);

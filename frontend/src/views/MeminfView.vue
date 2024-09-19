@@ -5,10 +5,9 @@
       <div v-if="paginatedData.length > 0" class="grid-item" v-for="(item, index) in paginatedData" :key="index">
         <p style="text-align: right;">
           <b>로그검색</b><br>
-          분류 &nbsp;&nbsp;&nbsp;<b>{{ item.top_bottom }}</b><br>
-          타입 &nbsp;&nbsp;&nbsp;<b>{{ item.shape }}</b><br>
-          종류 &nbsp;&nbsp;&nbsp;<b>{{ item.classification }}</b><br>
+          종류 &nbsp;&nbsp;&nbsp;<b>{{ item.clo_name }}</b><br>
           색상 &nbsp;&nbsp;&nbsp;<b>{{ item.color }}</b><br>
+          특징 &nbsp;&nbsp;&nbsp;<b>{{ item.feature_keyword }}</b><br>
           검색 날짜 &nbsp;&nbsp;&nbsp;<b>{{ item.date }}</b><br>
         </p>&nbsp;&nbsp;&nbsp;&nbsp;
         <img :src="item.imgURL" alt="Image Result" style="width: 150px; height: auto;" />
@@ -32,16 +31,13 @@ export default {
       showMemin: true,
       extractedData: {
         userId: [],
-        top_bottom: [],
-        shape: [],
-        classification: [],
+        clo_name: [],
         color: [],
         img: [],
         date: [],
-        f_code: []
+        feature_keyword: []
       },
       imgURL: []
-
     };
   },
   computed: {
@@ -51,13 +47,20 @@ export default {
     paginatedData() {
       const start = (this.page - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
-      return this.extractedData.userId.slice(start, end).map((userId, index) => ({
+      console.log('Paginated Data:', this.extractedData.userId.slice(start, end).map((userId, index) => ({
         userId,
-        top_bottom: this.extractedData.top_bottom[start + index],
-        shape: this.extractedData.shape[start + index],
-        classification: this.extractedData.classification[start + index],
+        clo_name: this.extractedData.clo_name[start + index],
         color: this.extractedData.color[start + index],
         date: this.extractedData.date[start + index],
+        feature_keyword: this.extractedData.feature_keyword[start + index],
+        imgURL: this.imgURL[start + index]
+      })));
+      return this.extractedData.userId.slice(start, end).map((userId, index) => ({
+        userId,
+        clo_name: this.extractedData.clo_name[start + index],
+        color: this.extractedData.color[start + index],
+        date: this.extractedData.date[start + index],
+        feature_keyword: this.extractedData.feature_keyword[start + index],
         imgURL: this.imgURL[start + index]
       }));
     }
@@ -101,11 +104,10 @@ export default {
         } else {
           response.data.data_list.forEach(item => {
             this.extractedData.userId.push(item.userID);
-            this.extractedData.top_bottom.push(item.top_bottom);
-            this.extractedData.shape.push(item.shape);
-            this.extractedData.classification.push(item.classification);
+            this.extractedData.clo_name.push(item.clo_name);
             this.extractedData.color.push(item.color);
             this.extractedData.img.push(item.img);
+            this.extractedData.feature_keyword.push(item.feature_keyword);
             let date = new Date(item.date);
             let year = date.getFullYear();
             let month = date.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더합니다.
@@ -115,7 +117,6 @@ export default {
             // let formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day} ${hour < 10 ? '0' + hour : hour}:${minute < 10 ? '0' + minute : minute}`;
             let formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
             this.extractedData.date.push(formattedDate);
-            this.extractedData.f_code.push(item.f_code);
           });
         }
         this.searchLog_image();

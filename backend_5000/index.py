@@ -27,16 +27,16 @@ class Index:
             print('feature_keywords : ', feature_keywords)
         return feature_keywords, f_code
 
-    def postData(self, keywordArray, featureArray): 
-        # 후드/프린트/헨리넥/카라/포켓
-        f_keyword, f_code = self.featureArray_keyword(featureArray)
-        # 모형/종류/색상
-        keyword = ' '.join(keywordArray)
-
+    def postData(self, clo_color, feature_list, clo_nameList): 
+        # f_keyword, f_code = self.featureArray_keyword(feature_list)
+        feature_keyword = ' '.join(feature_list)
+        clo_name = ' '.join(clo_nameList)
+        keyword = clo_color + ' ' + feature_keyword + ' ' + clo_name
         print('키워드 : ' + keyword)
-        # Node.js 서버의 URL
-        url = 'http://localhost:3000/api/search-images'
-        response = requests.post(url, json={'featureAarry': featureArray,'keywordArray': keywordArray, 'keywords': keyword})
+
+        # Node.js 서버의 URL로 데이터를 전송합니다.
+        response = requests.post('http://localhost:3000/api/search-images', 
+                                 json={'clo_color':clo_color, 'feature_keyword': feature_keyword, 'clo_name':clo_name, 'keywords': keyword})
         
         image_hash = ch.calculate_image_hash(imageName_global)
         check_image_duplication = ch.check_image_hash(image_hash)
@@ -46,14 +46,14 @@ class Index:
         # 응답을 확인합니다.
         if response_status == 'ok' and check_image_duplication[0][0] == 0:
             if user_id_global == 'null' :
-                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, f_code)
+                ch.clothes_Insert(image_hash, clo_name, clo_color, image_URL_global, feature_keyword)
             elif user_id_global != 'null':
-                ch.clothes_Insert(image_hash, 'top', keywordArray, image_URL_global, f_code)
-                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, f_code)
+                ch.clothes_Insert(image_hash, clo_name, clo_color, image_URL_global, feature_keyword)
+                ch.searchLog_Insert(user_id_global, clo_name, clo_color, image_URL_global, feature_keyword)
             return 'Data sent to Node.js server successfully', 200
         elif response_status == 'ok' and check_image_duplication[0][0] != 0:
             if user_id_global != 'null':
-                ch.searchLog_Insert(user_id_global, 'top', keywordArray, image_URL_global, f_code)
+                ch.searchLog_Insert(user_id_global, clo_name, clo_color, image_URL_global, feature_keyword)
             return 'Data sent to Node.js server successfully', 200
         return 'Failed to send data to Node.js server', 500
         
@@ -80,9 +80,9 @@ class Index:
         color_feature_script_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/color_feature.py')
 
         # detect_objects_and_extract_colors 실행 후 결과 받아오기
-        keywordArray, featureAarry = detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path)
+        clo_color, feature_list, clo_name = detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path)
         #print('keywordArray_global :  ', keywordArray_global)
-        return self.postData(keywordArray, featureAarry)
+        return self.postData(clo_color, feature_list, clo_name)
 
 Index = Index()
 

@@ -1,31 +1,32 @@
 CREATE TABLE IF NOT EXISTS clothes(
                 serial SERIAL PRIMARY KEY,
                 hash_code VARCHAR(100) NOT NULL,
-                top_bottom VARCHAR(50) NOT NULL,
-                shape VARCHAR(50) NOT NULL,
-                classification VARCHAR(50) NOT NULL,
+                -- top_bottom VARCHAR(50) NOT NULL,
+                clo_name VARCHAR(50) NOT NULL,
+                -- classification VARCHAR(50) NOT NULL,
                 color VARCHAR(50) NOT NULL,
                 img VARCHAR(100) NOT NULL,
-                f_code INT NOT NULL);
+                feature VARCHAR(100) NOT NULL);
 
 CREATE TABLE IF NOT EXISTS searchLog (
                 serial SERIAL PRIMARY KEY,
                 userID VARCHAR(50) NOT NULL,
-                top_bottom VARCHAR(50) NOT NULL,
-                shape VARCHAR(50) NOT NULL,
-                classification VARCHAR(50) NOT NULL,
+                -- top_bottom VARCHAR(50) NOT NULL,
+                clo_name VARCHAR(50) NOT NULL,
+                -- classification VARCHAR(50) NOT NULL,
                 color VARCHAR(50) NOT NULL,
                 img VARCHAR(100) NOT NULL,    
                 date DATE NOT NULL,
-                f_code INT NOT NULL);
+                feature VARCHAR(100) NOT NULL);
                 
 CREATE TABLE IF NOT EXISTS top_feature (
                 f_code INT NOT NULL,
-                f_hood BOOLEAN NOT NULL,
-                f_printer BOOLEAN NOT NULL,
                 f_henley BOOLEAN NOT NULL,
-                f_kara BOOLEAN NOT NULL,
+                f_logo BOOLEAN NOT NULL,
+                f_printer BOOLEAN NOT NULL,
                 f_pockey BOOLEAN NOT NULL,
+                f_kara BOOLEAN NOT NULL,
+                f_hood BOOLEAN NOT NULL,
                 CONSTRAINT t_f_code_pk PRIMARY KEY (f_code));
 
 
