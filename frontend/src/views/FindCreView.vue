@@ -44,14 +44,14 @@ export default {
     async findCredentials() {
       try {
         const response = await axios.post('http://localhost:3000/findCredentials', {
-          MEM_NAME: this.name,
-          MEM_EMAIL: this.email,
+          mem_name: this.name,
+          mem_email: this.email,
         });
 
         const result = response.data;
 
         if (response.status === 200) {
-          this.resultMessage = `아이디 : ${result.MEM_ID}, 비밀번호 : ${result.MEM_PASSWORD}`;
+          this.resultMessage = `아이디 : ${result.mem_id}, 비밀번호 : ${result.mem_password}`;
         } else {
           this.resultMessage = result.message;
         }

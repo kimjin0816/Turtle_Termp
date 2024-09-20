@@ -35,7 +35,7 @@ app.use(
   })
 );
 
-passport_session(app);
+passport_session.initializePassport(app);
 app.use(routes);
 
 app.listen(port, () => {
