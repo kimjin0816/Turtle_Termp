@@ -1,4 +1,4 @@
-const { queryClothes } = require("./postgreDB");
+const { queryClothes } = require("./PostgreDB");
 const ps = require("./passport-session");
 
 const clothesController = {

@@ -16,7 +16,7 @@
         </v-card-text>
         <v-card-actions class="justify-center">
           <v-btn @click="research">재검색</v-btn>
-          <v-btn @click="dialog = false; resultOpen = true">취소</v-btn>
+          <v-btn @click="closeDialog">취소</v-btn>
           <v-btn @click="getKeyword">최근 검색어</v-btn>
         </v-card-actions>
       </v-card>
@@ -76,6 +76,14 @@ export default {
   },
 
   methods: {
+    closeDialog(){
+      this.dialog = false; 
+      this.resultOpen = true;
+      if(this.extractedData.length == 0){
+        this.$router.push('/');
+        console.log(this.extractedData )
+        }
+    },
     openDialog() {
       this.dialog = true; // 'dialogOpen'은 다이얼로그의 열림 상태를 제어하는 데이터 속성이어야 합니다.
     },
