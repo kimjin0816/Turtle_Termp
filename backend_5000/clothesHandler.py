@@ -6,7 +6,7 @@ class clothesHandler:
 #region DB connection/close/write methods
     # Clothes DB
     def connectClothes(self):
-        self.c_conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='2023', port='5432')
+        self.c_conn = psycopg2.connect(host='localhost', database='Clothes', user='postgres', password='password', port='5432')
         self.c_cur = self.c_conn.cursor()
     def closeClothes(self):
         self.c_cur.close()
@@ -97,17 +97,3 @@ class clothesHandler:
         self.writeClothes(f"INSERT INTO clothes(hash_code, clo_name, color, img, feature) VALUES ('{hash_code}', '{clo_name}', '{clo_color}', '{img}', '{feature_keyword}');")
         self.closeClothes()
 # -----------------------------------------------------------------------------------------------------------------------------------------------
-
-    # def b_c_SelectID(self, id):
-    #     self.connectClothes()
-    #     self.writeClothes(f"SELECT * FROM clothes_bottom WHERE b_code LIKE '{id}_%';")
-    #     rows = self.c_cur.fetchall()
-    #     self.closeClothes()
-    #     return rows
-
-    # def b_c_Insert(self, id, shape, classification, color, feature):
-    #     self.connectClothes()
-    #     f_code = self.b_f_code(feature)
-    #     # image_path = self.c_img_url()        
-    #     self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code, t_url) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
-    #     self.closeClothes()

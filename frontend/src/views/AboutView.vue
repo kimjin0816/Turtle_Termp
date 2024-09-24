@@ -80,14 +80,6 @@ export default {
   },
 
   methods: {
-    closeDialog(){
-      this.dialog = false; 
-      this.resultOpen = true;
-      if(this.extractedData.length == 0){
-        this.$router.push('/');
-        console.log(this.extractedData )
-        }
-    },
     openDialog() {
       this.dialog = true;
     },

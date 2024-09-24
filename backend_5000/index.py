@@ -75,9 +75,9 @@ class Index:
         
         """ 객체 감지 및 색상 추출 """
         image_path = self.save_path
-        weights_path = Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/TopBottomPJ/top_train13/weights/best.pt')
-        detect_script_path = Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/detect.py')
-        color_feature_script_path = Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/color_feature.py')
+        weights_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/TopBottomPJ/top_train13/weights/best.pt')
+        detect_script_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/detect.py')
+        color_feature_script_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/color_feature.py')
 
         # detect_objects_and_extract_colors 실행 후 결과 받아오기
         clo_color, feature_list, clo_name = detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path)
