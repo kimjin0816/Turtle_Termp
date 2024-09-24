@@ -96,7 +96,6 @@ class clothesHandler:
         self.connectClothes()
         self.writeClothes(f"INSERT INTO clothes(hash_code, clo_name, color, img, feature) VALUES ('{hash_code}', '{clo_name}', '{clo_color}', '{img}', '{feature_keyword}');")
         self.closeClothes()
-<<<<<<< HEAD
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 
     # def b_c_SelectID(self, id):
@@ -112,6 +111,3 @@ class clothesHandler:
     #     # image_path = self.c_img_url()        
     #     self.writeClothes(f"INSERT INTO clothes_bottom(b_code, b_shape, b_classification, b_color, b_f_code, t_url) VALUES ('{id}_' || TO_CHAR(NOW(), 'YYYYMMDDHH24MISS'), '{shape}', '{classification}', '{color}',  {f_code}, '{image_path}');")
     #     self.closeClothes()
-=======
-# -----------------------------------------------------------------------------------------------------------------------------------------------
->>>>>>> d9e57aafbc60d168590582a1bbceac26fd011301

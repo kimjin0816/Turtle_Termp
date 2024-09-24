@@ -17,15 +17,9 @@
         </v-card-text>
 
         <v-card-actions class="justify-center">
-<<<<<<< HEAD
-          <v-btn @click="research">재검색</v-btn>
-          <v-btn @click="closeDialog">취소</v-btn>
-          <v-btn @click="getKeyword">최근 검색어</v-btn>
-=======
           <input type="button" value="취소" @click="closeDialog" class="custom-cancel" />
           <input type="button" value="적용" @click="research" class="custom-btn" />
           <input type="button" value="최근 검색어" @click="getKeyword" class="custom-btn" />
->>>>>>> d9e57aafbc60d168590582a1bbceac26fd011301
         </v-card-actions>
       </v-card>
     </v-dialog>

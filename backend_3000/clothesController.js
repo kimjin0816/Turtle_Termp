@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-const { queryClothes } = require("./PostgreDB");
-const ps = require("./passport-session");
-=======
 // const { queryClothes } = require("./PostgreDB");
 // const ps = require("./passport-session");
->>>>>>> d9e57aafbc60d168590582a1bbceac26fd011301
 
 // const clothesController = {
 //   async t_c_SelectId(req, res, next) {

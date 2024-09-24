@@ -1,8 +1,5 @@
 const { queryMembers } = require("./PostgreDB");
-<<<<<<< HEAD
-=======
 const { userId } = require("./passport-session");
->>>>>>> d9e57aafbc60d168590582a1bbceac26fd011301
 
 const UserController = {
   // 회원가입
