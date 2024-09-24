@@ -1,27 +1,39 @@
 <template>
   <div class="signup-container">
-    <h1>아이디 및 비밀번호 찾기</h1>
+    <h2>아이디 및 비밀번호 찾기</h2>
     <form @submit.prevent="findCredentials" class="signup-form">
-      <div v-if="!resultMessage" class="form-content">
+      <div v-if="!find_open" class="form-content">
         <div class="form-group">
-          <label for="name">이름:</label>
-          <input v-model="name" type="text" id="name" name="name" required>
+          <label for="name">이름</label>
+          <input v-model="name" type="text" id="name" name="name" required placeholder=" 이름을 입력해주세요." />
         </div>
 
         <div class="form-group">
-          <label for="email">이메일:</label>
-          <input v-model="email" type="email" id="email" name="email" required>
+          <label for="email">이메일</label>
+          <input v-model="email" type="email" id="email" name="email" required placeholder=" 이메일을 입력해주세요.">
         </div>
 
-        <button type="submit">찾기</button>
+        <div class="form-group"><button type="submit">찾기</button></div>
       </div>
 
-      <div v-if="resultMessage" class="result-message">
-        {{ resultMessage }}
+      <div v-if="find_open" class="result-message">
+        <div class="message">
+          <div v-if="result">
+            <p><span>아이디</span><br>
+              {{ this.find_id }}
+            </p>
+            <p><span>비밀번호</span><br>
+              {{ this.find_password }}
+            </p>
+          </div>
+          <div v-if="!result">
+            <p>{{ this.resultMessage }}</p>
+          </div>
+        </div>
         <div class="button-group">
-          <button @click="resetForm">다시 찾기</button>
-          <router-link to="/">
-            <button class="router-link">로그인</button>
+          <button @click="resetForm" style="background: #F0F0F0; color:black">다시 찾기</button>
+          <router-link to="/login">
+            <button @click="this.$router.push('/')" style="background: #262626; color:white">로그인</button>
           </router-link>
         </div>
       </div>
@@ -37,12 +49,19 @@ export default {
     return {
       name: '',
       email: '',
+
+      find_id: '',
+      find_password: '',
+      find_open: false,
       resultMessage: '',
+      result: false
+
     };
   },
   methods: {
     async findCredentials() {
       try {
+        this.find_open = true;
         const response = await axios.post('http://localhost:3000/findCredentials', {
           mem_name: this.name,
           mem_email: this.email,
@@ -51,19 +70,21 @@ export default {
         const result = response.data;
 
         if (response.status === 200) {
-          this.resultMessage = `아이디 : ${result.mem_id}, 비밀번호 : ${result.mem_password}`;
-        } else {
-          this.resultMessage = result.message;
+          this.find_id = result.mem_id;
+          this.find_password = result.mem_password;
+          this.result = true;
         }
       } catch (error) {
-        console.error('아이디/비밀번호 찾기 오류:', error);
         this.resultMessage = '가입된 아이디와 비밀번호가 없습니다.';
+        this.result = false;
       }
     },
     resetForm() {
       this.name = '';
       this.email = '';
       this.resultMessage = '';
+      this.result = false;
+      this.find_open = false;
     },
   },
 };
@@ -74,16 +95,66 @@ export default {
   max-width: 650px;
   margin: 20px auto;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin-top: 150px;
 }
 
-h1 {
-  font-size: 24px;
+h2 {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 130%;
   margin-bottom: 20px;
+}
+
+span {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 130%;
+  margin-bottom: 20px;
+  color: black;
+}
+
+label {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-align: left;
+}
+
+input {
+  background: #F0F0F0;
+  width: 10cm;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+}
+
+.form-group button {
+  background: #262626;
+  color: white;
+  width: 10cm;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 3px;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
 }
 
 .signup-form {
@@ -98,42 +169,10 @@ h1 {
 }
 
 .form-group {
-  margin-bottom: 16px;
-}
-
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
   margin-bottom: 10px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 3px;
 }
 
-button {
-  background-color: #007bff;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s;
-  margin-top: 10px;
-}
-
-button:hover {
-  background-color: grey;
-}
-
-.result-message {
+.message p {
   margin-top: 20px;
   color: red;
   font-size: 15px;
@@ -142,40 +181,28 @@ button:hover {
 
 .button-group {
   display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 
-.result-message button {
-  background-color: #007bff;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  margin-right: 10px;
-  margin-top: 21px;
-}
-
-.router-link button {
+.button-group button {
+  flex: 1;
   width: 100%;
-  color: white;
-  background-color: #007bff;
-  border: none;
   border-radius: 3px;
   padding: 12px 20px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
   margin-top: 10px;
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  justify-content: center;
 }
 
-.router-link button:hover {
+.form-group button:hover {
   background-color: grey;
 }
 
-.result-message button:hover {
+.button-group button:hover {
   background-color: grey;
 }
 </style>

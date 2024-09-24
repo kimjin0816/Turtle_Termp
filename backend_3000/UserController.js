@@ -1,19 +1,10 @@
 const { queryMembers } = require("./PostgreDB");
+<<<<<<< HEAD
+=======
+const { userId } = require("./passport-session");
+>>>>>>> d9e57aafbc60d168590582a1bbceac26fd011301
 
 const UserController = {
-  // membership 테이블 생성
-  createTable(req, res) {
-    queryMembers(
-      "CREATE TABLE IF NOT EXISTS membership (mem_id VARCHAR(255) NOT NULL, mem_password VARCHAR(255) NOT NULL, mem_name   VARCHAR(255) NOT NULL, mem_email   VARCHAR(255) NOT NULL, mem_tel       VARCHAR(255) NOT NULL, mem_nickname  VARCHAR(255) NOT NULL, mem_address   VARCHAR(255) NOT NULL, CONSTRAINT MEM PRIMARY KEY (mem_id))",
-      (error, results) => {
-        if (error) {
-          throw error;
-        }
-        console.log("membership 테이블 생성 완료");
-      }
-    );
-  },
-
   // 회원가입
   async signUp(req, res) {
     const {
@@ -28,7 +19,7 @@ const UserController = {
 
     try {
       const existingUser = await queryMembers(
-        'SELECT * FROM membership WHERE mem_id = $1',
+        "SELECT * FROM membership WHERE mem_id = $1",
         [mem_id]
       );
 
@@ -37,7 +28,7 @@ const UserController = {
       }
 
       await queryMembers(
-        'INSERT INTO membership (mem_id, mem_password, mem_name, mem_email, mem_tel, mem_nickname, mem_address) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+        "INSERT INTO membership (mem_id, mem_password, mem_name, mem_email, mem_tel, mem_nickname, mem_address) VALUES ($1, $2, $3, $4, $5, $6, $7)",
         [
           mem_id,
           mem_password,
@@ -62,7 +53,7 @@ const UserController = {
 
     try {
       const user = await queryMembers(
-        'SELECT mem_id, mem_password FROM membership WHERE mem_name = $1 AND mem_email = $2',
+        "SELECT mem_id, mem_password FROM membership WHERE mem_name = $1 AND mem_email = $2",
         [mem_name, mem_email]
       );
 
@@ -98,7 +89,7 @@ const UserController = {
 
     try {
       const existingUser = await queryMembers(
-        'SELECT * FROM membership WHERE mem_id = $1',
+        "SELECT * FROM membership WHERE mem_id = $1",
         [mem_id]
       );
 
@@ -107,7 +98,7 @@ const UserController = {
       }
 
       await queryMembers(
-        'UPDATE membership SET mem_password = $2, mem_name = $3, mem_email = $4, mem_tel = $5, mem_nickname = $6, mem_address = $7 WHERE mem_id = $1',
+        "UPDATE membership SET mem_password = $2, mem_name = $3, mem_email = $4, mem_tel = $5, mem_nickname = $6, mem_address = $7 WHERE mem_id = $1",
         [
           mem_id,
           mem_password,
@@ -132,7 +123,7 @@ const UserController = {
 
     try {
       const existingUser = await queryMembers(
-        'SELECT * FROM membership WHERE mem_id = $1 AND mem_password = $2',
+        "SELECT * FROM membership WHERE mem_id = $1 AND mem_password = $2",
         [mem_id, mem_password]
       );
 
@@ -142,23 +133,54 @@ const UserController = {
         });
       }
 
-      await queryMembers('DELETE FROM membership WHERE mem_id = $1', [
-        mem_id,
-      ]);
+      await queryMembers("DELETE FROM membership WHERE mem_id = $1", [mem_id]);
 
       // 세션 지우기
-      req.session.destroy((err) => {
+      req.logout((err) => {
         if (err) {
-          console.error("세션 삭제 오류:", err);
-          res.status(500).json({ message: "로그아웃 실패" });
-        } else {
-          console.log("세션 삭제 성공");
-          res.status(200).json({ message: "회원 삭제 성공 및 로그아웃 성공" });
+          return res.status(500).send("Logout error");
         }
+
+        req.session.destroy((err) => {
+          if (err) {
+            return res.status(500).send("Session destroy error");
+          }
+          res.clearCookie("connect.sid");
+          res.json({ message: "Logout Successful" });
+        });
       });
     } catch (error) {
       console.error("회원 삭제 오류:", error);
       res.status(500).json({ error: "서버 오류" });
+    }
+  },
+
+  // ID 존재 여부 확인
+  async getProfile(req, res) {
+    try {
+      const mem_id = req.body.mem_id;
+      console.log("ID : " + mem_id);
+      const existingUser = await queryMembers(
+        "SELECT * FROM membership WHERE mem_id = $1",
+        [mem_id]
+      );
+      if (existingUser.rows.length === 0) {
+        res.status(200).json({ id_possible: true });
+      } else {
+        res.status(200).json({
+          mem_id: existingUser.rows[0].mem_id,
+          mem_password: existingUser.rows[0].mem_password,
+          mem_name: existingUser.rows[0].mem_name,
+          mem_email: existingUser.rows[0].mem_email,
+          mem_tel: existingUser.rows[0].mem_tel,
+          mem_nickname: existingUser.rows[0].mem_nickname,
+          mem_address: existingUser.rows[0].mem_address,
+          logon_posiible: false,
+          id_possible: false,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "서버 오류" });
     }
   },
 };

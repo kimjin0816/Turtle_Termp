@@ -1,7 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const NaverStrategy = require("passport-naver").Strategy;
-const { queryMembers } = require("./postgreDB");
+const { queryMembers } = require("./PostgreDB");
 
 module.exports = {
   userId: "",
@@ -13,7 +13,7 @@ module.exports = {
       new LocalStrategy(async (username, password, done) => {
         try {
           const user = await queryMembers(
-            'SELECT * FROM membership WHERE mem_id = $1 AND mem_name IS NOT NULL',
+            "SELECT * FROM membership WHERE mem_id = $1 AND mem_name IS NOT NULL",
             [username]
           );
 
@@ -39,40 +39,53 @@ module.exports = {
     );
 
     passport.use(
-      new NaverStrategy({
-        clientID: 'wMDKpAS4spWQCbsbJuI6',
-        clientSecret: 'uRm738QZ0C',
-        callbackURL: 'http://localhost:3000/auth/naver/callback'
-      },
-      async (accessToken, refreshToken, profile, done) => {
-        try {
-          const naverProfile = profile._json;
-          let user = await queryMembers('SELECT * FROM membership WHERE mem_id = $1', [naverProfile.id]);
-
-          if (!user.rows || user.rows.length === 0) {
-            user = {
-              mem_id: naverProfile.id,
-              mem_password: '', 
-              mem_name: naverProfile.nickname, // 닉네임을 mem_name으로 사용
-              mem_email: naverProfile.email,
-              mem_tel: '',
-              mem_nickname: naverProfile.nickname,
-              mem_address: ''
-            };
-
-            await queryMembers(
-              'INSERT INTO membership (mem_id, mem_password, mem_name, mem_email, mem_tel, mem_nickname, mem_address) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-              [user.mem_id, user.mem_password, user.mem_name, user.mem_email, user.mem_tel, user.mem_nickname, user.mem_address]
+      new NaverStrategy(
+        {
+          clientID: "wMDKpAS4spWQCbsbJuI6",
+          clientSecret: "uRm738QZ0C",
+          callbackURL: "http://localhost:3000/auth/naver/callback",
+        },
+        async (accessToken, refreshToken, profile, done) => {
+          try {
+            const naverProfile = profile._json;
+            let user = await queryMembers(
+              "SELECT * FROM membership WHERE mem_id = $1",
+              [naverProfile.id]
             );
-          } else {
-            user = user.rows[0];
-          }
 
-          return done(null, user);
-        } catch (err) {
-          return done(err);
+            if (!user.rows || user.rows.length === 0) {
+              user = {
+                mem_id: naverProfile.id,
+                mem_password: "",
+                mem_name: naverProfile.nickname, // 닉네임을 mem_name으로 사용
+                mem_email: naverProfile.email,
+                mem_tel: "",
+                mem_nickname: naverProfile.nickname,
+                mem_address: "",
+              };
+
+              await queryMembers(
+                "INSERT INTO membership (mem_id, mem_password, mem_name, mem_email, mem_tel, mem_nickname, mem_address) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+                [
+                  user.mem_id,
+                  user.mem_password,
+                  user.mem_name,
+                  user.mem_email,
+                  user.mem_tel,
+                  user.mem_nickname,
+                  user.mem_address,
+                ]
+              );
+            } else {
+              user = user.rows[0];
+            }
+
+            return done(null, user);
+          } catch (err) {
+            return done(err);
+          }
         }
-      })
+      )
     );
 
     passport.serializeUser((user, done) => {
@@ -82,12 +95,12 @@ module.exports = {
     passport.deserializeUser(async (id, done) => {
       try {
         const user = await queryMembers(
-          'SELECT * FROM membership WHERE mem_id = $1',
+          "SELECT * FROM membership WHERE mem_id = $1",
           [id]
         );
 
         if (!user.rows || user.rows.length === 0) {
-          return done(new Error("No user with this id"), null);
+          return done(null, null);
         }
         return done(null, user.rows[0]);
       } catch (err) {
@@ -151,5 +164,37 @@ module.exports = {
         });
       });
     });
+
+    // app.post("/delete", (req, res) => {
+    //     const { mem_id, mem_password } = req.body;
+    //     const existingUser = queryMembers(
+    //       "SELECT * FROM membership WHERE mem_id = $1 AND mem_password = $2",
+    //       [mem_id, mem_password]
+    //     );
+
+    //     if (existingUser.rows.length === 0) {
+    //       return res.status(404).json({
+    //         message: "존재하지 않는 사용자이거나 잘못된 비밀번호입니다.",
+    //       });
+    //     }
+
+    //     queryMembers("DELETE FROM membership WHERE mem_id = $1", [
+    //       mem_id,
+    //     ]);
+
+    //     req.logout((err) => {
+    //       if (err) {
+    //         return res.status(500).send("Logout error");
+    //       }
+
+    //       req.session.destroy((err) => {
+    //         if (err) {
+    //           return res.status(500).send("Session destroy error");
+    //         }
+    //         res.clearCookie("connect.sid");
+    //         res.json({ message: "Account deletion successful" });
+    //       });
+    //     });
+    // });
   },
 };

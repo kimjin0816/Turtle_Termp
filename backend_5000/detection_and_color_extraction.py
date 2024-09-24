@@ -34,7 +34,15 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
         ]
         result = subprocess.run(color_keyword_command, capture_output=True, text=True, check=True)
         color_keyword_array.append(result.stdout.strip()) 
-        
-        output = [color_keyword_array[0],  detected_classes[0]]
-    
-    return  output
+        # feature = [False, False, False, False, False]
+
+        feature_keywords = ["헨리넥", "로고", "프린터", "포켓", "카라", "후드"]
+        feature_list = [keyword for keyword in detected_classes if keyword in feature_keywords]
+        clo_name = [cls for cls in detected_classes if cls not in feature_keywords]
+
+        feature_list = ["헨리넥", "로고"]
+        clo_name = ["티셔츠"]
+        # feature = [feature_hood, feature_printer, feature_henley, feature_kara, feature_pocket]
+        # output = [detected_classes[0], color_keyword_array[0]]
+        # 색상/키워드 bool값/옷 종류
+    return  color_keyword_array[0], feature_list, clo_name

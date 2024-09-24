@@ -5,8 +5,9 @@ const axios = require("axios");
 
 const naverAPI = {
   keywords: "",
-  keywordArray: [],
-  extractedData: [],
+  feature_keyword: "",
+  clo_color: "",
+  clo_name: "",
   save_path: "",
 
   // naverAPI call
@@ -18,7 +19,9 @@ const naverAPI = {
       };
       queryParams.query = req.body.keywords;
       this.keywords = req.body.keywords;
-      this.keywordArray = req.body.keywordArray;
+      this.feature_keyword = req.body.feature_keyword;
+      this.clo_color = req.body.clo_color;
+      this.clo_name = req.body.clo_name;
 
       clientId = "MLN5m3nClexyvNU0pp46";
       clientSecret = "fOYgb7iZsf";
@@ -56,7 +59,10 @@ const naverAPI = {
     try {
       res.json({
         keywords: this.keywords,
-        keywordArray: this.keywordArray,
+        feature_keyword: this.feature_keyword,
+        clo_color: this.clo_color,
+        clo_name: this.clo_name,
+        // keywordArray: this.keywordArray,
         extractedData: this.extractedData,
         showImageResult : true
       });
