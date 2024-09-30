@@ -25,7 +25,7 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
         lines = file.readlines()
         detected_classes = sorted(set(line.split()[0] for line in lines))
         print(detected_classes[0])
-        
+        ["","",""]
     color_keyword_array = []
     for cls in detected_classes:
         crop_image_path = detect_dir / 'crops' / cls / f'{image_name}.jpg'
@@ -40,7 +40,7 @@ def detect_objects_and_extract_colors(image_path, weights_path, detect_script_pa
         feature_list = [keyword for keyword in detected_classes if keyword in feature_keywords]
         clo_name = [cls for cls in detected_classes if cls not in feature_keywords]
 
-        feature_list = ["헨리넥", "로고"]
+        feature_list = ["후드", "프린팅"]
         clo_name = ["티셔츠"]
         # feature = [feature_hood, feature_printer, feature_henley, feature_kara, feature_pocket]
         # output = [detected_classes[0], color_keyword_array[0]]
