@@ -1,8 +1,10 @@
 <div align="center">
  <h1>웹 페이지</h1>
 </div> 
- <h2>스킬</h2>
+ <h2>🖥️ 스킬</h2>
 <div align="center">
+ <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
 <img src="https://img.shields.io/badge/mdi%2Ffont-2196F3?style=for-the-badge&logo=materialdesign&logoColor=white">
 <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
 <img src="https://img.shields.io/badge/core--js-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
