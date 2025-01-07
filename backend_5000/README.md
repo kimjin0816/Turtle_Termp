@@ -3,7 +3,7 @@
 </div> 
 
  <h2>스킬</h2>
-<span align="center">
+<div align="center">
  <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
  <img src="https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white">
  <img src="https://img.shields.io/badge/yolov5-00FFFF?style=for-the-badge&logo=github&logoColor=white">
@@ -13,7 +13,7 @@
  <img src="https://img.shields.io/badge/google%20colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white">
  <img src="https://img.shields.io/badge/color%20thief-3B5998?style=for-the-badge&logo=palette&logoColor=white">
  <img src="https://img.shields.io/badge/postgresql-336791?style=for-the-badge&logo=postgresql&logoColor=white">
-</span>
+</div>
 
 
 
