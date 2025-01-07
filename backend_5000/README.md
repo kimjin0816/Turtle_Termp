@@ -25,12 +25,15 @@
 
 <div>
  <h2>알고리즘</h2>
-   ![](/README_img/알고리즘.png)
+ 
+ ![](/README_img/알고리즘.png)
 
 </div>
 
 <div>
  <h2>데이터 처리과정</h2>
-   ![](/README_img/데이터처리과정.png)
+ 
+ ![](/README_img/데이터처리과정.png)
+
 </div>
 
