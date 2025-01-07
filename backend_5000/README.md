@@ -24,3 +24,14 @@
 - 데이터 처리 과정
 
 <br/>
+
+<div>
+ <h2>알고리즘</h2>
+  ![알고리즘](https://github.com/user-attachments/assets/8f6659a5-af93-4c32-860a-f06d314b1e85)
+</div>
+
+<div>
+ <h2>데이터 처리과정</h2>
+  ![데이터처리과정](https://github.com/user-attachments/assets/5986620a-a29f-460a-85fe-9297d2beab81)
+</div>
+
