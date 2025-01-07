@@ -14,14 +14,13 @@
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
 </div>
 
-<div>
-    <h2> 소개  </h2>
-    <br/>
-    웹 페이지에 대한 서버이며, 사용자의 계정이나 의류에 대한 검색 기록 관리로 구성되어 있습니다.    
-    <br/>
-    다음과 같은 내용을 작성할 수 있습니다.    
-        - 사용자 계정관리 및 검색 기록 ERD 
-</div>
+## 📝 소개
+웹 페이지에 대한 서버이며, 사용자의 계정이나 의류에 대한 검색 기록 관리로 구성되어 있습니다.    
+
+다음과 같은 내용을 작성할 수 있습니다.
+- 사용자 계정관리 및 검색 기록 ERD 
+
+
 
 <div>
     <h2>사용자 계정관리 및 검색 기록 ERD</h2>
