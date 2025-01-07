@@ -38,20 +38,6 @@
  ![](/README_img/처리도.png)
 
 ## 실행영상
-<img src="https://github.com/user-attachments/assets/30bf1b8c-6821-43a5-a3e1-332cf25f11b6" style="margin: 0px; width:100% height: 100%; background-color: rgb(14, 14, 14);">
-## 시나리오및 화면 구성
-
-### 로그인/회원가입
-![](README_image/로그인.png) ![](README_image/로그인화면.png)
-
-### 명언 모음(Crwaling)
-![](/README_image/크롤링화면.png)
-
-### 신체별 부위 운동 가이드
-![](/README_image/신체부위별운동.png)![](/README_image/API화면.png)
-
-### 운동 루틴 작성
-![](/README_image/루틴작성.png)![](/README_image/운동루틴화면.png)
-
-### 당일 운동 수행능력 확인
-![](/README_image/운동수행확인.png)![](/README_image/IOT화면.png)
+<img src="" style="margin: 0px; width:100% height: 100%; background-color: rgb(14, 14, 14);">
+<img src="https://github.com/user-attachments/assets/30bf1b8c-6821-43a5-a3e1-332cf25f11b6" width="300" />
+출처: https://annajin.tistory.com/189 [내일 한걸음 더:티스토리]
