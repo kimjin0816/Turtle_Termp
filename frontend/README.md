@@ -30,9 +30,10 @@
 
 <div>
  <h2>메뉴 구성도</h2>
-![메뉴구성도](https://github.com/user-attachments/assets/ee88cb9a-3991-484d-8449-16309fb1552a)
-</div>
+ 
 
+</div>
+![](/README_img/메뉴구성도.png)
 <div>
  <h2>화면 설계서</h2>
  ![화면설계서1](https://github.com/user-attachments/assets/4feb155f-bab1-4a30-921e-f7819a141ddb)
