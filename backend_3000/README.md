@@ -27,5 +27,3 @@
     <h2>사용자 계정관리 및 검색 기록 ERD</h2>
     ![ERD](https://github.com/user-attachments/assets/705aae06-48c9-4adf-9b68-c07c0e511a4e)
 </div>
-
-<br />
