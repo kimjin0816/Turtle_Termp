@@ -1,4 +1,4 @@
-<div align="cneter">
+<div align="center">
     <h1>웹 서버 ✅</h1>
 </div>
 
