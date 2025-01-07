@@ -34,14 +34,11 @@
 ## 서비스 흐름도
  ![](/README_img/흐름도.png)
 
-## 개발 환경
-![](README_image/개발환경.png)
-
-## 프로그램 통합 구성도
-![](README_image/통합구성도.png)
+## 기능 처리도(기능 흐름도)
+ ![](/README_img/처리도.png)
 
 ## 실행영상
-![](GIFMaker_me.gif)
+![시연영상](https://github.com/user-attachments/assets/e3b747ac-eb80-4c14-afee-9ce47642daa6)
 
 ## 시나리오및 화면 구성
 ### 로그인/회원가입
