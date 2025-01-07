@@ -29,7 +29,7 @@
 ![](	https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
 
 ## 서비스 구성도
- ![서비스 구성도.png](C:\Users\user\Desktop\Turtle_Termp-jin\README_img\서비스 구성도.png)
+ ![](README_img/서비스 구성도.png)
 
 ## 연구방법
  * 브레인스토밍을 통한 아이디어 도출
