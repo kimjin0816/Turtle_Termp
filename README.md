@@ -1,6 +1,10 @@
 # 프로젝트
  **Clothes by Connect (옷을 연결해주다)**
 
+## Introduce
+이미지 속 의류를 분석한 후, 이를 기반으로 유사한 스타일의 의류를 추천하는 웹 플랫폼입니다.   
+      첨단 이미지 분석 기술을 활용하여 사용자에게 개인화된 패션 제안을 제공합니다.
+
 ## SKILL
 | 구분 | 기능 | 상세 내용 |
 | :---:         |     :---:      |          ---: |
@@ -24,9 +28,7 @@
 ![](https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)
 ![](	https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
 
-## Introduce
-이미지 속 의류를 분석한 후, 이를 기반으로 유사한 스타일의 의류를 추천하는 웹 플랫폼입니다.   
-      첨단 이미지 분석 기술을 활용하여 사용자에게 개인화된 패션 제안을 제공합니다.
+
 
 
 ## 기능
