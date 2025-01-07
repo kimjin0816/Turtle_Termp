@@ -2,7 +2,7 @@
  **Clothes by Connect (옷을 연결해주다)**
  
 ## Team
- Turtle 
+ **Turtle**
 
 ## SKILL
 | 구분 | 기능 | 상세 내용 |
