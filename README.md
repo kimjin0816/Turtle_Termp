@@ -38,7 +38,7 @@
  ![](/README_img/처리도.png)
 
 ## 실행영상
-<img src="https://github.com/user-attachments/assets/30bf1b8c-6821-43a5-a3e1-332cf25f11b6" style="margin: 0px; height: 100%; background-color: rgb(14, 14, 14);">
+<img src="https://github.com/user-attachments/assets/30bf1b8c-6821-43a5-a3e1-332cf25f11b6" style="margin: 0px; width:100% height: 100%; background-color: rgb(14, 14, 14);">
 ## 시나리오및 화면 구성
 
 ### 로그인/회원가입
