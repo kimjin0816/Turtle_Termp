@@ -1,17 +1,7 @@
 <div align="center">
  <h1>의류 분석 서버</h1>
 </div> 
-
-
-## 📝 소개
-사용자가 특정 이미지에 대한 검색을 하여 AI가 유사한 의류를 분석하여 제공해주는 서버이다.
-
-다음과 같은 내용을 작성할 수 있습니다.
-- 알고리즘
-- 데이터 처리 과정
-
 <br/>
-
  <h2>스킬</h2>
 <div align="center">
  <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
@@ -25,6 +15,13 @@
  <img src="https://img.shields.io/badge/postgresql-336791?style=for-the-badge&logo=postgresql&logoColor=white">
 </div>
 
+
+## 📝 소개
+사용자가 특정 이미지에 대한 검색을 하여 AI가 유사한 의류를 분석하여 제공해주는 서버이다.
+
+다음과 같은 내용을 작성할 수 있습니다.
+- 알고리즘
+- 데이터 처리 과정
 
 
 <div>
