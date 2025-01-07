@@ -28,15 +28,8 @@
 ![](https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)
 ![](	https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
 
-
-
-
-## 기능
- * 로그인/회원가입
- * 운동명언 모음(Crwaling)
- * 신체부위별 운동(API)
- * 나만의 운동 루틴 계획(DB, Vuetify)
- * 당일 운동 수행 확인(IOT(Postman), WebSocket)
+## 서비스 구성도
+ ![파일명](/path/to/img.jpg)
 
 ## 연구방법
  * 브레인스토밍을 통한 아이디어 도출
