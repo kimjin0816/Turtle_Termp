@@ -25,7 +25,7 @@
 
 <div>
  <h2>알고리즘</h2>
-  ![알고리즘](https://github.com/user-attachments/assets/8f6659a5-af93-4c32-860a-f06d314b1e85)
+  ![알고리즘](/README_img/)
 </div>
 
 <div>
