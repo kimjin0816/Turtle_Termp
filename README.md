@@ -38,9 +38,10 @@
  ![](/README_img/처리도.png)
 
 ## 실행영상
-![시연영상](https://github.com/user-attachments/assets/e3b747ac-eb80-4c14-afee-9ce47642daa6)
+![시연영상](https://github.com/user-attachments/assets/30bf1b8c-6821-43a5-a3e1-332cf25f11b6)
 
 ## 시나리오및 화면 구성
+
 ### 로그인/회원가입
 ![](README_image/로그인.png) ![](README_image/로그인화면.png)
 
