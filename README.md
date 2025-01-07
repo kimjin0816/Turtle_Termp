@@ -1,5 +1,5 @@
-# Project
- Clothes by Connect
+# 프로젝트
+ Clothes by Connect (옷을 연결해주다)
  
 ## Team
  Turtle 
@@ -28,7 +28,11 @@
 ![](	https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
 
 ## Introduce
- 사진 속 의류를 AI의 분석을 통해 키워드 가지고 유사한 의류를 제공해주는 웹 사이트
+  다양한 스마트 기기, 예를 들어 스마트폰, 태블릿, 컴퓨터, 스마트 TV 등을 통해 손쉽게 접근할 수 있는 응용 분야로, 사용자들이 자주 
+  사용하는 휴대전화의 카메라와 캡처 기능을 활용하여 이미지를 분석하고, 이를 통해 사용자가 원하는 의류와 유사성이 높은 제품을 매칭해 
+  손쉽게 찾을 수 있도록 하여 만족감을 극대화하고자 본 프로젝트를 기획하게 되었습니다.
+![image](https://github.com/user-attachments/assets/beddc667-43b4-4dc4-b492-0d4d1eb22e71)
+
 
 ## 기능
  * 로그인/회원가입
