@@ -6,9 +6,9 @@
 
 ## SKILL
 | 구분 | 기능 | 상세 내용 |
-| :---         |     :---:      |          ---: |
-| S/W개발환경 | git status     | git status    |
-| git diff     | git diff       | git diff      |
+| :---:         |     :---:      |          ---: |
+| S/W개발환경   | git status     | git status    |
+|              | git diff       | git diff      |
 ![](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![](https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white)
 ![](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white)
