@@ -36,6 +36,7 @@
 <div>
  <h2>화면 설계서</h2>
  ![화면설계서1](https://github.com/user-attachments/assets/4feb155f-bab1-4a30-921e-f7819a141ddb)
+ <br/>
  ![화면설계서2](https://github.com/user-attachments/assets/d83fe321-6935-4680-bb7b-6a94e980948d)
 </div>
 
