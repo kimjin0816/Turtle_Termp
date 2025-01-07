@@ -1,7 +1,6 @@
 <div align="center">
  <h1>의류 분석 서버</h1>
 </div> 
-<br/>
  <h2>스킬</h2>
 <div align="center">
  <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
