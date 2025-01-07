@@ -5,13 +5,13 @@
         <v-card-title class="text-center">키워드 입력</v-card-title>
         <v-card-text>
           <!-- 키워드 수정 내용 -->
-          <v-text-field label="색깔" v-model="clo_color">
+          <v-text-field class="v-text-field" label="색깔" v-model="clo_color">
             <!-- <p>현재 색깔: {{ keywordArray[0] }}</p> -->
           </v-text-field>
-          <v-text-field label="특징"  v-model="feature_keyword">
+          <v-text-field class="v-text-field" label="특징" v-model="feature_keyword">
             <!-- <p>현재 특징: {{ feature_keyword }}</p> -->
           </v-text-field>
-          <v-text-field label="종류"  v-model="clo_name">
+          <v-text-field class="v-text-field" label="종류" v-model="clo_name">
             <!-- <p>현재 종류: {{ keywordArray[1] }}</p> -->
           </v-text-field>
         </v-card-text>

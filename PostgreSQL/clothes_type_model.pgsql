@@ -1,12 +1,12 @@
 CREATE TABLE IF NOT EXISTS clothes(
                 serial SERIAL PRIMARY KEY,
-                hash_code VARCHAR(100) NOT NULL,
+                hash_code VARCHAR(1000) NOT NULL,
                 -- top_bottom VARCHAR(50) NOT NULL,
                 clo_name VARCHAR(50) NOT NULL,
                 -- classification VARCHAR(50) NOT NULL,
                 color VARCHAR(50) NOT NULL,
-                img VARCHAR(100) NOT NULL,
-                feature VARCHAR(100) NOT NULL);
+                img VARCHAR(1000) NOT NULL,
+                feature VARCHAR(200) NOT NULL);
 
 CREATE TABLE IF NOT EXISTS searchLog (
                 serial SERIAL PRIMARY KEY,
@@ -15,9 +15,9 @@ CREATE TABLE IF NOT EXISTS searchLog (
                 clo_name VARCHAR(50) NOT NULL,
                 -- classification VARCHAR(50) NOT NULL,
                 color VARCHAR(50) NOT NULL,
-                img VARCHAR(100) NOT NULL,    
+                img VARCHAR(1000) NOT NULL,    
                 date DATE NOT NULL,
-                feature VARCHAR(100) NOT NULL);
+                feature VARCHAR(200) NOT NULL);
                 
 CREATE TABLE IF NOT EXISTS top_feature (
                 f_code INT NOT NULL,

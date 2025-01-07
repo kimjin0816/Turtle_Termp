@@ -1,3 +1,4 @@
+
 from flask import Flask, request, url_for, jsonify, send_from_directory
 from flask_cors import CORS
 import requests
@@ -17,16 +18,6 @@ imageName_global = ''
 image_URL_global = ''
 
 class Index:      
-    def featureArray_keyword(self, featureArray):
-        with open('../backend_5000/feature_keyword.json','r', encoding='utf-8') as f:
-        # 후드 / 프린트 / 헨리넥 / 카라 / 포켓
-            json_data = json.load(f)
-            f_code = ch.t_f_code(featureArray)
-            print(type(f_code))
-            feature_keywords= json_data[str(f_code)]
-            print('feature_keywords : ', feature_keywords)
-        return feature_keywords, f_code
-
     def postData(self, clo_color, feature_list, clo_nameList): 
         # f_keyword, f_code = self.featureArray_keyword(feature_list)
         feature_keyword = ' '.join(feature_list)
@@ -75,9 +66,9 @@ class Index:
         
         """ 객체 감지 및 색상 추출 """
         image_path = self.save_path
-        weights_path = Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/TopBottomPJ/top_train13/weights/best.pt')
-        detect_script_path = Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/detect.py')
-        color_feature_script_path = Path('C:/Users/user/Desktop/Turtle_Termp/yolov5/color_feature.py')
+        weights_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/TopBottomPJ/top_train13/weights/best.pt')
+        detect_script_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/detect.py')
+        color_feature_script_path = Path('C:/Users/user/Desktop/Turtle_Termp-jin/yolov5/color_feature.py')
 
         # detect_objects_and_extract_colors 실행 후 결과 받아오기
         clo_color, feature_list, clo_name = detect_objects_and_extract_colors(image_path, weights_path, detect_script_path, color_feature_script_path)
