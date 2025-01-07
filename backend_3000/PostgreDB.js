@@ -5,7 +5,7 @@ const members = new Pool({
   user: "postgres", // 자신의 DB user 이름 적기
   host: "localhost", // 자신의 DB host 이름 적기
   database: "members", // 자신의 DB 서버 이름 적기
-  password: "2023", // 자신의 DB 비밀번호 적기
+  password: "password", // 자신의 DB 비밀번호 적기
   port: 5432, // 자신의 DB 포트 번호 적기
 });
 
@@ -13,7 +13,7 @@ const clothes = new Pool({
   user: "postgres",
   host: "localhost",
   database: "Clothes",
-  password: "2023",
+  password: "password",
   port: 5432,
 });
 

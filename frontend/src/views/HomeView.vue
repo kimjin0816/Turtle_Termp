@@ -114,6 +114,12 @@ export default {
           this.attachedImages = []; // 첨부된 이미지 초기화
           const imageURL = URL.createObjectURL(this.selectedImage);
           this.attachedImages.unshift({ src: imageURL });
+
+          // 결과값 초기화
+          this.showImageResult = false;
+          this.resultOpen = false;
+          this.keywords = '';
+          this.extractedData = [];
         } catch (error) {
           console.error('uploadImage:', error);
         }
