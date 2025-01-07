@@ -24,17 +24,18 @@
 웹 페이지에 대한 구성 요소를 나타낸 것이다.
 
 다음과 같은 내용을 작성할 수 있습니다.
-- 알고리즘
-- 데이터 처리 과정
+- 메뉴 구성도
+- 화면 설계서
 
 
 <div>
- <h2>알고리즘</h2>
-  ![알고리즘](https://github.com/user-attachments/assets/8f6659a5-af93-4c32-860a-f06d314b1e85)
+ <h2>메뉴 구성도</h2>
+![메뉴구성도](https://github.com/user-attachments/assets/ee88cb9a-3991-484d-8449-16309fb1552a)
 </div>
 
 <div>
- <h2>데이터 처리과정</h2>
-  ![데이터처리과정](https://github.com/user-attachments/assets/5986620a-a29f-460a-85fe-9297d2beab81)
+ <h2>화면 설계서</h2>
+ ![화면설계서1](https://github.com/user-attachments/assets/4feb155f-bab1-4a30-921e-f7819a141ddb)
+ ![화면설계서2](https://github.com/user-attachments/assets/d83fe321-6935-4680-bb7b-6a94e980948d)
 </div>
 
