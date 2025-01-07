@@ -31,13 +31,18 @@
 <div>
  <h2>메뉴 구성도</h2>
  
+ ![](/README_img/메뉴구성도.png)
 
 </div>
-![](/README_img/메뉴구성도.png)
 <div>
  <h2>화면 설계서</h2>
- ![화면설계서1](https://github.com/user-attachments/assets/4feb155f-bab1-4a30-921e-f7819a141ddb)
+ 
+  ![](/README_img/화면설계서1.png)
+
  <br/>
- ![화면설계서2](https://github.com/user-attachments/assets/d83fe321-6935-4680-bb7b-6a94e980948d)
+ 
+  ![](/README_img/화면설계서2.png)
+
+ 
 </div>
 
