@@ -25,11 +25,12 @@
 
 <div>
  <h2>알고리즘</h2>
-  ![알고리즘](/README_img/)
+   ![](/README_img/알고리즘.png)
+
 </div>
 
 <div>
  <h2>데이터 처리과정</h2>
-  ![데이터처리과정](https://github.com/user-attachments/assets/5986620a-a29f-460a-85fe-9297d2beab81)
+   ![](/README_img/데이터처리과정.png)
 </div>
 
