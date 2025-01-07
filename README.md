@@ -38,6 +38,5 @@
  ![](/README_img/처리도.png)
 
 ## 실행영상
-<img src="" style="margin: 0px; width:100% height: 100%; background-color: rgb(14, 14, 14);">
 <img src="https://github.com/user-attachments/assets/30bf1b8c-6821-43a5-a3e1-332cf25f11b6" width="300" />
 출처: https://annajin.tistory.com/189 [내일 한걸음 더:티스토리]
