@@ -39,7 +39,7 @@
 
 ## 실행영상
 ![시연영상](https://github.com/user-attachments/assets/30bf1b8c-6821-43a5-a3e1-332cf25f11b6)
-<img src="[복사해온 URL](https://github.com/user-attachments/assets/30bf1b8c-6821-43a5-a3e1-332cf25f11b6)">
+<img src="https://github.com/user-attachments/assets/30bf1b8c-6821-43a5-a3e1-332cf25f11b6">
 ## 시나리오및 화면 구성
 
 ### 로그인/회원가입
