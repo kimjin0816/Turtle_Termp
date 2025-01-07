@@ -1,5 +1,5 @@
 # 프로젝트
- Clothes by Connect (옷을 연결해주다)
+ **Clothes by Connect (옷을 연결해주다)**
  
 ## Team
  Turtle 
