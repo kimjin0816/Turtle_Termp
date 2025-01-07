@@ -2,7 +2,7 @@
  <h1>의류 분석 서버</h1>
 </div> 
 <div align="center">
- <h1>스킬</h1> <br>
+ <h2>스킬</h1> <br>
  <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
  <img src="https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white">
  <img src="https://img.shields.io/badge/yolov5-00FFFF?style=for-the-badge&logo=github&logoColor=white">
